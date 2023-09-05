@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="LogsJB"
+<testsuite name="LogsJBSupport"
            tests="1"
            failures="0"
            errors="0"
            skipped="0"
-           time="5.036">
+           time="6.940">
   <properties />
   
   
-            <testcase name="writeLog" time="5.036" classname="com.josebran.LogsJB.LogsJBTest" />
+            <testcase name="writeLog" time="6.940" classname="com.josebran.LogsJB.LogsJBTest" />
       
 </testsuite>

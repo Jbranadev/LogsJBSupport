@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.github.josecarlosbran</groupId>
-  <artifactId>LogsJBSupport</artifactId>
+  <artifactId>logsjbsupport</artifactId>
   <version>0.5.6</version>
 
   <name>${project.groupId}:${project.artifactId}</name>
-  <description>LogsJB es una librería java que permite la gestión de
+  <description>LogsJBSupport es una librería java que permite la gestión de
     registros de un programa en paralelo a la ejecución
     del programa, lo cual la hace una potente herramienta para programas empresariales y personales
     que exigen grandes niveles de rendimiento. Para mayor
