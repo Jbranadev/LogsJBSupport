@@ -5,7 +5,12 @@ del programa, lo cual la hace una potente herramienta para programas empresarial
 que exigen grandes niveles de rendimiento. 
 
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.josecarlosbran/LogsJBSupport?logo=apachemaven&logoColor=%23C71A36&color=blue&link=https%3A%2F%2Fcentral.sonatype.com%2Fsearch%3Fq%3D%26namespace%3Dio.github.josecarlosbran%26name%3DLogsJBSupport)
-[![License](https://img.shields.io/badge/Licence-Apache%202.0-blue.svg)](https://github.com/Jbranadev/LogsJB/tree/support_version/LICENSE.txt)
+[![javadoc](https://javadoc.io/badge2/io.github.josecarlosbran/LogsJBSupport/javadoc.svg)](https://javadoc.io/doc/io.github.josecarlosbran/LogsJBSupport)
+[![License](https://img.shields.io/badge/Licence-Apache%202.0-blue.svg)](https://github.com/Jbranadev/LogsJBSupport/tree/support_version/LICENSE.txt)
+[![CodeQL](https://github.com/Jbranadev/LogsJBSupport/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/Jbranadev/LogsJBSupport/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Jbranadev/LogsJBSupport/badge)](https://securityscorecards.dev/viewer/?uri=github.com/Jbranadev/LogsJBSupport)
+
+
 * * *
 ## Estado del Proyecto :atom:  
 LogsJBSupport actualmente está en una etapa de desarrollo continuo, por lo cual sus observaciones y recomendaciones, 
@@ -190,8 +195,7 @@ implementation 'io.github.josecarlosbran:logsjbsupport:0.5.6'
 
 Para mayor información sobre como descargar LogsJBSupport desde otros 
 administradores de paquetes, puedes ir al siguiente Link
-
-<https://search.maven.org/artifact/io.github.josecarlosbran/LogsJBSupport>
+[LogsJBSupport](https://search.maven.org/artifact/io.github.josecarlosbran/LogsJBSupport)
 
 ***
 
