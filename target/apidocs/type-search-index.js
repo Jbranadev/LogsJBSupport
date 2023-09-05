@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.josebran.LogsJB","l":"LogsJB"},{"p":"com.josebran.LogsJB.Numeracion","l":"LogsJBProperties"},{"p":"com.josebran.LogsJB.Numeracion","l":"NivelLog"},{"p":"com.josebran.LogsJB.Numeracion","l":"SizeLog"}];updateSearchResults();
