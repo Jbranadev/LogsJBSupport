@@ -17,7 +17,7 @@ public class LogsJBTest {
         LogsJB.setGradeLog(NivelLog.TRACE);
         //LogsJB.debug( "Primer comentario grado Debug");
         Integer i=0;
-        while(i<1000){
+        while(i<1200){
 
             trace( i+" comentario grado Trace");
 
