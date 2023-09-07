@@ -38,3 +38,5 @@ bin/
 /Log.txt
 /Log - copia.txt
 /Logs/
+/target/
+/test-output/

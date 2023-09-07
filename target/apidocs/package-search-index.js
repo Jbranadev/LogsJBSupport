@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.josebran.LogsJB"},{"l":"com.josebran.LogsJB.Numeracion"}];updateSearchResults();

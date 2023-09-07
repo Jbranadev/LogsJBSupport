@@ -17,7 +17,7 @@ public class LogsJBTest {
         LogsJB.setGradeLog(NivelLog.TRACE);
         //LogsJB.debug( "Primer comentario grado Debug");
         Integer i=0;
-        while(i<6000){
+        while(i<1200){
 
             trace( i+" comentario grado Trace");
 
@@ -33,9 +33,7 @@ public class LogsJBTest {
 
             i=i+6;
         }
-
         LogsJB.waitForOperationComplete();
-
 
     }catch (Exception e){
         System.err.println("Excepcion capturada en el metodo main: "+e.getMessage());
