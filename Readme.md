@@ -7,7 +7,7 @@ que exigen grandes niveles de rendimiento.
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.josecarlosbran/LogsJBSupport?logo=apachemaven&logoColor=%23C71A36&color=blue&link=https%3A%2F%2Fcentral.sonatype.com%2Fsearch%3Fq%3D%26namespace%3Dio.github.josecarlosbran%26name%3DLogsJBSupport)
 [![javadoc](https://javadoc.io/badge2/io.github.josecarlosbran/LogsJBSupport/javadoc.svg)](https://javadoc.io/doc/io.github.josecarlosbran/LogsJBSupport)
 [![License](https://img.shields.io/badge/Licence-Apache%202.0-blue.svg)](LICENSE.md)
-[![CodeQL](https://github.com/Jbranadev/LogsJBSupport/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/Jbranadev/LogsJBSupport/actions/workflows/codeql.yml)
+[![CodeQL](https://github.com/Jbranadev/LogsJBSupport/actions/workflows/codeql.yml/badge.svg)](https://github.com/Jbranadev/LogsJBSupport/actions/workflows/codeql.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Jbranadev/LogsJBSupport/badge)](https://securityscorecards.dev/viewer/?uri=github.com/Jbranadev/LogsJBSupport)
 
 
