@@ -49,7 +49,6 @@ class Execute {
 
     /**
      * Ejecutor de Tareas asincronas
-     * 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
      */
     private ExecutorService executorPrincipal = Executors.newCachedThreadPool();
     private Execute() {
