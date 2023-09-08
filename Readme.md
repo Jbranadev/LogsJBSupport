@@ -4,13 +4,13 @@ registros de un programa en paralelo a la ejecución
 del programa, lo cual la hace una potente herramienta para programas empresariales y personales 
 que exigen grandes niveles de rendimiento. 
 
-![Maven Central](https://img.shields.io/maven-central/v/io.github.josecarlosbran/LogsJBSupport?logo=apachemaven&logoColor=%23C71A36&color=blue&link=https%3A%2F%2Fcentral.sonatype.com%2Fsearch%3Fq%3D%26namespace%3Dio.github.josecarlosbran%26name%3DLogsJBSupport)
-[![javadoc](https://javadoc.io/badge2/io.github.josecarlosbran/LogsJBSupport/javadoc.svg)](https://javadoc.io/doc/io.github.josecarlosbran/LogsJBSupport)
+![Maven Central](https://img.shields.io/maven-central/v/io.github.josecarlosbran/logsjbsupport?logo=apachemaven&logoColor=%23C71A36&color=blue&link=https%3A%2F%2Fcentral.sonatype.com%2Fsearch%3Fq%3D%26namespace%3Dio.github.josecarlosbran%26name%logsjbsupport)
+[![javadoc](https://javadoc.io/badge2/io.github.josecarlosbran/logsjbsupport/javadoc.svg)](https://javadoc.io/doc/io.github.josecarlosbran/logsjbsupport)
 [![License](https://img.shields.io/badge/Licence-Apache%202.0-blue.svg)](LICENSE.md)
 [![CodeQL](https://github.com/Jbranadev/LogsJBSupport/actions/workflows/codeql.yml/badge.svg)](https://github.com/Jbranadev/LogsJBSupport/actions/workflows/codeql.yml)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/Jbranadev/LogsJBSupport/badge)](https://securityscorecards.dev/viewer/?uri=github.com/Jbranadev/LogsJBSupport)
-
-
+[![codecov](https://codecov.io/gh/Jbranadev/LogsJBSupport/graph/badge.svg?token=sfWzoza3q1)](https://codecov.io/gh/Jbranadev/LogsJBSupport)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/7812/badge)](https://www.bestpractices.dev/projects/7812)
 * * *
 ## Estado del Proyecto :atom:  
 LogsJBSupport actualmente está en una etapa de desarrollo continuo, por lo cual sus observaciones y recomendaciones, 
