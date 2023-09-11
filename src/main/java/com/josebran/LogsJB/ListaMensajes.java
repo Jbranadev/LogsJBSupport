@@ -16,6 +16,8 @@
 
 package com.josebran.LogsJB;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -60,9 +62,10 @@ class ListaMensajes {
                 return dato;
             }
         }catch (Exception e){
-            System.err.println("Excepcion capturada al obtener el mensaje: "+Thread.currentThread().getName());
+            System.err.println("Exepcion capturada en el metodo Metodo que Obtiene el mensaje en la posición 0 de la lista");
+            System.err.println("Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
+            return null;
         }
-        return null;
     }
 
     /***

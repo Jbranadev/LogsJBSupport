@@ -91,9 +91,6 @@ public  class LogsJB {
         }catch (Exception e){
             System.err.println("Excepcion capturada al tratar de setear el contador de las veces que se a escrito en " +
                     "el log " +isAndroid);
-            System.err.println("Tipo de Excepción : "+e.getClass());
-            System.err.println("Causa de la Exepción : "+e.getCause());
-            System.err.println("Mensaje de la Exepción : "+e.getMessage());
             System.err.println("Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
         }
     }
@@ -191,9 +188,6 @@ public  class LogsJB {
             field.set(null, Usuario);
         }catch (Exception e){
             System.err.println("Excepcion capturada al tratar de setear el usuario del entorno actual "+Usuario);
-            System.err.println("Tipo de Excepción : "+e.getClass());
-            System.err.println("Causa de la Exepción : "+e.getCause());
-            System.err.println("Mensaje de la Exepción : "+e.getMessage());
             System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
         }
 
@@ -250,9 +244,6 @@ public  class LogsJB {
             System.err.println("Excepcion capturada al Executor encargado de hacer la llamada al ejecutor en un hilo de ejecución aparte, para que este se encargue\n" +
                     "     * de ejecutar los ejecutores de log's en subprocesos, diferentes al programa principal");
             System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se llama la escritura de los logs");
-            System.err.println("Tipo de Excepción : "+e.getClass());
-            System.err.println("Causa de la Exepción : "+e.getCause());
-            System.err.println("Mensaje de la Exepción : "+e.getMessage());
             System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
         }
 
@@ -271,7 +262,7 @@ public  class LogsJB {
      * Espera que se termine de ejecutar los trabajos que esta realizando el Log
      */
     public static void waitForOperationComplete(){
-        while(!getInstance().getTaskisReady()){
+        while(getTaskIsReady()){
 
         }
         System.out.println("Completo de escribir los Logs");

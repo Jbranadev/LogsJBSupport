@@ -68,6 +68,16 @@ class Execute {
         return instance;
     }
 
+    /**
+     * Recuperara las propiedades de LogsJB seteadas en las propiedades del sistema
+     */
+    protected void getLogsJBProperties(){
+        setearRuta();
+        setearNivelLog();
+        setearSizelLog();
+        setearIsAndroid();
+    }
+
 
     /***
      * Proporciona el acceso a la lista que sirve como cola de las peticiones
@@ -86,9 +96,6 @@ class Execute {
             writePrincipal();
         }catch (Exception e){
             System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se llama la escritura de los logs");
-            System.err.println("Tipo de Excepción : "+e.getClass());
-            System.err.println("Causa de la Exepción : "+e.getCause());
-            System.err.println("Mensaje de la Exepción : "+e.getMessage());
             System.err.println("Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
         }
     }
@@ -137,9 +144,6 @@ class Execute {
         }catch (Exception e){
             System.err.println("Exepcion capturada en el metodo Escritor principal, es el que maneja la logica de la aplicación la cual decide si el log se almacena en una BD's,\n" +
                     "     * un Txt Ó si se envía a un RestAPI.");
-            System.err.println("Tipo de Excepción : "+e.getClass());
-            System.err.println("Causa de la Exepción : "+e.getCause());
-            System.err.println("Mensaje de la Exepción : "+e.getMessage());
             System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
         }
     }
