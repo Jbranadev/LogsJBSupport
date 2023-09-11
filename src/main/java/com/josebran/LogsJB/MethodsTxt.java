@@ -197,9 +197,6 @@ class MethodsTxt {
             temp=formater.format(LocalDateTime.now());
         }catch (Exception e){
             System.err.println("Exepcion capturada en el metodo Metodo que Obtiene la fecha actual en formato dd/MM/YYYY HH:MM:SS");
-            System.err.println("Tipo de Excepción : "+e.getClass());
-            System.err.println("Causa de la Exepción : "+e.getCause());
-            System.err.println("Mensaje de la Exepción : "+e.getMessage());
             System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
         }
         return temp;
@@ -218,9 +215,6 @@ class MethodsTxt {
 
         }catch (Exception e){
             System.err.println("Exepcion capturada en el metodo Metodo que Obtiene la fecha en el formato indicado");
-            System.err.println("Tipo de Excepción : "+e.getClass());
-            System.err.println("Causa de la Exepción : "+e.getCause());
-            System.err.println("Mensaje de la Exepción : "+e.getMessage());
             System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
         }
 
@@ -283,9 +277,6 @@ class MethodsTxt {
         }catch (Exception e){
             System.err.println("Exepcion capturada en el metodo Metodo que retorna la cantidad de tabulaciones para el siguiente texto en la misma linea conforme\n" +
                     "     * al la longitud de la cadena actual:");
-            System.err.println("Tipo de Excepción : "+e.getClass());
-            System.err.println("Causa de la Exepción : "+e.getCause());
-            System.err.println("Mensaje de la Exepción : "+e.getMessage());
             System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e).toString());
         }
 
@@ -341,9 +332,6 @@ class MethodsTxt {
             }
         }catch (Exception e){
             System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se verifica el tamaño del archivo: " +getRuta());
-            System.err.println("Tipo de Excepción : "+e.getClass());
-            System.err.println("Causa de la Exepción : "+e.getCause());
-            System.err.println("Mensaje de la Exepción : "+e.getMessage());
             System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
         }
     }
@@ -442,9 +430,6 @@ class MethodsTxt {
             }
         }catch (Exception e){
             System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se escribir el log del Text");
-            System.err.println("Tipo de Excepción : "+e.getClass());
-            System.err.println("Causa de la Exepción : "+e.getCause());
-            System.err.println("Mensaje de la Exepción : "+e.getMessage());
             System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
         }
 
@@ -472,9 +457,6 @@ class MethodsTxt {
         }catch (Exception e){
             System.err.println("Excepcion capturada al tratar; de setear el contador de las veces que se a escrito en " +
                     "el log " +Logtext);
-            System.err.println("Tipo de Excepción : "+e.getClass());
-            System.err.println("Causa de la Exepción : "+e.getCause());
-            System.err.println("Mensaje de la Exepción : "+e.getMessage());
             System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
         }
 
