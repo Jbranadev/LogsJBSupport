@@ -26,7 +26,7 @@ import java.lang.reflect.Field;
 
 import static com.josebran.LogsJB.Execute.getInstance;
 import static com.josebran.LogsJB.Execute.getListado;
-import static com.josebran.LogsJB.MethodsTxt.convertir_fecha;
+import static com.josebran.LogsJB.MethodsTxt.*;
 
 /****
  * Copyright (C) 2022 El proyecto de código abierto LogsJB de José Bran
@@ -90,8 +90,8 @@ public  class LogsJB {
             System.setProperty(LogsJBProperties.LogsJBIsAndroid.getProperty(), String.valueOf(isAndroid));
         }catch (Exception e){
             System.err.println("Excepcion capturada al tratar de setear el contador de las veces que se a escrito en " +
-                    "el log " +isAndroid);
-            System.err.println("Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
+                    "el log " +isAndroid+" Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
+
         }
     }
 
@@ -132,7 +132,7 @@ public  class LogsJB {
             System.setProperty(LogsJBProperties.LogsJBNivelLog.getProperty(), GradeLog.name());
             //Methods.metodo = metodo;
         }catch (Exception e){
-            System.err.println("Excepcion capturada al tratar de setear el GradeLog de la aplicación " +GradeLog);
+            System.err.println("Excepcion capturada al tratar de setear el GradeLog de la aplicación " +GradeLog+" Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -148,12 +148,12 @@ public  class LogsJB {
     /***
      * Setea el tamaño maximo para el archivo Log de la aplicación actual.
      * @param SizeLog Tamaño maximo del archivo sobre el cual se estara escribiendo el Log.
-     *      * Little_Little = 125Mb,
-     *      * Little = 250Mb,
-     *      * Small_Medium = 500Mb,
-     *      * Medium = 1,000Mb,
-     *      * Small_Large = 2,000Mb,
-     *      * Large = 4,000Mb.
+     *      * Little_Little = 25Mb,
+     *      * Little = 50Mb,
+     *      * Small_Medium = 100Mb,
+     *      * Medium = 150Mb,
+     *      * Small_Large = 250Mb,
+     *      * Large = 500Mb.
      * El valor por defaul es Little_Little.
      */
     public static void setSizeLog(SizeLog SizeLog) {
@@ -164,7 +164,7 @@ public  class LogsJB {
             System.setProperty(LogsJBProperties.LogsJBSizeLog.getProperty(), SizeLog.name());
             //Methods.metodo = metodo;
         }catch (Exception e){
-            System.err.println("Excepcion capturada al tratar de setear el Tamaño del archivo Log " +SizeLog);
+            System.err.println("Excepcion capturada al tratar de setear el Tamaño del archivo Log " +SizeLog +" Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -187,13 +187,10 @@ public  class LogsJB {
             field.setAccessible(true);
             field.set(null, Usuario);
         }catch (Exception e){
-            System.err.println("Excepcion capturada al tratar de setear el usuario del entorno actual "+Usuario);
-            System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
+            System.err.println("Excepcion capturada al tratar de setear el usuario del entorno actual "+Usuario+" Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
         }
 
     }
-
-
 
 
     /***
@@ -223,7 +220,6 @@ public  class LogsJB {
                     metodo = elements[3].getMethodName()+" => "+elements[3].getLineNumber();
                 }
             }
-
             if(nivelLog.getGradeLog()>= getGradeLog().getGradeLog()){
                 MensajeWrite mensaje=new MensajeWrite();
                 mensaje.setTexto(Texto);
@@ -231,20 +227,13 @@ public  class LogsJB {
                 mensaje.setClase(clase);
                 mensaje.setMetodo(metodo);
                 mensaje.setFecha(convertir_fecha());
-                //System.out.println("Agregara el dato: "+Thread.currentThread().getName());
                 getListado().addDato(mensaje);
-                //System.out.println("Correra el metodo run: "+Thread.currentThread().getName());
                 if(getInstance().getTaskisReady()){
                     getInstance().run();
                 }
-                //System.out.println("Nombre hilo Execute: "+Thread.currentThread().getName());
-                //Thread.sleep(2);
             }
         }catch (Exception e){
-            System.err.println("Excepcion capturada al Executor encargado de hacer la llamada al ejecutor en un hilo de ejecución aparte, para que este se encargue\n" +
-                    "     * de ejecutar los ejecutores de log's en subprocesos, diferentes al programa principal");
-            System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se llama la escritura de los logs");
-            System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
+            System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se llama la escritura de los logs"+" Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
         }
 
 
@@ -262,10 +251,18 @@ public  class LogsJB {
      * Espera que se termine de ejecutar los trabajos que esta realizando el Log
      */
     public static void waitForOperationComplete(){
-        while(getTaskIsReady()){
+        while(!getTaskIsReady()){
 
         }
         System.out.println("Completo de escribir los Logs");
+    }
+
+
+    /**
+     * Recuperara las propiedades de LogsJB seteadas en las propiedades del sistema
+     */
+    public static void getLogsJBProperties(){
+        getInstance().getLogsJBProperties();
     }
 
 

@@ -30,7 +30,7 @@ ContextRoute es la ruta del programa actual en ejecución.
 Logs es una carpeta creada en el directorio de la aplicación
 En el cual se crea automáticamente una carpeta por cada día en el que se crea un Log.txt.
 
-- El tamaño máximo de un log es de 125Mb 
+- El tamaño máximo de un log es de 25Mb 
 
 Al superarse el tamaño máximo por default de Log.txt, se modificará el nombre de este a la siguiente notación
 Log_dd-MM-YYYY_HH-MM-SSS.txt y se seguirán escribiendo los registros en Log.txt
@@ -100,12 +100,12 @@ Usted puede modificar el tamaño que desea que tenga cada archivo de registros d
 /***
  * Setea el tamaño maximo para el archivo Log de la aplicación actual.
  * @param SizeLog Tamaño maximo del archivo sobre el cual se estara escribiendo el Log.
- *      * Little_Little = 125Mb,
- *      * Little = 250Mb,
- *      * Small_Medium = 500Mb,
- *      * Medium = 1,000Mb,
- *      * Small_Large = 2,000Mb,
- *      * Large = 4,000Mb.
+ *      * Little_Little = 25Mb,
+ *      * Little = 50Mb,
+ *      * Small_Medium = 100Mb,
+ *      * Medium = 150Mb,
+ *      * Small_Large = 250Mb,
+ *      * Large = 500Mb.
  * El valor por defaul es Little_Little.
  */
 LogsJB.setSizeLog(SizeLog.Little_Little);

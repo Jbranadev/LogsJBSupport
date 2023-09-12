@@ -191,14 +191,8 @@ class MethodsTxt {
      * @return Retorna una cadena de texto con la fecha obtenida
      */
     protected static String convertir_fecha(){
-        String temp=null;
-        try{
             DateTimeFormatter formater = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss SSS");
-            temp=formater.format(LocalDateTime.now());
-        }catch (Exception e){
-            System.err.println("Exepcion capturada en el metodo Metodo que Obtiene la fecha actual en formato dd/MM/YYYY HH:MM:SS");
-            System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
-        }
+        String temp=formater.format(LocalDateTime.now());
         return temp;
     }
 
@@ -208,16 +202,8 @@ class MethodsTxt {
      * @return Retorna una cadena de texto con la fecha obtenida en el formato especificado.
      */
     protected static String convertir_fecha(String formato){
-        String temp=null;
-        try{
             DateTimeFormatter formater = DateTimeFormatter.ofPattern(formato);
-            temp=formater.format(LocalDateTime.now());
-
-        }catch (Exception e){
-            System.err.println("Exepcion capturada en el metodo Metodo que Obtiene la fecha en el formato indicado");
-            System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
-        }
-
+            String temp=formater.format(LocalDateTime.now());
         return temp;
     }
 
@@ -243,7 +229,6 @@ class MethodsTxt {
                 result=result+" ";
             }
         }
-        try{
             //Si la cadena es menor a 13, retornara 7 tabs
             if(tamaño<13){
                     result=result+tab.repeat(7);
@@ -274,11 +259,7 @@ class MethodsTxt {
                     result=result+tab.repeat(2);
 
             }
-        }catch (Exception e){
-            System.err.println("Exepcion capturada en el metodo Metodo que retorna la cantidad de tabulaciones para el siguiente texto en la misma linea conforme\n" +
-                    "     * al la longitud de la cadena actual:");
-            System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e).toString());
-        }
+
 
         return result;
     }
@@ -301,7 +282,7 @@ class MethodsTxt {
                 BasicFileAttributes attributes = null;
                 String fechaformateada="";
                 int numeroaleatorio=0;
-                try { attributes = Files.readAttributes(logactual.toPath(), BasicFileAttributes.class);
+                attributes = Files.readAttributes(logactual.toPath(), BasicFileAttributes.class);
                     //FileTime time = attributes.creationTime();
                     FileTime time = attributes.lastModifiedTime();
 
@@ -312,27 +293,22 @@ class MethodsTxt {
                     fechaformateada = simpleDateFormat.format( new Date( time.toMillis() ) );
 
                     //System.out.println( "La fecha y hora de creación del archivo es: " + fechaformateada );
-                }catch(IOException exception) {
-                    System.err.println("Exception handled when trying to get file " + "attributes: " + exception.getMessage());
-                }
+
 
                 //SimpleDateFormat  formatofecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 //String fechalog=(formatofecha.format(logactual.lastModified())).replace(":","-").replace(" ", "_");
                 String fechalog=fechaformateada.replace(":","-").replace(" ", "_")+numeroaleatorio;
                 String newrute=getRuta().replace(".txt", "")+"_"+fechalog+".txt";
                 File newfile= new File(newrute);
-                if(logactual.renameTo(newfile)){
+                logactual.renameTo(newfile);
                     System.out.println("Archivo renombrado: " +newrute);
                     logactual.delete();
                     //Thread.sleep(5000);
                     logactual.createNewFile();
-                }else{
-                    System.out.println(logactual.toPath()+" No se pudo renombrar el archivo: " +newrute);
-                }
+
             }
         }catch (Exception e){
-            System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se verifica el tamaño del archivo: " +getRuta());
-            System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
+            System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se verifica el tamaño del archivo: " +getRuta() +" Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -392,11 +368,8 @@ class MethodsTxt {
                     System.out.println("*"+ "\n");
                     System.out.println("*"+ "\n");
                     System.out.println("*"+ "\n");
-                    if(nivelLog.getGradeLog()>=NivelLog.ERROR.getGradeLog()){
-                        System.err.println(fecha+getTabs(fecha)+getUsuario()+getTabs(getUsuario())+ Clase +getTabs(Clase)+ Metodo +getTabs(Metodo)+nivelLog+getTabs(nivelLog.toString())+Texto+ "\n");
-                    }{
                         System.out.println(fecha+getTabs(fecha)+getUsuario()+getTabs(getUsuario())+ Clase +getTabs(Clase)+ Metodo +getTabs(Metodo)+nivelLog+getTabs(nivelLog.toString())+Texto+ "\n");
-                    }
+
                 }else{
                     if(getLogtext()==1){
                         BufferedWriter bw = new BufferedWriter(new FileWriter(fichero.getAbsoluteFile(), true));
@@ -408,11 +381,8 @@ class MethodsTxt {
                         bw.write(fecha+getTabs(fecha)+getUsuario()+getTabs(getUsuario())+ Clase +getTabs(Clase)+ Metodo +getTabs(Metodo)+nivelLog+getTabs(nivelLog.toString())+Texto+ "\n");
                         bw.close();
                         System.out.println("\n");
-                        if(nivelLog.getGradeLog()>=NivelLog.ERROR.getGradeLog()){
-                            System.err.println(fecha+getTabs(fecha)+getUsuario()+getTabs(getUsuario())+ Clase +getTabs(Clase)+ Metodo +getTabs(Metodo)+nivelLog+getTabs(nivelLog.toString())+Texto+ "\n");
-                        }else{
                             System.out.println(fecha+getTabs(fecha)+getUsuario()+getTabs(getUsuario())+ Clase +getTabs(Clase)+ Metodo +getTabs(Metodo)+nivelLog+getTabs(nivelLog.toString())+Texto+ "\n");
-                        }
+
                     }else{
                         //Agrega en el fichero el Log
                         BufferedWriter bw = new BufferedWriter(new FileWriter(fichero.getAbsoluteFile(), true));
@@ -429,8 +399,7 @@ class MethodsTxt {
                 }
             }
         }catch (Exception e){
-            System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se escribir el log del Text");
-            System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
+            System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se escribir el log del Text" +" Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
         }
 
     }
@@ -448,17 +417,19 @@ class MethodsTxt {
      * Setea la cantidad de veces que se a escrito en el Log actual.
      * @param Logtext Numero de veces que se a escrito en el Log.
      */
-    private static void setLogtext(long Logtext) {
-        try{
+
+    /**
+     * Setea la cantidad de veces que se a escrito en el Log actual.
+     * @param Logtext Numero de veces que se a escrito en el Log.
+     * @throws NoSuchFieldException Lanza esta excepción si no encuentra el field que se quiere modificar
+     * @throws IllegalAccessException Lanza este error si no se puede setear el valor solicitado al campo
+     */
+    private static void setLogtext(long Logtext) throws NoSuchFieldException, IllegalAccessException {
+
             Field field = MethodsTxt.class.getDeclaredField("logtext");
             field.setAccessible(true);
             field.set(null, Logtext);
-            //logtext = logtext;
-        }catch (Exception e){
-            System.err.println("Excepcion capturada al tratar; de setear el contador de las veces que se a escrito en " +
-                    "el log " +Logtext);
-            System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
-        }
+
 
     }
 

@@ -52,20 +52,14 @@ class ListaMensajes {
      * retorna null.
      */
     protected synchronized MensajeWrite getDato()  {
-        try{
-            if (this.mensajes.size()==0){
-                return null;
-            }else{
+
+
                 MensajeWrite dato = this.mensajes.get(0);
                 this.mensajes.remove(0);
                 //System.out.println("Quita el msj a la lista: "+dato.getTexto()+" "+dato.getNivelLog());
                 return dato;
-            }
-        }catch (Exception e){
-            System.err.println("Exepcion capturada en el metodo Metodo que Obtiene el mensaje en la posición 0 de la lista");
-            System.err.println("Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
-            return null;
-        }
+
+
     }
 
     /***

@@ -30,8 +30,11 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
+      #Limpiamos la cache de Maven
+    - name: Limpiamos la cache de Maven
+      run: mvn -B clean
     - name: Run tests and collect coverage
-      run: mvn -B test
+      run: mvn -B clean test
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3
       env:
