@@ -92,12 +92,7 @@ class Execute {
      * Metodo por medio del cual se llama la escritura de los logs
      */
     protected void run(){
-        try{
             writePrincipal();
-        }catch (Exception e){
-            System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se llama la escritura de los logs");
-            System.err.println("Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
-        }
     }
 
     /***
@@ -138,7 +133,6 @@ class Execute {
                         break;
                     }
                 }
-                return;
             };
             this.executorPrincipal.submit(EscritorPrincipal);
         }catch (Exception e){

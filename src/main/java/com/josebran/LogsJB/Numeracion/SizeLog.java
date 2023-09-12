@@ -25,39 +25,39 @@ public enum SizeLog {
 
     /***
      * El tamaño mas pequeño, que el pequeño,
-     * Se definiria el tamaño de log en 125Mb.
+     * Se definiria el tamaño de log en 25Mb.
      */
-    Little_Little(125),
+    Little_Little(25),
 
     /***
      * El tamaño pequeño del Log de una aplicación,
-     * Se definiria el tamaño de log en 250Mb.
+     * Se definiria el tamaño de log en 50Mb.
      */
-    Little(250),
+    Little(50),
 
     /**
      * El tamaño mas pequeño que el mediano y mas grande que el pequeño del Log de una aplicación,
-     * Se definiria el tamaño de log en 500Mb.
+     * Se definiria el tamaño de log en 100Mb.
      */
-    Small_Medium(500),
+    Small_Medium(100),
 
     /**
      * El tamaño mediano del Log de una aplicación,
-     * Se definiría el tamaño de log en 1,000Mb.
+     * Se definiría el tamaño de log en 150Mb.
      */
-    Medium(1000),
+    Medium(150),
 
     /**
      * El tamaño mas pequeño que el grande y mas grande que el mediano del Log de una aplicación,
-     * Se definiria el tamaño de log en 2,000Mb
+     * Se definiria el tamaño de log en 250Mb
      */
-    Small_Large(2000),
+    Small_Large(250),
 
     /**
      * El tamaño grande del Log de una aplicación,
-     * Se definiría el tamaño de log en 4,000Mb.
+     * Se definiría el tamaño de log en 500Mb.
      */
-    Large(4000);
+    Large(500);
 
     private int size;
 
@@ -68,12 +68,12 @@ public enum SizeLog {
     /***
      * Retorna el tamaño expresado en MB definido para el fichero Log de la aplicación actual
      * @return Retorna un entero con el tamaño maximo definido para el fichero donde se escribe el Log.
-     * Little_Little = 125Mb,
-     * Little = 250Mb,
-     * Small_Medium = 500Mb,
-     * Medium = 1,000Mb,
-     * Small_Large = 2,000Mb,
-     * Large = 4,000Mb.
+     * Little_Little = 25Mb,
+     * Little = 50Mb,
+     * Small_Medium = 100Mb,
+     * Medium = 150Mb,
+     * Small_Large = 250Mb,
+     * Large = 500Mb.
      */
     public int getSizeLog(){
         return this.size;
