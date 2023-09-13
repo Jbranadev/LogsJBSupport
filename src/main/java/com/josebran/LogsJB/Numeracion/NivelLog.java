@@ -55,8 +55,8 @@ public enum NivelLog {
 
     private int gradeLog;
 
-    private NivelLog(int GradeLog){
-        this.gradeLog=GradeLog;
+    private NivelLog(int GradeLog) {
+        this.gradeLog = GradeLog;
     }
 
 
@@ -71,7 +71,7 @@ public enum NivelLog {
      * Fatal = 1000.
      * @return retorna un entero que representa el gradeLog correspondiente a la numeración.
      */
-    public int getGradeLog(){
+    public int getGradeLog() {
         return gradeLog;
     }
 

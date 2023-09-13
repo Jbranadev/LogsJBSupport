@@ -16,8 +16,6 @@
 
 package com.josebran.LogsJB;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,9 +25,9 @@ import java.util.List;
  * por escribir a la lista, mientras que el proceso de ejecución secundario se encarga de escribir los mensajes.
  */
 class ListaMensajes {
-    private List<MensajeWrite> mensajes=new LinkedList<>();
+    private List<MensajeWrite> mensajes = new LinkedList<>();
 
-    protected  ListaMensajes(){
+    protected ListaMensajes() {
 
     }
 
@@ -37,8 +35,7 @@ class ListaMensajes {
      * Agrega un mensaje a la lista para que este luego sea escrito.
      * @param dato Mensaje que se desea agregar a la lista.
      */
-    protected synchronized void addDato(MensajeWrite dato)
-    {
+    protected synchronized void addDato(MensajeWrite dato) {
         //System.out.println("Agrega el msj a la lista: "+dato.getTexto()+" "+dato.getNivelLog());
         this.mensajes.add(dato);
         //notify();
@@ -51,13 +48,13 @@ class ListaMensajes {
      * @return Restorna el proximo mensaje en la cola a ser escrito, basado en el algoritmo FIFO, si no hay mensajes
      * retorna null.
      */
-    protected synchronized MensajeWrite getDato()  {
+    protected synchronized MensajeWrite getDato() {
 
 
-                MensajeWrite dato = this.mensajes.get(0);
-                this.mensajes.remove(0);
-                //System.out.println("Quita el msj a la lista: "+dato.getTexto()+" "+dato.getNivelLog());
-                return dato;
+        MensajeWrite dato = this.mensajes.get(0);
+        this.mensajes.remove(0);
+        //System.out.println("Quita el msj a la lista: "+dato.getTexto()+" "+dato.getNivelLog());
+        return dato;
 
 
     }
@@ -66,7 +63,7 @@ class ListaMensajes {
      * Retorna la cantidad de mensajes que tiene la lista actualmente.
      * @return Retorna un entero que representa la cantidad de mensajes que actualmente tiene la lista.
      */
-    protected synchronized int getSize(){
+    protected synchronized int getSize() {
         return this.mensajes.size();
     }
 

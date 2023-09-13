@@ -32,27 +32,22 @@ import static com.josebran.LogsJB.MethodsTxt.*;
  */
 class Execute {
 
-    private Boolean TaskisReady=true;
-
     /***
      * Lista que funciona como la cola de peticiones que llegan al Ejecutor
      */
-    private static ListaMensajes listado=new ListaMensajes();
-
-
-
+    private static ListaMensajes listado = new ListaMensajes();
     /***
      * Se utiliza el patron Singleton, para asegurarnos que sea una unica instancia la que se encargue de
      * Llevar el control de los Logs
      */
     private static Execute instance = new Execute();
-
+    private Boolean TaskisReady = true;
     /**
      * Ejecutor de Tareas asincronas
      */
     private ExecutorService executorPrincipal = Executors.newCachedThreadPool();
+
     private Execute() {
-        //System.out.println("Ejecuta el constructor de Execute Soporte: ");
         setearRuta();
         setearNivelLog();
         setearSizelLog();
@@ -68,17 +63,6 @@ class Execute {
         return instance;
     }
 
-    /**
-     * Recuperara las propiedades de LogsJB seteadas en las propiedades del sistema
-     */
-    protected void getLogsJBProperties(){
-        setearRuta();
-        setearNivelLog();
-        setearSizelLog();
-        setearIsAndroid();
-    }
-
-
     /***
      * Proporciona el acceso a la lista que sirve como cola de las peticiones
      * @return Retorna una lista de MensajeWrite, la cual lleva la información que se desea registrar en los Logs
@@ -87,66 +71,72 @@ class Execute {
         return listado;
     }
 
+    /**
+     * Recuperara las propiedades de LogsJB seteadas en las propiedades del sistema
+     */
+    protected void getLogsJBProperties() {
+        setearRuta();
+        setearNivelLog();
+        setearSizelLog();
+        setearIsAndroid();
+    }
 
     /***
      * Metodo por medio del cual se llama la escritura de los logs
      */
-    protected void run(){
-            writePrincipal();
+    protected void run() {
+        writePrincipal();
     }
 
     /***
      * Escritor principal, es el que maneja la logica de la aplicación la cual decide si el log se almacena en una BD's,
      * un Txt Ó si se envía a un RestAPI.
      */
-    private void writePrincipal(){
-        try{
+    private void writePrincipal() {
+        try {
             getInstance().setTaskisReady(false);
-            Runnable EscritorPrincipal= ()->{
-                String temporal="";
-                boolean band=true;
-                Integer i=0;
-                while(band){
-                    if(i>5000){
+            Runnable EscritorPrincipal = () -> {
+                String temporal = "";
+                boolean band = true;
+                Integer i = 0;
+                while (band) {
+                    if (i > 5000) {
                         verificarSizeFichero();
-                        i=0;
+                        i = 0;
                     }
                     i++;
                     //String Mensaje=Execute.getInstance().getTexto();
                     //NivelLog logtemporal=Execute.getInstance().getNivelLog();
-                    MensajeWrite mensajetemp=null;
-                    mensajetemp=getListado().getDato();
+                    MensajeWrite mensajetemp = null;
+                    mensajetemp = getListado().getDato();
                     //System.out.println("Mensaje en Execute: "+mensajetemp.getTexto()+" "+mensajetemp.getNivelLog());
-                    String Mensaje=mensajetemp.getTexto();
-                    NivelLog logtemporal=mensajetemp.getNivelLog();
-                    String Clase= mensajetemp.getClase();
-                    String Metodo= mensajetemp.getMetodo();
-                    String fecha= mensajetemp.getFecha();
+                    String Mensaje = mensajetemp.getTexto();
+                    NivelLog logtemporal = mensajetemp.getNivelLog();
+                    String Clase = mensajetemp.getClase();
+                    String Metodo = mensajetemp.getMetodo();
+                    String fecha = mensajetemp.getFecha();
                     //System.out.println("NivelLog definido: "+nivelaplicación);
                     //System.out.println("NivelLog temporal: "+intniveltemporal);
                     //System.out.println("Cantidad de mensajes Por limpiar: "+getListaTxt().getSize());
                     //Verifica que el nivel de Log a escribir sea igual o mayor al nivel predefinido.
                     writeLog(logtemporal, Mensaje, Clase, Metodo, fecha);
-                    if(getListado().getSize()==0){
-                        band=false;
+                    if (getListado().getSize() == 0) {
+                        band = false;
                         getInstance().setTaskisReady(true);
                         break;
                     }
                 }
             };
             this.executorPrincipal.submit(EscritorPrincipal);
-        }catch (Exception e){
-            System.err.println("Exepcion capturada en el metodo Escritor principal, es el que maneja la logica de la aplicación la cual decide si el log se almacena en una BD's,\n" +
-                    "     * un Txt Ó si se envía a un RestAPI.");
-            System.err.println("Trace de la Exepción : "+ExceptionUtils.getStackTrace(e));
+        } catch (Exception e) {
+            System.err.println("Exepcion capturada en el metodo Escritor principal, " + "Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
         }
     }
 
 
-
-
     /**
      * Obtiene la bandera que indica si actualmente esta trabajando la clase Execute o si ya no esta trabajando
+     *
      * @return True si esta libre, false si actualmente esta trabajando
      */
     protected synchronized Boolean getTaskisReady() {
@@ -155,6 +145,7 @@ class Execute {
 
     /**
      * Setea la bandera que indica si actualmente esta trabajando la clase Execute o si ya no esta trabajando
+     *
      * @param taskisReady True si esta libre, false si actualmente esta trabajando
      */
     protected synchronized void setTaskisReady(Boolean taskisReady) {

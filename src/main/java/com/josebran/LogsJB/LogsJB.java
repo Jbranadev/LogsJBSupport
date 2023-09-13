@@ -26,7 +26,7 @@ import java.lang.reflect.Field;
 
 import static com.josebran.LogsJB.Execute.getInstance;
 import static com.josebran.LogsJB.Execute.getListado;
-import static com.josebran.LogsJB.MethodsTxt.*;
+import static com.josebran.LogsJB.MethodsTxt.convertir_fecha;
 
 /****
  * Copyright (C) 2022 El proyecto de código abierto LogsJB de José Bran
@@ -44,7 +44,7 @@ import static com.josebran.LogsJB.MethodsTxt.*;
  *      fatal(Texto);
  *      error(Texto);
  */
-public  class LogsJB {
+public class LogsJB {
 
 
     /***
@@ -57,21 +57,23 @@ public  class LogsJB {
 
     /**
      * Setea la ruta en la cual se desea que escriba el Log.
+     *
      * @param Ruta Ruta del archivo .Txt donde se desea escribir el Log.
      */
     public static void setRuta(String Ruta) {
-        try{
+        try {
             Field field = MethodsTxt.class.getDeclaredField("ruta");
             field.setAccessible(true);
             field.set(null, Ruta);
             System.setProperty(LogsJBProperties.LogsJBRutaLog.getProperty(), Ruta);
-        }catch (Exception e){
-            System.err.println("Excepcion capturada al tratar de setear la ruta del log " +Ruta);
+        } catch (Exception e) {
+            System.err.println("Excepcion capturada al tratar de setear la ruta del log " + Ruta);
         }
     }
 
     /**
      * Bandera que indica si la libreria esta siendo utilizada en Android
+     *
      * @return True si la libreia esta siendo utilizada en Android, de lo contrario retorna False
      */
     public static Boolean getIsAndroid() {
@@ -80,17 +82,18 @@ public  class LogsJB {
 
     /**
      * Setea la bandera que indica si la libreria esta siendo utilizada en Android
+     *
      * @param isAndroid True si la libreria esta siendo utilizada en Android, False si no esta siendo utilizada en Android
      */
     public static void setIsAndroid(Boolean isAndroid) {
-        try{
+        try {
             Field field = MethodsTxt.class.getDeclaredField("isAndroid");
             field.setAccessible(true);
             field.set(null, isAndroid);
             System.setProperty(LogsJBProperties.LogsJBIsAndroid.getProperty(), String.valueOf(isAndroid));
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear el contador de las veces que se a escrito en " +
-                    "el log " +isAndroid+" Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
+                    "el log " + isAndroid + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
 
         }
     }
@@ -112,7 +115,6 @@ public  class LogsJB {
     }
 
 
-
     /***
      * Setea el NivelLog desde el cual deseamos se escriba en el Log de la aplicación actual.
      * @param GradeLog Nivel Log desde el cual hacía arriba en la jerarquia de logs, deseamos se reporten
@@ -125,14 +127,14 @@ public  class LogsJB {
      * El valor por defaul es Info. Lo cual hace que se reporten los Logs de grado Info, Warning, Error y Fatal.
      */
     public static void setGradeLog(NivelLog GradeLog) {
-        try{
+        try {
             Field field = MethodsTxt.class.getDeclaredField("gradeLog");
             field.setAccessible(true);
             field.set(null, GradeLog);
             System.setProperty(LogsJBProperties.LogsJBNivelLog.getProperty(), GradeLog.name());
             //Methods.metodo = metodo;
-        }catch (Exception e){
-            System.err.println("Excepcion capturada al tratar de setear el GradeLog de la aplicación " +GradeLog+" Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
+        } catch (Exception e) {
+            System.err.println("Excepcion capturada al tratar de setear el GradeLog de la aplicación " + GradeLog + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -157,14 +159,14 @@ public  class LogsJB {
      * El valor por defaul es Little_Little.
      */
     public static void setSizeLog(SizeLog SizeLog) {
-        try{
+        try {
             Field field = MethodsTxt.class.getDeclaredField("sizeLog");
             field.setAccessible(true);
             field.set(null, SizeLog);
             System.setProperty(LogsJBProperties.LogsJBSizeLog.getProperty(), SizeLog.name());
             //Methods.metodo = metodo;
-        }catch (Exception e){
-            System.err.println("Excepcion capturada al tratar de setear el Tamaño del archivo Log " +SizeLog +" Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
+        } catch (Exception e) {
+            System.err.println("Excepcion capturada al tratar de setear el Tamaño del archivo Log " + SizeLog + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -181,13 +183,13 @@ public  class LogsJB {
      * Setea el nombre del usuario del sistema sobre el cual corre la aplicación
      * @param Usuario Usuario actual del sistema que se desea indicar al Log.
      */
-    public static void setUsuario(String Usuario){
-        try{
+    public static void setUsuario(String Usuario) {
+        try {
             Field field = MethodsTxt.class.getDeclaredField("usuario");
             field.setAccessible(true);
             field.set(null, Usuario);
-        }catch (Exception e){
-            System.err.println("Excepcion capturada al tratar de setear el usuario del entorno actual "+Usuario+" Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
+        } catch (Exception e) {
+            System.err.println("Excepcion capturada al tratar de setear el usuario del entorno actual " + Usuario + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
         }
 
     }
@@ -199,41 +201,41 @@ public  class LogsJB {
      * @param nivelLog NivelLog del mensaje que queremos almacenar en el Log.
      * @param Texto Texto que se desea escribir en el Log.
      */
-    private static void executor(NivelLog nivelLog, String Texto){
-        try{
+    private static void executor(NivelLog nivelLog, String Texto) {
+        try {
             //Permitira obtener la pila de procesos asociados a la ejecuciòn actual
             StackTraceElement[] elements = Thread.currentThread().getStackTrace();
             String clase = null;
             String metodo = null;
-            try{
+            try {
                 clase = elements[3].getClassName();
-                metodo = elements[3].getMethodName()+" => "+elements[3].getLineNumber();
-                if(getIsAndroid()){
+                metodo = elements[3].getMethodName() + " => " + elements[3].getLineNumber();
+                if (getIsAndroid()) {
                     clase = elements[4].getClassName();
-                    metodo = elements[4].getMethodName()+" => "+elements[4].getLineNumber();
+                    metodo = elements[4].getMethodName() + " => " + elements[4].getLineNumber();
                 }
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 clase = elements[2].getClassName();
-                metodo = elements[2].getMethodName()+" => "+elements[2].getLineNumber();
-                if(getIsAndroid()){
+                metodo = elements[2].getMethodName() + " => " + elements[2].getLineNumber();
+                if (getIsAndroid()) {
                     clase = elements[3].getClassName();
-                    metodo = elements[3].getMethodName()+" => "+elements[3].getLineNumber();
+                    metodo = elements[3].getMethodName() + " => " + elements[3].getLineNumber();
                 }
             }
-            if(nivelLog.getGradeLog()>= getGradeLog().getGradeLog()){
-                MensajeWrite mensaje=new MensajeWrite();
+            if (nivelLog.getGradeLog() >= getGradeLog().getGradeLog()) {
+                MensajeWrite mensaje = new MensajeWrite();
                 mensaje.setTexto(Texto);
                 mensaje.setNivelLog(nivelLog);
                 mensaje.setClase(clase);
                 mensaje.setMetodo(metodo);
                 mensaje.setFecha(convertir_fecha());
                 getListado().addDato(mensaje);
-                if(getInstance().getTaskisReady()){
+                if (getInstance().getTaskisReady()) {
                     getInstance().run();
                 }
             }
-        }catch (Exception e){
-            System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se llama la escritura de los logs"+" Trace de la Exepción : "+ ExceptionUtils.getStackTrace(e));
+        } catch (Exception e) {
+            System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se llama la escritura de los logs" + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
         }
 
 
@@ -241,17 +243,18 @@ public  class LogsJB {
 
     /**
      * Obtiene la bandera que indica si no existe alguna tarea pendiente de realizar por parte LogsJB
+     *
      * @return True si la LogsJB se encuentra libre, si esta ocupado retorna False
      */
-    public static Boolean getTaskIsReady(){
+    public static Boolean getTaskIsReady() {
         return getInstance().getTaskisReady();
     }
 
     /**
      * Espera que se termine de ejecutar los trabajos que esta realizando el Log
      */
-    public static void waitForOperationComplete(){
-        while(!getTaskIsReady()){
+    public static void waitForOperationComplete() {
+        while (!getTaskIsReady()) {
 
         }
         System.out.println("Completo de escribir los Logs");
@@ -261,7 +264,7 @@ public  class LogsJB {
     /**
      * Recuperara las propiedades de LogsJB seteadas en las propiedades del sistema
      */
-    public static void getLogsJBProperties(){
+    public static void getLogsJBProperties() {
         getInstance().getLogsJBProperties();
     }
 
@@ -270,7 +273,7 @@ public  class LogsJB {
      * Escribe en el Log el mensaje especificado indicando que pertenece a la categoria de Informacion.
      * @param Texto Texto que se desea escribir en el Log.
      */
-    public static void info(String Texto){
+    public static void info(String Texto) {
         executor(NivelLog.INFO, Texto);
     }
 
@@ -278,14 +281,15 @@ public  class LogsJB {
      * Escribe en el Log el mensaje especificado indicando que pertenece a la categoria de Debug.
      * @param Texto Texto que se desea escribir en el Log.
      */
-    public static void debug(String Texto){
+    public static void debug(String Texto) {
         executor(NivelLog.DEBUG, Texto);
     }
+
     /***
      * Escribe en el Log el mensaje especificado indicando que pertenece a la categoria de Trace, la cual es un seguimiento mayor a Debug.
      * @param Texto Texto que se desea escribir en el Log.
      */
-    public static void trace(String Texto){
+    public static void trace(String Texto) {
         executor(NivelLog.TRACE, Texto);
     }
 
@@ -293,7 +297,7 @@ public  class LogsJB {
      * Escribe en el Log el mensaje especificado indicando que pertenece a la categoria de Advertencia.
      * @param Texto Texto que se desea escribir en el Log.
      */
-    public static void warning(String Texto){
+    public static void warning(String Texto) {
         executor(NivelLog.WARNING, Texto);
     }
 
@@ -301,7 +305,7 @@ public  class LogsJB {
      * Escribe en el Log el mensaje especificado indicando que pertenece a la categoria Fatal lo cual indica un error del cual no es posible recuperarse.
      * @param Texto Texto que se desea escribir en el Log.
      */
-    public static void fatal(String Texto){
+    public static void fatal(String Texto) {
         executor(NivelLog.FATAL, Texto);
     }
 
@@ -309,10 +313,9 @@ public  class LogsJB {
      * Escribe en el Log el mensaje especificado indicando que pertenece a la categoria de Error, lo cual indica que capturo un error.
      * @param Texto Texto que se desea escribir en el Log.
      */
-    public static void error(String Texto){
+    public static void error(String Texto) {
         executor(NivelLog.ERROR, Texto);
     }
-
 
 
 }

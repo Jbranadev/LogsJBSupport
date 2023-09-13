@@ -61,8 +61,8 @@ public enum SizeLog {
 
     private int size;
 
-    private SizeLog(int SizeLog){
-        this.size=SizeLog;
+    private SizeLog(int SizeLog) {
+        this.size = SizeLog;
     }
 
     /***
@@ -75,7 +75,7 @@ public enum SizeLog {
      * Small_Large = 250Mb,
      * Large = 500Mb.
      */
-    public int getSizeLog(){
+    public int getSizeLog() {
         return this.size;
     }
 
