@@ -63,6 +63,15 @@
                 <scope>test</scope>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.13.0</version>
+                <scope>test</scope>
+            </dependency>
+
+
             <!-- Dependencia para Extender funcionalidades de lenguaje Java-->
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -86,6 +95,13 @@
             <artifactId>reportng</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Dependencia para Extender funcionalidades de lenguaje Java-->
         <dependency>
             <groupId>org.apache.commons</groupId>

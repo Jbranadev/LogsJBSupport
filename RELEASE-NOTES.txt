@@ -4,8 +4,14 @@
 
 Actualización de Test, Apego a estandares OpenSSFScoredCard
 
-
-
+## What's Changed
+* Actualización Badges by @Jbranadev in https://github.com/Jbranadev/LogsJBSupport/pull/8
+* Bump actions/checkout from 3.6.0 to 4.0.0 by @dependabot in https://github.com/Jbranadev/LogsJBSupport/pull/11
+* Bump actions/upload-artifact from 3.1.2 to 3.1.3 by @dependabot in https://github.com/Jbranadev/LogsJBSupport/pull/10
+* Bump actions/dependency-review-action from 3.0.8 to 3.1.0 by @dependabot in https://github.com/Jbranadev/LogsJBSupport/pull/9
+* Actualización Porcentaje Covertura de Test by @Jbranadev in https://github.com/Jbranadev/LogsJBSupport/pull/12
+* Actualización Porcentaje Covertura de Test de 60 a 85 Por Ciento by @Jbranadev in https://github.com/Jbranadev/LogsJBSupport/pull/13
+* Release 1.0.1 by @Jbranadev in https://github.com/Jbranadev/LogsJBSupport/pull/14
 
                                         logsjbsupport
                                         Version 1.0.1

@@ -46,6 +46,7 @@ public class LogsJBTest {
             error(" comentario grado " + "Error".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
 
             fatal(" comentario grado " + " Fatal".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+            LogsJB.waitForOperationComplete();
         } catch (Exception e) {
             System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
             System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
@@ -195,7 +196,7 @@ public class LogsJBTest {
     }
 
     @Test(testName = "Write Log txt Llegar a 15MB", dependsOnMethods = "writeLog")
-    public void writeLogVeintiNueveTxt() {
+    public void writeLogVeinNueveTxt() {
         try {
             LogsJB.setGradeLog(NivelLog.TRACE);
             LogsJB.setSizeLog(SizeLog.Little_Little);
@@ -226,7 +227,7 @@ public class LogsJBTest {
         }
     }
 
-    @Test(testName = "Write Log txt Llegar a 25MB", dependsOnMethods = "writeLogVeintiNueveTxt")
+    @Test(testName = "Write Log txt Llegar a 25MB", dependsOnMethods = "writeLogVeinNueveTxt")
     public void writeLogTreintaYSeisTexto333() {
         try {
             LogsJB.setGradeLog(NivelLog.TRACE);
