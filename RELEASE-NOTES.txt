@@ -1,0 +1,30 @@
+                                        logsjbsupport
+                                        Version 1.0.1
+                                        Release Notes
+
+Actualización de Test, Apego a estandares OpenSSFScoredCard
+
+
+
+
+                                        logsjbsupport
+                                        Version 1.0.1
+                                        Release Notes
+
+Publicación de Librería Acorde a los estandares de Maven
+
+## What's Changed
+* Actualización POM Test by @Jbranadev in https://github.com/Jbranadev/LogsJBSupport/pull/5
+* Bump actions/dependency-review-action from 2.5.1 to 3.0.8 by @dependabot in https://github.com/Jbranadev/LogsJBSupport/pull/4
+* Bump github/codeql-action from 2.2.4 to 2.21.5 by @dependabot in https://github.com/Jbranadev/LogsJBSupport/pull/3
+* Bump actions/checkout from 3.1.0 to 4.0.0 by @dependabot in https://github.com/Jbranadev/LogsJBSupport/pull/2
+* Bump org.apache.maven.plugins:maven-deploy-plugin from 2.8.2 to 3.1.1 by @dependabot in https://github.com/Jbranadev/LogsJBSupport/pull/1
+* [StepSecurity] Apply security best practices by @step-security-bot in https://github.com/Jbranadev/LogsJBSupport/pull/6
+* Release 1.0.0 by @Jbranadev in https://github.com/Jbranadev/LogsJBSupport/pull/7
+
+## New Contributors
+* @Jbranadev made their first contribution in https://github.com/Jbranadev/LogsJBSupport/pull/5
+* @dependabot made their first contribution in https://github.com/Jbranadev/LogsJBSupport/pull/4
+* @step-security-bot made their first contribution in https://github.com/Jbranadev/LogsJBSupport/pull/6
+
+**Full Changelog**: https://github.com/Jbranadev/LogsJBSupport/commits/1.0.0
