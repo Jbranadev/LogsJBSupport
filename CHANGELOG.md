@@ -1,3 +1,13 @@
+# Version: 1.0.1
+
+* [#8](https://github.com/Jbranadev/LogsJBSupport/pull/8): Actualización Badges
+* [#9](https://github.com/Jbranadev/LogsJBSupport/pull/9): Bump actions/dependency-review-action from 3.0.8 to 3.1.0
+* [#10](https://github.com/Jbranadev/LogsJBSupport/pull/10): Bump actions/upload-artifact from 3.1.2 to 3.1.3
+* [#11](https://github.com/Jbranadev/LogsJBSupport/pull/11): Bump actions/checkout from 3.6.0 to 4.0.0
+* [#12](https://github.com/Jbranadev/LogsJBSupport/pull/12): Actualización Porcentaje Covertura de Test
+* [#13](https://github.com/Jbranadev/LogsJBSupport/pull/13): Actualización Porcentaje Covertura de Test de 60 a 85 Por Ciento
+
+
 # Version: 1.0.0
 
 * [#1](https://github.com/Jbranadev/LogsJBSupport/pull/1): Bump org.apache.maven.plugins:maven-deploy-plugin from 2.8.2
