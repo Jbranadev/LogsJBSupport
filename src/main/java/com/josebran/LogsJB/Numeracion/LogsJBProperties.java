@@ -14,7 +14,6 @@ public enum LogsJBProperties {
     LogsJBWriteTxt("LogsJBSupportwriteTxt"),
 
 
-
     /**
      * Tamaño maximo del archivo sobre el cual se estara escribiendo el Log.
      */
@@ -32,8 +31,23 @@ public enum LogsJBProperties {
     LogsJBRutaLog("LogsJBSupportRutaLog");
 
 
+    /**
+     * Indica la propieda que se estara setiando
+     */
+    private String property;
 
+    private LogsJBProperties(String property) {
+        this.setProperty(property);
+    }
 
+    /**
+     * Obtiene la propiedad que posee la numeración
+     *
+     * @return Propiedad que posee la numeración
+     */
+    public String getProperty() {
+        return property;
+    }
 
     /**
      * Setea la propiedad de la numeración
@@ -42,23 +56,6 @@ public enum LogsJBProperties {
      */
     private void setProperty(String property) {
         this.property = property;
-    }
-
-    /**
-     * Obtiene la propiedad que posee la numeración
-     * @return Propiedad que posee la numeración
-     */
-    public String getProperty() {
-        return property;
-    }
-
-    /**
-     * Indica la propieda que se estara setiando
-     */
-    private String property;
-
-    private LogsJBProperties(String property){
-        this.setProperty(property);
     }
 
 
