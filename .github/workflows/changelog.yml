@@ -9,11 +9,11 @@ jobs:
 
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@1b05615854632b887b69ae1be8cbefe72d3ae423 # v2.6.0
+        uses: step-security/harden-runner@91182cccc01eb5e619899d80e4e971d6181294a7 # v2.10.1
         with:
           egress-policy: audit
           #Obtenemos el repositorio
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v3.6.0
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v3.6.0
       #Corremos el changelog
       - name: Run Changelog CI
         uses: saadmk11/changelog-ci@94435ac02b50745a2543caf0c5d6eae23665615a # v1.1.2
