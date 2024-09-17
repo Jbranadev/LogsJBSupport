@@ -14,7 +14,6 @@
  * limitaciones bajo la Licencia.
  */
 
-
 package com.josebran.LogsJB.Numeracion;
 
 /****
@@ -28,40 +27,35 @@ public enum SizeLog {
      * Se definiria el tamaño de log en 25Mb.
      */
     Little_Little(25),
-
     /***
      * El tamaño pequeño del Log de una aplicación,
      * Se definiria el tamaño de log en 50Mb.
      */
     Little(50),
-
     /**
      * El tamaño mas pequeño que el mediano y mas grande que el pequeño del Log de una aplicación,
      * Se definiria el tamaño de log en 100Mb.
      */
     Small_Medium(100),
-
     /**
      * El tamaño mediano del Log de una aplicación,
      * Se definiría el tamaño de log en 150Mb.
      */
     Medium(150),
-
     /**
      * El tamaño mas pequeño que el grande y mas grande que el mediano del Log de una aplicación,
      * Se definiria el tamaño de log en 250Mb
      */
     Small_Large(250),
-
     /**
      * El tamaño grande del Log de una aplicación,
      * Se definiría el tamaño de log en 500Mb.
      */
     Large(500);
 
-    private int size;
+    private final int size;
 
-    private SizeLog(int SizeLog) {
+    SizeLog(int SizeLog) {
         this.size = SizeLog;
     }
 
@@ -78,6 +72,4 @@ public enum SizeLog {
     public int getSizeLog() {
         return this.size;
     }
-
-
 }

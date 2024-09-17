@@ -16,7 +16,6 @@
 
 package com.josebran.LogsJB;
 
-
 import com.josebran.LogsJB.Numeracion.LogsJBProperties;
 import com.josebran.LogsJB.Numeracion.NivelLog;
 import com.josebran.LogsJB.Numeracion.SizeLog;
@@ -45,7 +44,6 @@ import static com.josebran.LogsJB.MethodsTxt.convertir_fecha;
  *      error(Texto);
  */
 public class LogsJB {
-
 
     /***
      * Obtiene la ruta donde se estara escribiendo el Log.
@@ -94,7 +92,6 @@ public class LogsJB {
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear el contador de las veces que se a escrito en " +
                     "el log " + isAndroid + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
-
         }
     }
 
@@ -113,7 +110,6 @@ public class LogsJB {
     public static NivelLog getGradeLog() {
         return MethodsTxt.gradeLog;
     }
-
 
     /***
      * Setea el NivelLog desde el cual deseamos se escriba en el Log de la aplicación actual.
@@ -170,7 +166,6 @@ public class LogsJB {
         }
     }
 
-
     /***
      * Obtiene el usuario del sistema sobre el cual corre la aplicación
      * @return Retorna un String con el nombre del usuario actual.
@@ -191,9 +186,7 @@ public class LogsJB {
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear el usuario del entorno actual " + Usuario + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
         }
-
     }
-
 
     /***
      * Metodo encargado de hacer la llamada al ejecutor en un hilo de ejecución aparte, para que este se encargue
@@ -237,8 +230,6 @@ public class LogsJB {
         } catch (Exception e) {
             System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se llama la escritura de los logs" + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
         }
-
-
     }
 
     /**
@@ -255,11 +246,9 @@ public class LogsJB {
      */
     public static void waitForOperationComplete() {
         while (!getTaskIsReady()) {
-
         }
         System.out.println("Completo de escribir los Logs");
     }
-
 
     /**
      * Recuperara las propiedades de LogsJB seteadas en las propiedades del sistema
@@ -267,7 +256,6 @@ public class LogsJB {
     public static void getLogsJBProperties() {
         getInstance().getLogsJBProperties();
     }
-
 
     /***
      * Escribe en el Log el mensaje especificado indicando que pertenece a la categoria de Informacion.
@@ -316,6 +304,4 @@ public class LogsJB {
     public static void error(String Texto) {
         executor(NivelLog.ERROR, Texto);
     }
-
-
 }

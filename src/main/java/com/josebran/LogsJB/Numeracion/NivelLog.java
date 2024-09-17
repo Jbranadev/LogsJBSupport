@@ -26,7 +26,6 @@ public enum NivelLog {
      * El grado de este nivel de log es 200.
      */
     TRACE(200),
-
     /**
      * DEBUG , REALIZA LA DEPURACION DE LA APLICACION.
      * El grado de este nivel de log es 400.
@@ -53,12 +52,11 @@ public enum NivelLog {
      */
     FATAL(1000);
 
-    private int gradeLog;
+    private final int gradeLog;
 
-    private NivelLog(int GradeLog) {
+    NivelLog(int GradeLog) {
         this.gradeLog = GradeLog;
     }
-
 
     /***
      * Obtiene el grado del log, sobre el cual se estara realizando el seguimiento de los mensajes que se
@@ -74,5 +72,4 @@ public enum NivelLog {
     public int getGradeLog() {
         return gradeLog;
     }
-
 }

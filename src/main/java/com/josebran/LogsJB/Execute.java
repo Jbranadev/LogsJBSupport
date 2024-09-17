@@ -16,13 +16,18 @@
 
 package com.josebran.LogsJB;
 
-
 import com.josebran.LogsJB.Numeracion.NivelLog;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.josebran.LogsJB.LogsJB.getRuta;
 import static com.josebran.LogsJB.MethodsTxt.*;
 
 /****
@@ -35,17 +40,25 @@ class Execute {
     /***
      * Lista que funciona como la cola de peticiones que llegan al Ejecutor
      */
-    private static ListaMensajes listado = new ListaMensajes();
+    private static final ListaMensajes listado = new ListaMensajes();
     /***
      * Se utiliza el patron Singleton, para asegurarnos que sea una unica instancia la que se encargue de
      * Llevar el control de los Logs
      */
-    private static Execute instance = new Execute();
-    private Boolean TaskisReady = true;
+    private static final Execute instance = new Execute();
     /**
      * Ejecutor de Tareas asincronas
      */
-    private ExecutorService executorPrincipal = Executors.newCachedThreadPool();
+    private final ExecutorService executorPrincipal = Executors.newCachedThreadPool();
+    //private Boolean TaskisReady = true;
+    // Cambia la declaración de TaskisReady a AtomicBoolean
+    private AtomicBoolean TaskisReady = new AtomicBoolean(true);
+    private BufferedWriter bw;
+    /***
+     * Contador que expresa la cantidad de veces que se a escrito en la ejecución actual de la aplicación
+     *
+     */
+    private long logtext = 0;
 
     private Execute() {
         setearRuta();
@@ -69,6 +82,42 @@ class Execute {
      */
     protected static ListaMensajes getListado() {
         return listado;
+    }
+
+    /**
+     * Obtiene el buffer en el que se esta escribiendo actualmente el log
+     *
+     * @return Buffer en memoria que referencia el archivo en el que se esta escribiendo el log
+     */
+    protected BufferedWriter getBw() {
+        return bw;
+    }
+
+    protected void setBw(BufferedWriter buffer) {
+        this.bw = buffer;
+    }
+
+    /***
+     * Obtiene la cantidad de veces que se a escrito en el Txt En la ejecución actual
+     * @return Retorna la cantidad de veces que se a escrito en el Log.
+     */
+    protected long getLogtext() {
+        return logtext;
+    }
+    /***
+     * Setea la cantidad de veces que se a escrito en el Log actual.
+     * @param Logtext Numero de veces que se a escrito en el Log.
+     */
+
+    /**
+     * Setea la cantidad de veces que se a escrito en el Log actual.
+     *
+     * @param Logtext Numero de veces que se a escrito en el Log.
+     * @throws NoSuchFieldException   Lanza esta excepción si no encuentra el field que se quiere modificar
+     * @throws IllegalAccessException Lanza este error si no se puede setear el valor solicitado al campo
+     */
+    protected void setLogtext(long Logtext) throws NoSuchFieldException, IllegalAccessException {
+        this.logtext = logtext;
     }
 
     /**
@@ -96,35 +145,46 @@ class Execute {
         try {
             getInstance().setTaskisReady(false);
             Runnable EscritorPrincipal = () -> {
-                String temporal = "";
-                boolean band = true;
-                Integer i = 0;
-                while (band) {
-                    if (i > 5000) {
-                        verificarSizeFichero();
-                        i = 0;
+                try {
+                    //Rutas de archivos
+                    File fichero = new File(getRuta());
+                    //Verifica si existe la carpeta Logs, si no existe, la Crea
+                    File directorio = new File(fichero.getParent());
+                    if (!directorio.exists()) {
+                        if (directorio.mkdirs()) {
+                            System.out.println("*");
+                            System.out.println("Crea el directorio donde almacenara el Log de la prueba: " + fichero.getParent());
+                            System.out.println("*");
+                        }
                     }
-                    i++;
-                    //String Mensaje=Execute.getInstance().getTexto();
-                    //NivelLog logtemporal=Execute.getInstance().getNivelLog();
-                    MensajeWrite mensajetemp = null;
-                    mensajetemp = getListado().getDato();
-                    //System.out.println("Mensaje en Execute: "+mensajetemp.getTexto()+" "+mensajetemp.getNivelLog());
-                    String Mensaje = mensajetemp.getTexto();
-                    NivelLog logtemporal = mensajetemp.getNivelLog();
-                    String Clase = mensajetemp.getClase();
-                    String Metodo = mensajetemp.getMetodo();
-                    String fecha = mensajetemp.getFecha();
-                    //System.out.println("NivelLog definido: "+nivelaplicación);
-                    //System.out.println("NivelLog temporal: "+intniveltemporal);
-                    //System.out.println("Cantidad de mensajes Por limpiar: "+getListaTxt().getSize());
-                    //Verifica que el nivel de Log a escribir sea igual o mayor al nivel predefinido.
-                    writeLog(logtemporal, Mensaje, Clase, Metodo, fecha);
-                    if (getListado().getSize() == 0) {
-                        band = false;
-                        getInstance().setTaskisReady(true);
-                        break;
+                    bw = new BufferedWriter(new FileWriter(fichero, true));
+                    String temporal = "";
+                    boolean band = true;
+                    Integer i = 0;
+                    while (band) {
+                        if (i > 5000) {
+                            verificarSizeFichero();
+                            i = 0;
+                        }
+                        i++;
+                        MensajeWrite mensajetemp = null;
+                        mensajetemp = getListado().getDato();
+                        String Mensaje = mensajetemp.getTexto();
+                        NivelLog logtemporal = mensajetemp.getNivelLog();
+                        String Clase = mensajetemp.getClase();
+                        String Metodo = mensajetemp.getMetodo();
+                        String fecha = mensajetemp.getFecha();
+                        //Verifica que el nivel de Log a escribir sea igual o mayor al nivel predefinido.
+                        writeLog(logtemporal, Mensaje, Clase, Metodo, fecha);
+                        if (getListado().getSize() == 0) {
+                            band = false;
+                            bw.close();
+                            getInstance().setTaskisReady(true);
+                            break;
+                        }
                     }
+                } catch (IOException e) {
+                    System.err.println("Exepcion capturada al inicializar el buffer, " + "Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
                 }
             };
             this.executorPrincipal.submit(EscritorPrincipal);
@@ -133,14 +193,13 @@ class Execute {
         }
     }
 
-
     /**
      * Obtiene la bandera que indica si actualmente esta trabajando la clase Execute o si ya no esta trabajando
      *
      * @return True si esta libre, false si actualmente esta trabajando
      */
-    protected synchronized Boolean getTaskisReady() {
-        return TaskisReady;
+    protected Boolean getTaskisReady() {
+        return TaskisReady.get();
     }
 
     /**
@@ -148,8 +207,7 @@ class Execute {
      *
      * @param taskisReady True si esta libre, false si actualmente esta trabajando
      */
-    protected synchronized void setTaskisReady(Boolean taskisReady) {
-        TaskisReady = taskisReady;
+    protected void setTaskisReady(Boolean taskisReady) {
+        TaskisReady.set(taskisReady);
     }
-
 }
