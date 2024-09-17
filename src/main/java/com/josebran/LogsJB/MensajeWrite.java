@@ -14,7 +14,6 @@
  * limitaciones bajo la Licencia.
  */
 
-
 package com.josebran.LogsJB;
 
 import com.josebran.LogsJB.Numeracion.NivelLog;
@@ -39,7 +38,6 @@ class MensajeWrite {
     private String fecha;
 
     protected MensajeWrite() {
-
     }
 
     /***
@@ -57,7 +55,6 @@ class MensajeWrite {
     protected void setTexto(String texto) {
         Texto = texto;
     }
-
 
     /***
      * Obtiene el NivelLog del Mensaje.

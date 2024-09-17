@@ -28,7 +28,6 @@ class ListaMensajes {
     private List<MensajeWrite> mensajes = new LinkedList<>();
 
     protected ListaMensajes() {
-
     }
 
     /***
@@ -39,7 +38,6 @@ class ListaMensajes {
         //System.out.println("Agrega el msj a la lista: "+dato.getTexto()+" "+dato.getNivelLog());
         this.mensajes.add(dato);
         //notify();
-
     }
 
     /***
@@ -49,14 +47,10 @@ class ListaMensajes {
      * retorna null.
      */
     protected synchronized MensajeWrite getDato() {
-
-
         MensajeWrite dato = this.mensajes.get(0);
         this.mensajes.remove(0);
         //System.out.println("Quita el msj a la lista: "+dato.getTexto()+" "+dato.getNivelLog());
         return dato;
-
-
     }
 
     /***
@@ -66,5 +60,4 @@ class ListaMensajes {
     protected synchronized int getSize() {
         return this.mensajes.size();
     }
-
 }

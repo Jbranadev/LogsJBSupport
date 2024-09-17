@@ -16,7 +16,6 @@
 
 package com.josebran.LogsJB;
 
-
 import com.josebran.LogsJB.Numeracion.NivelLog;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -133,7 +132,6 @@ class Execute {
         }
     }
 
-
     /**
      * Obtiene la bandera que indica si actualmente esta trabajando la clase Execute o si ya no esta trabajando
      *
@@ -151,5 +149,4 @@ class Execute {
     protected synchronized void setTaskisReady(Boolean taskisReady) {
         TaskisReady = taskisReady;
     }
-
 }
