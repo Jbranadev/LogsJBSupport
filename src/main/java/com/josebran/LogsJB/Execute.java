@@ -93,8 +93,8 @@ class Execute {
         return bw;
     }
 
-    protected void setBw(BufferedWriter buffer){
-        this.bw=buffer;
+    protected void setBw(BufferedWriter buffer) {
+        this.bw = buffer;
     }
 
     /***

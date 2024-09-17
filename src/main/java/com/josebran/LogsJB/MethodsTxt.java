@@ -275,7 +275,6 @@ class MethodsTxt {
                 logactual.delete();
                 logactual.createNewFile();
                 getInstance().setBw(new BufferedWriter(new FileWriter(logactual, true)));
-
             }
         } catch (Exception e) {
             System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se verifica el tamaño del archivo: " + getRuta() + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
