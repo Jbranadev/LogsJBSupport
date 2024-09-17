@@ -19,9 +19,14 @@ package com.josebran.LogsJB;
 import com.josebran.LogsJB.Numeracion.NivelLog;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.josebran.LogsJB.LogsJB.getRuta;
 import static com.josebran.LogsJB.MethodsTxt.*;
 
 /****
@@ -34,17 +39,19 @@ class Execute {
     /***
      * Lista que funciona como la cola de peticiones que llegan al Ejecutor
      */
-    private static ListaMensajes listado = new ListaMensajes();
+    private static final ListaMensajes listado = new ListaMensajes();
     /***
      * Se utiliza el patron Singleton, para asegurarnos que sea una unica instancia la que se encargue de
      * Llevar el control de los Logs
      */
-    private static Execute instance = new Execute();
+    private static final Execute instance = new Execute();
     private Boolean TaskisReady = true;
     /**
      * Ejecutor de Tareas asincronas
      */
-    private ExecutorService executorPrincipal = Executors.newCachedThreadPool();
+    private final ExecutorService executorPrincipal = Executors.newCachedThreadPool();
+
+    private BufferedWriter bw;
 
     private Execute() {
         setearRuta();
@@ -68,6 +75,10 @@ class Execute {
      */
     protected static ListaMensajes getListado() {
         return listado;
+    }
+
+    protected BufferedWriter getBw() {
+        return bw;
     }
 
     /**
@@ -95,35 +106,53 @@ class Execute {
         try {
             getInstance().setTaskisReady(false);
             Runnable EscritorPrincipal = () -> {
-                String temporal = "";
-                boolean band = true;
-                Integer i = 0;
-                while (band) {
-                    if (i > 5000) {
-                        verificarSizeFichero();
-                        i = 0;
+                try {
+                    //Rutas de archivos
+                    File fichero = new File(getRuta());
+                    //System.out.println("Ruta del log: " + fichero.getAbsolutePath());
+                    //Verifica si existe la carpeta Logs, si no existe, la Crea
+                    File directorio = new File(fichero.getParent());
+                    if (!directorio.exists()) {
+                        if (directorio.mkdirs()) {
+                            System.out.println("*");
+                            System.out.println("Crea el directorio donde almacenara el Log de la prueba: " + fichero.getParent());
+                            System.out.println("*");
+                        }
                     }
-                    i++;
-                    //String Mensaje=Execute.getInstance().getTexto();
-                    //NivelLog logtemporal=Execute.getInstance().getNivelLog();
-                    MensajeWrite mensajetemp = null;
-                    mensajetemp = getListado().getDato();
-                    //System.out.println("Mensaje en Execute: "+mensajetemp.getTexto()+" "+mensajetemp.getNivelLog());
-                    String Mensaje = mensajetemp.getTexto();
-                    NivelLog logtemporal = mensajetemp.getNivelLog();
-                    String Clase = mensajetemp.getClase();
-                    String Metodo = mensajetemp.getMetodo();
-                    String fecha = mensajetemp.getFecha();
-                    //System.out.println("NivelLog definido: "+nivelaplicación);
-                    //System.out.println("NivelLog temporal: "+intniveltemporal);
-                    //System.out.println("Cantidad de mensajes Por limpiar: "+getListaTxt().getSize());
-                    //Verifica que el nivel de Log a escribir sea igual o mayor al nivel predefinido.
-                    writeLog(logtemporal, Mensaje, Clase, Metodo, fecha);
-                    if (getListado().getSize() == 0) {
-                        band = false;
-                        getInstance().setTaskisReady(true);
-                        break;
+                    bw = new BufferedWriter(new FileWriter(fichero, true));
+                    String temporal = "";
+                    boolean band = true;
+                    Integer i = 0;
+                    while (band) {
+                        if (i > 5000) {
+                            verificarSizeFichero();
+                            i = 0;
+                        }
+                        i++;
+                        //String Mensaje=Execute.getInstance().getTexto();
+                        //NivelLog logtemporal=Execute.getInstance().getNivelLog();
+                        MensajeWrite mensajetemp = null;
+                        mensajetemp = getListado().getDato();
+                        //System.out.println("Mensaje en Execute: "+mensajetemp.getTexto()+" "+mensajetemp.getNivelLog());
+                        String Mensaje = mensajetemp.getTexto();
+                        NivelLog logtemporal = mensajetemp.getNivelLog();
+                        String Clase = mensajetemp.getClase();
+                        String Metodo = mensajetemp.getMetodo();
+                        String fecha = mensajetemp.getFecha();
+                        //System.out.println("NivelLog definido: "+nivelaplicación);
+                        //System.out.println("NivelLog temporal: "+intniveltemporal);
+                        //System.out.println("Cantidad de mensajes Por limpiar: "+getListaTxt().getSize());
+                        //Verifica que el nivel de Log a escribir sea igual o mayor al nivel predefinido.
+                        writeLog(logtemporal, Mensaje, Clase, Metodo, fecha);
+                        if (getListado().getSize() == 0) {
+                            band = false;
+                            bw.close();
+                            getInstance().setTaskisReady(true);
+                            break;
+                        }
                     }
+                } catch (IOException e) {
+                    System.err.println("Exepcion capturada al inicializar el buffer, " + "Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
                 }
             };
             this.executorPrincipal.submit(EscritorPrincipal);

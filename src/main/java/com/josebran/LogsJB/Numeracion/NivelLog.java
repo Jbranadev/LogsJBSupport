@@ -52,9 +52,9 @@ public enum NivelLog {
      */
     FATAL(1000);
 
-    private int gradeLog;
+    private final int gradeLog;
 
-    private NivelLog(int GradeLog) {
+    NivelLog(int GradeLog) {
         this.gradeLog = GradeLog;
     }
 

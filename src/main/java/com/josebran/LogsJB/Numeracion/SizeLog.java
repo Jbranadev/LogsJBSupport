@@ -53,9 +53,9 @@ public enum SizeLog {
      */
     Large(500);
 
-    private int size;
+    private final int size;
 
-    private SizeLog(int SizeLog) {
+    SizeLog(int SizeLog) {
         this.size = SizeLog;
     }
 

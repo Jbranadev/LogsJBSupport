@@ -28,7 +28,7 @@ public enum LogsJBProperties {
      */
     private String property;
 
-    private LogsJBProperties(String property) {
+    LogsJBProperties(String property) {
         this.setProperty(property);
     }
 

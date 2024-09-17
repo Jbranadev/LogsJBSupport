@@ -23,19 +23,20 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
+import static com.josebran.LogsJB.Execute.getInstance;
 import static com.josebran.LogsJB.LogsJB.*;
 
 /****
@@ -44,6 +45,10 @@ import static com.josebran.LogsJB.LogsJB.*;
  */
 class MethodsTxt {
 
+    // Definimos el formateador como una constante estática para evitar recrearlo en cada llamada
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss SSS");
+    // Definir una constante para el patrón de fecha.
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss SSS");
     /**
      * Bandera que indica si la aplicación esta corriendo en un sistema operativo Android
      */
@@ -66,17 +71,17 @@ class MethodsTxt {
     /**
      * Separador que utiliza el sistema de archivos por default
      */
-    private static String separador = System.getProperty("file.separator");
+    private static final String separador = System.getProperty("file.separator");
     /***
      * Ruta donde se estara escribiendo el log por default, la cual sería:
      *  ContexAplicación/Logs/fecha_hoy/Log.txt
      */
-    protected static String ruta = (Paths.get("").toAbsolutePath().normalize().toString() + separador + "Logs" + separador + convertir_fecha("dd-MM-YYYY") + separador + "Log.txt");
+    protected static String ruta = (Paths.get("").toAbsolutePath().normalize() + separador + "Logs" + separador + convertir_fecha("dd-MM-YYYY") + separador + "Log.txt");
     /***
      * Contador que expresa la cantidad de veces que se a escrito en la ejecución actual de la aplicación
      *
      */
-    private static long logtext = 0;
+    private static final long logtext = 0;
 
     /***
      * Setea el NivelLog configurado en las propiedades del sistema, de no estar
@@ -118,7 +123,7 @@ class MethodsTxt {
         String rutaLog = System.getProperty(LogsJBProperties.LogsJBRutaLog.getProperty());
         if (Objects.isNull(rutaLog)) {
             //Si la propiedad del sistema no esta definida, setea la ruta por default
-            String ruta = (Paths.get("").toAbsolutePath().normalize().toString() + separador + "Logs" + separador +
+            String ruta = (Paths.get("").toAbsolutePath().normalize() + separador + "Logs" + separador +
                     convertir_fecha("dd-MM-YYYY") + separador + "Log.txt");
             setRuta(ruta);
         } else {
@@ -178,8 +183,7 @@ class MethodsTxt {
      * @return Retorna una cadena de texto con la fecha obtenida
      */
     protected static String convertir_fecha() {
-        DateTimeFormatter formater = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss SSS");
-        String temp = formater.format(LocalDateTime.now());
+        String temp = FORMATTER.format(LocalDateTime.now());
         return temp;
     }
 
@@ -255,26 +259,23 @@ class MethodsTxt {
             //long sizeFichero=((logactual.length())/1024);
             //System.out.println("Tamaño del archivo en Kb: " +sizeFichero);
             if (sizeFichero > getSizeLog().getSizeLog()) {
-                BasicFileAttributes attributes = null;
-                String fechaformateada = "";
-                int numeroaleatorio = 0;
-                attributes = Files.readAttributes(logactual.toPath(), BasicFileAttributes.class);
+                BasicFileAttributes attributes = Files.readAttributes(logactual.toPath(), BasicFileAttributes.class);
                 //FileTime time = attributes.creationTime();
                 FileTime time = attributes.lastModifiedTime();
-                String pattern = "dd-MM-yyyy HH:mm:ss SS";
-                numeroaleatorio = (int) Math.floor(Math.random() * (9 - 0 + 1) + 0);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-                fechaformateada = simpleDateFormat.format(new Date(time.toMillis()));
+                // Genera una fecha formateada para renombrar el archivo.
+                String fechaformateada = DATE_FORMATTER.format(Instant.ofEpochMilli(time.toMillis())
+                        .atZone(ZoneId.systemDefault()).toLocalDateTime());
+                // Genera un número aleatorio entre 0 y 9 para evitar colisiones de nombres.
+                int numeroAleatorio = ThreadLocalRandom.current().nextInt(0, 10);
                 //System.out.println( "La fecha y hora de creación del archivo es: " + fechaformateada );
                 //SimpleDateFormat  formatofecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 //String fechalog=(formatofecha.format(logactual.lastModified())).replace(":","-").replace(" ", "_");
-                String fechalog = fechaformateada.replace(":", "-").replace(" ", "_") + numeroaleatorio;
+                String fechalog = fechaformateada.replace(":", "-").replace(" ", "_") + numeroAleatorio;
                 String newrute = getRuta().replace(".txt", "") + "_" + fechalog + ".txt";
                 File newfile = new File(newrute);
                 logactual.renameTo(newfile);
                 System.out.println("Archivo renombrado: " + newrute);
                 logactual.delete();
-                //Thread.sleep(5000);
                 logactual.createNewFile();
             }
         } catch (Exception e) {
@@ -310,25 +311,16 @@ class MethodsTxt {
                 File fichero = new File(getRuta());
                 //System.out.println("Ruta del log: " + fichero.getAbsolutePath());
                 //Verifica si existe la carpeta Logs, si no existe, la Crea
-                File directorio = new File(fichero.getParent());
-                if (!directorio.exists()) {
-                    if (directorio.mkdirs()) {
-                        System.out.println("*");
-                        System.out.println("Crea el directorio donde almacenara el Log de la prueba: " + fichero.getParent());
-                        System.out.println("*");
-                    }
-                }
                 /////Esta seccion se encarga de Crear y escribir en el Log/////
                 //verificarSizeFichero();
                 /*Si es un nuevo Test se ejecuta el siguiente codigo, tomando en cuenta que sea el primer
                  * TestCase del Test actual*/
                 //Si el fichero no Existe, lo creara y agregara el siguiente texto
                 if (!fichero.exists()) {
-                    BufferedWriter bw = new BufferedWriter(new FileWriter(fichero));
+                    BufferedWriter bw = getInstance().getBw();
                     escribirCabeceraLog(bw);
                     bw.write(logMessage);
                     bw.newLine();
-                    bw.close();
                     System.out.println("*" + "\n");
                     System.out.println("*" + "\n");
                     System.out.println("*" + "\n");
@@ -337,20 +329,18 @@ class MethodsTxt {
                     System.out.println(logMessage);
                 } else {
                     if (getLogtext() == 1) {
-                        BufferedWriter bw = new BufferedWriter(new FileWriter(fichero.getAbsoluteFile(), true));
+                        BufferedWriter bw = getInstance().getBw();
                         escribirCabeceraLog(bw);
                         bw.write(logMessage);
                         bw.newLine();
-                        bw.close();
                         System.out.println("\n");
                         System.out.println(logMessage);
                     } else {
                         //Agrega en el fichero el Log
-                        BufferedWriter bw = new BufferedWriter(new FileWriter(fichero.getAbsoluteFile(), true));
+                        BufferedWriter bw = getInstance().getBw();
                         bw.newLine();
                         bw.write(logMessage);
                         bw.newLine();
-                        bw.close();
                         System.out.println("\n");
                         if (nivelLog.getGradeLog() >= NivelLog.ERROR.getGradeLog()) {
                             System.err.println(logMessage);
@@ -380,14 +370,13 @@ class MethodsTxt {
      * @return Una cadena formateada que contiene la información completa del log.
      */
     private static String buildLogMessage(String fecha, String clase, String metodo, NivelLog nivelLog, String texto) {
-        StringBuilder logBuilder = new StringBuilder();
-        logBuilder.append(fecha).append(getTabs(fecha))
-                .append(getUsuario()).append(getTabs(getUsuario()))
-                .append(clase).append(getTabs(clase))
-                .append(metodo).append(getTabs(metodo))
-                .append(nivelLog).append(getTabs(nivelLog.toString()))
-                .append(texto);
-        return logBuilder.toString();
+        String logBuilder = fecha + getTabs(fecha) +
+                getUsuario() + getTabs(getUsuario()) +
+                clase + getTabs(clase) +
+                metodo + getTabs(metodo) +
+                nivelLog + getTabs(nivelLog.toString()) +
+                texto;
+        return logBuilder;
     }
 
     /**
