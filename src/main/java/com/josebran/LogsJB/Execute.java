@@ -25,6 +25,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.josebran.LogsJB.LogsJB.getRuta;
 import static com.josebran.LogsJB.MethodsTxt.*;
@@ -49,7 +50,9 @@ class Execute {
      * Ejecutor de Tareas asincronas
      */
     private final ExecutorService executorPrincipal = Executors.newCachedThreadPool();
-    private Boolean TaskisReady = true;
+    //private Boolean TaskisReady = true;
+    // Cambia la declaración de TaskisReady a AtomicBoolean
+    private AtomicBoolean TaskisReady = new AtomicBoolean(true);
     private BufferedWriter bw;
     /***
      * Contador que expresa la cantidad de veces que se a escrito en la ejecución actual de la aplicación
@@ -88,6 +91,10 @@ class Execute {
      */
     protected BufferedWriter getBw() {
         return bw;
+    }
+
+    protected void setBw(BufferedWriter buffer){
+        this.bw=buffer;
     }
 
     /***
@@ -141,7 +148,6 @@ class Execute {
                 try {
                     //Rutas de archivos
                     File fichero = new File(getRuta());
-                    //System.out.println("Ruta del log: " + fichero.getAbsolutePath());
                     //Verifica si existe la carpeta Logs, si no existe, la Crea
                     File directorio = new File(fichero.getParent());
                     if (!directorio.exists()) {
@@ -161,19 +167,13 @@ class Execute {
                             i = 0;
                         }
                         i++;
-                        //String Mensaje=Execute.getInstance().getTexto();
-                        //NivelLog logtemporal=Execute.getInstance().getNivelLog();
                         MensajeWrite mensajetemp = null;
                         mensajetemp = getListado().getDato();
-                        //System.out.println("Mensaje en Execute: "+mensajetemp.getTexto()+" "+mensajetemp.getNivelLog());
                         String Mensaje = mensajetemp.getTexto();
                         NivelLog logtemporal = mensajetemp.getNivelLog();
                         String Clase = mensajetemp.getClase();
                         String Metodo = mensajetemp.getMetodo();
                         String fecha = mensajetemp.getFecha();
-                        //System.out.println("NivelLog definido: "+nivelaplicación);
-                        //System.out.println("NivelLog temporal: "+intniveltemporal);
-                        //System.out.println("Cantidad de mensajes Por limpiar: "+getListaTxt().getSize());
                         //Verifica que el nivel de Log a escribir sea igual o mayor al nivel predefinido.
                         writeLog(logtemporal, Mensaje, Clase, Metodo, fecha);
                         if (getListado().getSize() == 0) {
@@ -198,8 +198,8 @@ class Execute {
      *
      * @return True si esta libre, false si actualmente esta trabajando
      */
-    protected synchronized Boolean getTaskisReady() {
-        return TaskisReady;
+    protected Boolean getTaskisReady() {
+        return TaskisReady.get();
     }
 
     /**
@@ -207,7 +207,7 @@ class Execute {
      *
      * @param taskisReady True si esta libre, false si actualmente esta trabajando
      */
-    protected synchronized void setTaskisReady(Boolean taskisReady) {
-        TaskisReady = taskisReady;
+    protected void setTaskisReady(Boolean taskisReady) {
+        TaskisReady.set(taskisReady);
     }
 }

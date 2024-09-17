@@ -25,6 +25,7 @@ public class LogsJBTest {
             //System.out.println("Ruta del log: " + fichero.getAbsolutePath());
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
+            FileUtils.deleteDirectory(directorio);
             if (!directorio.exists()) {
                 if (directorio.mkdirs()) {
                     System.out.println("*");
@@ -138,6 +139,8 @@ public class LogsJBTest {
         try {
             LogsJB.setGradeLog(NivelLog.TRACE);
             LogsJB.setSizeLog(SizeLog.Little_Little);
+            LogsJB.getLogsJBProperties();
+            Assert.assertEquals(SizeLog.Little_Little.getSizeLog(), getSizeLog().getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
             ThreadLocalRandom.current().nextInt(5, 14);
             Integer i = 0;
             Random random = new Random();
@@ -218,7 +221,7 @@ public class LogsJBTest {
             //System.out.println("Ruta del log: " + fichero.getAbsolutePath());
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
-            FileUtils.deleteDirectory(directorio);
+            //FileUtils.deleteDirectory(directorio);
             Integer i = 0;
             Random random = new Random();
             while (i < 1200) {

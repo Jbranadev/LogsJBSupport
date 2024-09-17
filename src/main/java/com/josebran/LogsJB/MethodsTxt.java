@@ -23,6 +23,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -265,6 +266,7 @@ class MethodsTxt {
                 //System.out.println( "La fecha y hora de creación del archivo es: " + fechaformateada );
                 //SimpleDateFormat  formatofecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 //String fechalog=(formatofecha.format(logactual.lastModified())).replace(":","-").replace(" ", "_");
+                getInstance().getBw().close();
                 String fechalog = fechaformateada.replace(":", "-").replace(" ", "_") + numeroAleatorio;
                 String newrute = getRuta().replace(".txt", "") + "_" + fechalog + ".txt";
                 File newfile = new File(newrute);
@@ -272,6 +274,8 @@ class MethodsTxt {
                 System.out.println("Archivo renombrado: " + newrute);
                 logactual.delete();
                 logactual.createNewFile();
+                getInstance().setBw(new BufferedWriter(new FileWriter(logactual, true)));
+
             }
         } catch (Exception e) {
             System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se verifica el tamaño del archivo: " + getRuta() + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
