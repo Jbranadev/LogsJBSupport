@@ -84,22 +84,22 @@ public class LogsJBTest {
         try {
             LogsJB.setGradeLog(NivelLog.TRACE);
             LogsJB.getLogsJBProperties();
-            Assert.assertTrue(LogsJB.getGradeLog() == NivelLog.TRACE, "El valor de Log obtenido no corresponde al seteado");
+            Assert.assertSame(getGradeLog(), NivelLog.TRACE, "El valor de Log obtenido no corresponde al seteado");
             LogsJB.setGradeLog(NivelLog.DEBUG);
             LogsJB.getLogsJBProperties();
-            Assert.assertTrue(LogsJB.getGradeLog() == NivelLog.DEBUG, "El valor de Log obtenido no corresponde al seteado");
+            Assert.assertSame(getGradeLog(), NivelLog.DEBUG, "El valor de Log obtenido no corresponde al seteado");
             LogsJB.setGradeLog(NivelLog.INFO);
             LogsJB.getLogsJBProperties();
-            Assert.assertTrue(LogsJB.getGradeLog() == NivelLog.INFO, "El valor de Log obtenido no corresponde al seteado");
+            Assert.assertSame(getGradeLog(), NivelLog.INFO, "El valor de Log obtenido no corresponde al seteado");
             LogsJB.setGradeLog(NivelLog.WARNING);
             LogsJB.getLogsJBProperties();
-            Assert.assertTrue(LogsJB.getGradeLog() == NivelLog.WARNING, "El valor de Log obtenido no corresponde al seteado");
+            Assert.assertSame(getGradeLog(), NivelLog.WARNING, "El valor de Log obtenido no corresponde al seteado");
             LogsJB.setGradeLog(NivelLog.ERROR);
             LogsJB.getLogsJBProperties();
-            Assert.assertTrue(LogsJB.getGradeLog() == NivelLog.ERROR, "El valor de Log obtenido no corresponde al seteado");
+            Assert.assertSame(getGradeLog(), NivelLog.ERROR, "El valor de Log obtenido no corresponde al seteado");
             LogsJB.setGradeLog(NivelLog.FATAL);
             LogsJB.getLogsJBProperties();
-            Assert.assertTrue(LogsJB.getGradeLog() == NivelLog.FATAL, "El valor de Log obtenido no corresponde al seteado");
+            Assert.assertSame(getGradeLog(), NivelLog.FATAL, "El valor de Log obtenido no corresponde al seteado");
         } catch (Exception e) {
             System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
             System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
@@ -111,22 +111,22 @@ public class LogsJBTest {
         try {
             LogsJB.setSizeLog(SizeLog.Little_Little);
             LogsJB.getLogsJBProperties();
-            Assert.assertTrue(LogsJB.getSizeLog().getSizeLog() == SizeLog.Little_Little.getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
+            Assert.assertEquals(SizeLog.Little_Little.getSizeLog(), getSizeLog().getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
             LogsJB.setSizeLog(SizeLog.Little);
             LogsJB.getLogsJBProperties();
-            Assert.assertTrue(LogsJB.getSizeLog().getSizeLog() == SizeLog.Little.getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
+            Assert.assertEquals(SizeLog.Little.getSizeLog(), getSizeLog().getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
             LogsJB.setSizeLog(SizeLog.Small_Medium);
             LogsJB.getLogsJBProperties();
-            Assert.assertTrue(LogsJB.getSizeLog().getSizeLog() == SizeLog.Small_Medium.getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
+            Assert.assertEquals(SizeLog.Small_Medium.getSizeLog(), getSizeLog().getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
             LogsJB.setSizeLog(SizeLog.Medium);
             LogsJB.getLogsJBProperties();
-            Assert.assertTrue(LogsJB.getSizeLog().getSizeLog() == SizeLog.Medium.getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
+            Assert.assertEquals(SizeLog.Medium.getSizeLog(), getSizeLog().getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
             LogsJB.setSizeLog(SizeLog.Small_Large);
             LogsJB.getLogsJBProperties();
-            Assert.assertTrue(LogsJB.getSizeLog().getSizeLog() == SizeLog.Small_Large.getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
+            Assert.assertEquals(SizeLog.Small_Large.getSizeLog(), getSizeLog().getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
             LogsJB.setSizeLog(SizeLog.Large);
             LogsJB.getLogsJBProperties();
-            Assert.assertTrue(LogsJB.getSizeLog().getSizeLog() == SizeLog.Large.getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
+            Assert.assertEquals(SizeLog.Large.getSizeLog(), getSizeLog().getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
         } catch (Exception e) {
             System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
             System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
