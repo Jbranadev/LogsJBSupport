@@ -24,7 +24,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -50,6 +49,10 @@ class MethodsTxt {
     // Definir una constante para el patrón de fecha.
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss SSS");
     /**
+     * Separador que utiliza el sistema de archivos por default
+     */
+    private static final String separador = System.getProperty("file.separator");
+    /**
      * Bandera que indica si la aplicación esta corriendo en un sistema operativo Android
      */
     protected static Boolean isAndroid = false;
@@ -68,20 +71,11 @@ class MethodsTxt {
      * con el nuevo registro.
      */
     protected static SizeLog sizeLog = SizeLog.Little_Little;
-    /**
-     * Separador que utiliza el sistema de archivos por default
-     */
-    private static final String separador = System.getProperty("file.separator");
     /***
      * Ruta donde se estara escribiendo el log por default, la cual sería:
      *  ContexAplicación/Logs/fecha_hoy/Log.txt
      */
     protected static String ruta = (Paths.get("").toAbsolutePath().normalize() + separador + "Logs" + separador + convertir_fecha("dd-MM-YYYY") + separador + "Log.txt");
-    /***
-     * Contador que expresa la cantidad de veces que se a escrito en la ejecución actual de la aplicación
-     *
-     */
-    private static final long logtext = 0;
 
     /***
      * Setea el NivelLog configurado en las propiedades del sistema, de no estar
@@ -211,39 +205,40 @@ class MethodsTxt {
     protected static String getTabs(String cadena) {
         //Reglas del negocio, maximas tabulaciones son 4
         //Minima tabulacion es una
-        String result = "";
+        StringBuilder result = new StringBuilder();
         String tab = "\u0009";
         int tamaño = cadena.length();
         int sobrantes = tamaño % 4;
         if (sobrantes != 0) {
             int restantes = 4 - sobrantes;
-            for (int i = 1; i < restantes; i++) {
-                result = result + " ";
-            }
+            result.append(" ".repeat(restantes));
         }
         //Si la cadena es menor a 13, retornara 7 tabs
+        int numTabs = 0;
         if (tamaño < 13) {
-            result = result + tab.repeat(7);
+            numTabs = 7;
             //Si la cadena es menor a 17, retornara 6 tabs
         } else if (tamaño < 17) {
-            result = result + tab.repeat(6);
+            numTabs = 6;
             //Si la cadena es menor a 25, retornara 5 tabs
         } else if (tamaño < 25) {
-            result = result + tab.repeat(5);
+            numTabs = 5;
             //Si la cadena es menor a 29, retornara 4 tabs
         } else if (tamaño < 29) {
-            result = result + tab.repeat(4);
+            numTabs = 4;
             //Si la cadena es menor a 33, retornara 3 tabs
         } else if (tamaño < 33) {
-            result = result + tab.repeat(3);
+            numTabs = 3;
             //Si la cadena es menor a 37, retornara 2 tabs
         } else if (tamaño < 37) {
-            result = result + tab.repeat(2);
+            numTabs = 2;
             //Si la cadena es mayor a 36, retornara 2 tabs
         } else if (tamaño > 36) {
-            result = result + tab.repeat(2);
+            numTabs = 2;
         }
-        return result;
+        // Añadir las tabs correspondientes
+        result.append(tab.repeat(numTabs));
+        return result.toString();
     }
 
     /***
@@ -296,7 +291,7 @@ class MethodsTxt {
         try {
             //System.out.println("Nombre hilo Execute: "+Thread.currentThread().getName());
             //Aumenta la Cantidad de Veces que se a escrito el Log
-            setLogtext(getLogtext() + 1);
+            getInstance().setLogtext(getInstance().getLogtext() + 1);
             String logMessage = buildLogMessage(fecha, Clase, Metodo, nivelLog, Texto);
             if (getIsAndroid()) {
                 System.out.println("\n");
@@ -328,7 +323,7 @@ class MethodsTxt {
                     System.out.println("*" + "\n");
                     System.out.println(logMessage);
                 } else {
-                    if (getLogtext() == 1) {
+                    if (getInstance().getLogtext() == 1) {
                         BufferedWriter bw = getInstance().getBw();
                         escribirCabeceraLog(bw);
                         bw.write(logMessage);
@@ -391,30 +386,5 @@ class MethodsTxt {
      */
     private static void escribirCabeceraLog(BufferedWriter bw) throws IOException {
         bw.write("\n*\n*\n*\n*\n");
-    }
-
-    /***
-     * Obtiene la cantidad de veces que se a escrito en el Txt En la ejecución actual
-     * @return Retorna la cantidad de veces que se a escrito en el Log.
-     */
-    private static long getLogtext() {
-        return logtext;
-    }
-    /***
-     * Setea la cantidad de veces que se a escrito en el Log actual.
-     * @param Logtext Numero de veces que se a escrito en el Log.
-     */
-
-    /**
-     * Setea la cantidad de veces que se a escrito en el Log actual.
-     *
-     * @param Logtext Numero de veces que se a escrito en el Log.
-     * @throws NoSuchFieldException   Lanza esta excepción si no encuentra el field que se quiere modificar
-     * @throws IllegalAccessException Lanza este error si no se puede setear el valor solicitado al campo
-     */
-    private static void setLogtext(long Logtext) throws NoSuchFieldException, IllegalAccessException {
-        Field field = MethodsTxt.class.getDeclaredField("logtext");
-        field.setAccessible(true);
-        field.set(null, Logtext);
     }
 }

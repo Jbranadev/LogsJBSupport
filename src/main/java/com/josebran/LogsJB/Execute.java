@@ -45,13 +45,17 @@ class Execute {
      * Llevar el control de los Logs
      */
     private static final Execute instance = new Execute();
-    private Boolean TaskisReady = true;
     /**
      * Ejecutor de Tareas asincronas
      */
     private final ExecutorService executorPrincipal = Executors.newCachedThreadPool();
-
+    private Boolean TaskisReady = true;
     private BufferedWriter bw;
+    /***
+     * Contador que expresa la cantidad de veces que se a escrito en la ejecución actual de la aplicación
+     *
+     */
+    private long logtext = 0;
 
     private Execute() {
         setearRuta();
@@ -77,8 +81,36 @@ class Execute {
         return listado;
     }
 
+    /**
+     * Obtiene el buffer en el que se esta escribiendo actualmente el log
+     *
+     * @return Buffer en memoria que referencia el archivo en el que se esta escribiendo el log
+     */
     protected BufferedWriter getBw() {
         return bw;
+    }
+
+    /***
+     * Obtiene la cantidad de veces que se a escrito en el Txt En la ejecución actual
+     * @return Retorna la cantidad de veces que se a escrito en el Log.
+     */
+    protected long getLogtext() {
+        return logtext;
+    }
+    /***
+     * Setea la cantidad de veces que se a escrito en el Log actual.
+     * @param Logtext Numero de veces que se a escrito en el Log.
+     */
+
+    /**
+     * Setea la cantidad de veces que se a escrito en el Log actual.
+     *
+     * @param Logtext Numero de veces que se a escrito en el Log.
+     * @throws NoSuchFieldException   Lanza esta excepción si no encuentra el field que se quiere modificar
+     * @throws IllegalAccessException Lanza este error si no se puede setear el valor solicitado al campo
+     */
+    protected void setLogtext(long Logtext) throws NoSuchFieldException, IllegalAccessException {
+        this.logtext = logtext;
     }
 
     /**
