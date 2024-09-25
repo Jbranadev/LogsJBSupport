@@ -57,6 +57,11 @@ class MethodsTxt {
      * Bandera que indica si la aplicación esta corriendo en un sistema operativo Android
      */
     protected static Boolean isAndroid = false;
+
+    /**
+     * Indica si se imprimira en consola
+     */
+    protected static Boolean viewConsole = true;
     /***
      * Obtiene el usuario actual del sistema operativo
      */
@@ -169,6 +174,20 @@ class MethodsTxt {
             setIsAndroid(false);
         } else {
             setIsAndroid(Boolean.valueOf(Android));
+        }
+        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("SizeLog"));
+    }
+
+    /***
+     * Setea la propiedad de si la libreria imprimira en consola la salida de los logs
+     */
+    protected static void setearViewConsole() {
+        String viewConsole = System.getProperty(LogsJBProperties.LogsJBviewConsole.getProperty());
+        if (Objects.isNull(viewConsole)) {
+            //Si la propiedad del sistema no esta definida, setea el nivel por default
+            setviewConsole(true);
+        } else {
+            setviewConsole(Boolean.valueOf(viewConsole));
         }
         //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("SizeLog"));
     }
@@ -297,11 +316,17 @@ class MethodsTxt {
             getInstance().setLogtext(getInstance().getLogtext() + 1);
             String logMessage = buildLogMessage(fecha, Clase, Metodo, nivelLog, Texto);
             if (getIsAndroid()) {
-                System.out.println("\n");
+                if (getviewConsole()) {
+                    System.out.println("\n");
+                }
                 if (nivelLog.getGradeLog() >= NivelLog.ERROR.getGradeLog()) {
-                    System.err.println(logMessage);
+                    if (getviewConsole()) {
+                        System.err.println(logMessage);
+                    }
                 } else {
-                    System.out.println(logMessage);
+                    if (getviewConsole()) {
+                        System.out.println(logMessage);
+                    }
                 }
             } else {
                 //System.out.println("clase: " + Clase + " metodo: " + Metodo);
@@ -319,31 +344,41 @@ class MethodsTxt {
                     escribirCabeceraLog(bw);
                     bw.write(logMessage);
                     bw.newLine();
-                    System.out.println("*" + "\n");
-                    System.out.println("*" + "\n");
-                    System.out.println("*" + "\n");
-                    System.out.println("*" + "\n");
-                    System.out.println("*" + "\n");
-                    System.out.println(logMessage);
+                    if (getviewConsole()) {
+                        System.out.println("*" + "\n");
+                        System.out.println("*" + "\n");
+                        System.out.println("*" + "\n");
+                        System.out.println("*" + "\n");
+                        System.out.println("*" + "\n");
+                        System.out.println(logMessage);
+                    }
                 } else {
                     if (getInstance().getLogtext() == 1) {
                         BufferedWriter bw = getInstance().getBw();
                         escribirCabeceraLog(bw);
                         bw.write(logMessage);
                         bw.newLine();
-                        System.out.println("\n");
-                        System.out.println(logMessage);
+                        if (getviewConsole()) {
+                            System.out.println("\n");
+                            System.out.println(logMessage);
+                        }
                     } else {
                         //Agrega en el fichero el Log
                         BufferedWriter bw = getInstance().getBw();
                         bw.newLine();
                         bw.write(logMessage);
                         bw.newLine();
-                        System.out.println("\n");
+                        if (getviewConsole()) {
+                            System.out.println("\n");
+                        }
                         if (nivelLog.getGradeLog() >= NivelLog.ERROR.getGradeLog()) {
-                            System.err.println(logMessage);
+                            if (getviewConsole()) {
+                                System.err.println(logMessage);
+                            }
                         } else {
-                            System.out.println(logMessage);
+                            if (getviewConsole()) {
+                                System.out.println(logMessage);
+                            }
                         }
                     }
                 }

@@ -191,7 +191,11 @@ public class LogsJBTest {
             LogsJB.setSizeLog(SizeLog.Little_Little);
             ThreadLocalRandom.current().nextInt(5, 14);
             Integer i = 0;
-            Random random = new Random();
+            // Secuencia ANSI para limpiar la terminal
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            // Ejecutar el comando "cls" de Windows para limpiar la terminal
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             while (i < 55000) {
                 trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
                 debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
@@ -202,6 +206,13 @@ public class LogsJBTest {
                 i = i + 6;
             }
             LogsJB.waitForOperationComplete();
+            File fichero = new File(getRuta());
+            //Verifica si existe la carpeta Logs, si no existe, la Crea
+            File directorio = new File(fichero.getParent());
+            Assert.assertTrue(
+                    FileUtils.listFiles(directorio, null, false).size() > 1
+                    , "El Directorio no contiene más de un archivo"
+            );
         } catch (Exception e) {
             System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
             System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
@@ -234,7 +245,6 @@ public class LogsJBTest {
                 i = i + 6;
             }
             LogsJB.waitForOperationComplete();
-            Thread.sleep(1000);
             while (i < 1200) {
                 trace(i + "cadena contar caracteres26");
                 debug(i + "cadena contar caracteres treinta3");

@@ -95,6 +95,32 @@ public class LogsJB {
         }
     }
 
+    /**
+     * Setea la bandera que indica si la librería imprimira los logs en consola
+     *
+     * @return True si imprimira en consola la salida del log, false en caso contrario
+     */
+    public static Boolean getviewConsole() {
+        return MethodsTxt.viewConsole;
+    }
+
+    /**
+     * Setea la bandera que indica si la libreria imprimira los logs en consola
+     *
+     * @param viewConsole True si la libreria imprimira en la salida de la terminal el log, False si no imprimira en la terminal el log
+     */
+    public static void setviewConsole(Boolean viewConsole) {
+        try {
+            Field field = MethodsTxt.class.getDeclaredField("viewConsole");
+            field.setAccessible(true);
+            field.set(null, viewConsole);
+            System.setProperty(LogsJBProperties.LogsJBviewConsole.getProperty(), String.valueOf(viewConsole));
+        } catch (Exception e) {
+            System.err.println("Excepcion capturada al tratar de setear el contador de las veces que se a escrito en " +
+                    "el log " + viewConsole + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
+        }
+    }
+
     /***
      * Obtiene el grado del log, sobre el cual se estara realizando el seguimiento de los mensajes que se
      * escriben en las bitacoras de Log de la aplicación actual.
