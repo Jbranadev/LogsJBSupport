@@ -7,6 +7,10 @@ public enum LogsJBProperties {
      */
     LogsJBIsAndroid("LogsJBSupportisAndroid"),
     /**
+     * Bandera que indica si la libreria imprimira en la terminal
+     */
+    LogsJBviewConsole("LogsJBSupportviewConsole"),
+    /**
      * Bandera que índica a LogsJB si se escribirá el log en el archivo TXT
      */
     LogsJBWriteTxt("LogsJBSupportwriteTxt"),

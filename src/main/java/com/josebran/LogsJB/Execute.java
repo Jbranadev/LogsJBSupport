@@ -52,7 +52,7 @@ class Execute {
     private final ExecutorService executorPrincipal = Executors.newCachedThreadPool();
     //private Boolean TaskisReady = true;
     // Cambia la declaración de TaskisReady a AtomicBoolean
-    private AtomicBoolean TaskisReady = new AtomicBoolean(true);
+    private final AtomicBoolean TaskisReady = new AtomicBoolean(true);
     private BufferedWriter bw;
     /***
      * Contador que expresa la cantidad de veces que se a escrito en la ejecución actual de la aplicación
@@ -61,10 +61,7 @@ class Execute {
     private long logtext = 0;
 
     private Execute() {
-        setearRuta();
-        setearNivelLog();
-        setearSizelLog();
-        setearIsAndroid();
+        getLogsJBProperties();
     }
 
     /***
@@ -128,6 +125,7 @@ class Execute {
         setearNivelLog();
         setearSizelLog();
         setearIsAndroid();
+        setearViewConsole();
     }
 
     /***
