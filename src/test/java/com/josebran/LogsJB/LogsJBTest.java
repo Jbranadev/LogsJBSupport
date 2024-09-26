@@ -191,11 +191,6 @@ public class LogsJBTest {
             LogsJB.setSizeLog(SizeLog.Little_Little);
             ThreadLocalRandom.current().nextInt(5, 14);
             Integer i = 0;
-            // Secuencia ANSI para limpiar la terminal
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
-            // Ejecutar el comando "cls" de Windows para limpiar la terminal
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             while (i < 55000) {
                 trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
                 debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));

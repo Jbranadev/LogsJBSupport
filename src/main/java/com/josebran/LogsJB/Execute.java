@@ -38,14 +38,15 @@ import static com.josebran.LogsJB.MethodsTxt.*;
 class Execute {
 
     /***
-     * Lista que funciona como la cola de peticiones que llegan al Ejecutor
-     */
-    private static final ListaMensajes listado = new ListaMensajes();
-    /***
      * Se utiliza el patron Singleton, para asegurarnos que sea una unica instancia la que se encargue de
      * Llevar el control de los Logs
      */
-    private static final Execute instance = new Execute();
+    // ThreadLocal asegura que cada hilo tenga su propia instancia de SingletonLogger
+    //private static final ThreadLocal<Execute> instance = ThreadLocal.withInitial(Execute::new);
+    private static final ThreadLocal<Execute> instance = ThreadLocal.withInitial(() -> {
+        System.out.println("Creando instancia de Execute para el hilo: " + Thread.currentThread().getName());
+        return new Execute();
+    });
     /**
      * Ejecutor de Tareas asincronas
      */
@@ -53,12 +54,12 @@ class Execute {
     //private Boolean TaskisReady = true;
     // Cambia la declaración de TaskisReady a AtomicBoolean
     private final AtomicBoolean TaskisReady = new AtomicBoolean(true);
-    private BufferedWriter bw;
+    //private static final Execute instance = new Execute();
     /***
-     * Contador que expresa la cantidad de veces que se a escrito en la ejecución actual de la aplicación
-     *
+     * Lista que funciona como la cola de peticiones que llegan al Ejecutor
      */
-    private long logtext = 0;
+    private ListaMensajes listado = new ListaMensajes();
+    private MethodsTxt runTXT = new MethodsTxt();
 
     private Execute() {
         getLogsJBProperties();
@@ -70,51 +71,16 @@ class Execute {
      * en segundo plano.
      */
     protected static Execute getInstance() {
-        return instance;
+        return instance.get();
+        //return instance;
     }
 
     /***
      * Proporciona el acceso a la lista que sirve como cola de las peticiones
      * @return Retorna una lista de MensajeWrite, la cual lleva la información que se desea registrar en los Logs
      */
-    protected static ListaMensajes getListado() {
+    protected ListaMensajes getListado() {
         return listado;
-    }
-
-    /**
-     * Obtiene el buffer en el que se esta escribiendo actualmente el log
-     *
-     * @return Buffer en memoria que referencia el archivo en el que se esta escribiendo el log
-     */
-    protected BufferedWriter getBw() {
-        return bw;
-    }
-
-    protected void setBw(BufferedWriter buffer) {
-        this.bw = buffer;
-    }
-
-    /***
-     * Obtiene la cantidad de veces que se a escrito en el Txt En la ejecución actual
-     * @return Retorna la cantidad de veces que se a escrito en el Log.
-     */
-    protected long getLogtext() {
-        return logtext;
-    }
-    /***
-     * Setea la cantidad de veces que se a escrito en el Log actual.
-     * @param Logtext Numero de veces que se a escrito en el Log.
-     */
-
-    /**
-     * Setea la cantidad de veces que se a escrito en el Log actual.
-     *
-     * @param Logtext Numero de veces que se a escrito en el Log.
-     * @throws NoSuchFieldException   Lanza esta excepción si no encuentra el field que se quiere modificar
-     * @throws IllegalAccessException Lanza este error si no se puede setear el valor solicitado al campo
-     */
-    protected void setLogtext(long Logtext) throws NoSuchFieldException, IllegalAccessException {
-        this.logtext = logtext;
     }
 
     /**
@@ -141,7 +107,7 @@ class Execute {
      */
     private void writePrincipal() {
         try {
-            getInstance().setTaskisReady(false);
+            this.setTaskisReady(false);
             Runnable EscritorPrincipal = () -> {
                 try {
                     //Rutas de archivos
@@ -155,29 +121,29 @@ class Execute {
                             System.out.println("*");
                         }
                     }
-                    bw = new BufferedWriter(new FileWriter(fichero, true));
+                    this.runTXT.setBw(new BufferedWriter(new FileWriter(fichero, true)));
                     String temporal = "";
                     boolean band = true;
                     Integer i = 0;
                     while (band) {
                         if (i > 5000) {
-                            verificarSizeFichero();
+                            runTXT.verificarSizeFichero();
                             i = 0;
                         }
                         i++;
                         MensajeWrite mensajetemp = null;
-                        mensajetemp = getListado().getDato();
+                        mensajetemp = this.getListado().getDato();
                         String Mensaje = mensajetemp.getTexto();
                         NivelLog logtemporal = mensajetemp.getNivelLog();
                         String Clase = mensajetemp.getClase();
                         String Metodo = mensajetemp.getMetodo();
                         String fecha = mensajetemp.getFecha();
                         //Verifica que el nivel de Log a escribir sea igual o mayor al nivel predefinido.
-                        writeLog(logtemporal, Mensaje, Clase, Metodo, fecha);
+                        this.runTXT.writeLog(logtemporal, Mensaje, Clase, Metodo, fecha);
                         if (getListado().getSize() == 0) {
                             band = false;
-                            bw.close();
-                            getInstance().setTaskisReady(true);
+                            this.runTXT.getBw().close();
+                            this.setTaskisReady(true);
                             break;
                         }
                     }

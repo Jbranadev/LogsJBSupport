@@ -24,7 +24,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import java.lang.reflect.Field;
 
 import static com.josebran.LogsJB.Execute.getInstance;
-import static com.josebran.LogsJB.Execute.getListado;
 import static com.josebran.LogsJB.MethodsTxt.convertir_fecha;
 
 /****
@@ -248,7 +247,7 @@ public class LogsJB {
                 mensaje.setClase(clase);
                 mensaje.setMetodo(metodo);
                 mensaje.setFecha(convertir_fecha());
-                getListado().addDato(mensaje);
+                getInstance().getListado().addDato(mensaje);
                 if (getInstance().getTaskisReady()) {
                     getInstance().run();
                 }

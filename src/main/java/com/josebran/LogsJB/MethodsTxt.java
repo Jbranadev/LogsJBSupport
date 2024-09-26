@@ -36,7 +36,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.josebran.LogsJB.Execute.getInstance;
 import static com.josebran.LogsJB.LogsJB.*;
 
 /****
@@ -82,6 +81,14 @@ class MethodsTxt {
      *  ContexAplicación/Logs/fecha_hoy/Log.txt
      */
     protected static String ruta = (Paths.get("").toAbsolutePath().normalize() + separador + "Logs" + separador + convertir_fecha("dd-MM-YYYY") + separador + "Log.txt");
+
+    private BufferedWriter bw;
+
+    /***
+     * Contador que expresa la cantidad de veces que se a escrito en la ejecución actual de la aplicación
+     *
+     */
+    private long logtext = 0;
 
     /***
      * Setea el NivelLog configurado en las propiedades del sistema, de no estar
@@ -261,133 +268,6 @@ class MethodsTxt {
         return result.toString();
     }
 
-    /***
-     * Verifica el tamaño del fichero de log actual, cuando este alcance los 5MB le asignara el nombre
-     * LOG_dd-MM-YYYY_HH-MM-SSS.txt donde la fecha y hora que se le coloca, corresponde a la fecha y hora de creación del archivo
-     */
-    protected static synchronized void verificarSizeFichero() {
-        try {
-            //System.out.println("Nombre hilo Execute: "+Thread.currentThread().getName());
-            File logactual = new File(getRuta());
-            //Devuelve el tamaño del fichero en Mb
-            long sizeFichero = ((logactual.length()) / 1024) / 1024;
-            //long sizeFichero=((logactual.length())/1024);
-            //System.out.println("Tamaño del archivo en Kb: " +sizeFichero);
-            if (sizeFichero > getSizeLog().getSizeLog()) {
-                BasicFileAttributes attributes = Files.readAttributes(logactual.toPath(), BasicFileAttributes.class);
-                //FileTime time = attributes.creationTime();
-                FileTime time = attributes.lastModifiedTime();
-                // Genera una fecha formateada para renombrar el archivo.
-                String fechaformateada = DATE_FORMATTER.format(Instant.ofEpochMilli(time.toMillis())
-                        .atZone(ZoneId.systemDefault()).toLocalDateTime());
-                // Genera un número aleatorio entre 0 y 9 para evitar colisiones de nombres.
-                int numeroAleatorio = ThreadLocalRandom.current().nextInt(0, 10);
-                //System.out.println( "La fecha y hora de creación del archivo es: " + fechaformateada );
-                //SimpleDateFormat  formatofecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                //String fechalog=(formatofecha.format(logactual.lastModified())).replace(":","-").replace(" ", "_");
-                getInstance().getBw().close();
-                String fechalog = fechaformateada.replace(":", "-").replace(" ", "_") + numeroAleatorio;
-                String newrute = getRuta().replace(".txt", "") + "_" + fechalog + ".txt";
-                File newfile = new File(newrute);
-                logactual.renameTo(newfile);
-                System.out.println("Archivo renombrado: " + newrute);
-                logactual.delete();
-                logactual.createNewFile();
-                getInstance().setBw(new BufferedWriter(new FileWriter(logactual, true)));
-            }
-        } catch (Exception e) {
-            System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se verifica el tamaño del archivo: " + getRuta() + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
-        }
-    }
-
-    /***
-     * Metodo para escribir en el Log, lo que esta sucediendo dentro de la prueba,
-     * imprime en consola el texto que sera agregado al Log
-     * @param nivelLog nivelLog que representa el grado de log del mensaje.
-     * @param Texto Texto que es el mensaje que se desea escribir.
-     * @param Clase Clase que representa la clase en la cual se mando a llamar la escritura del Log.
-     * @param Metodo Metodo que representa el metodo desde el cual se llama la escritura del Log.
-     * @param fecha fecha y hora de la escritura del Log.
-     */
-    protected synchronized static void writeLog(NivelLog nivelLog, String Texto, String Clase, String Metodo, String fecha) {
-        try {
-            //System.out.println("Nombre hilo Execute: "+Thread.currentThread().getName());
-            //Aumenta la Cantidad de Veces que se a escrito el Log
-            getInstance().setLogtext(getInstance().getLogtext() + 1);
-            String logMessage = buildLogMessage(fecha, Clase, Metodo, nivelLog, Texto);
-            if (getIsAndroid()) {
-                if (getviewConsole()) {
-                    System.out.println("\n");
-                }
-                if (nivelLog.getGradeLog() >= NivelLog.ERROR.getGradeLog()) {
-                    if (getviewConsole()) {
-                        System.err.println(logMessage);
-                    }
-                } else {
-                    if (getviewConsole()) {
-                        System.out.println(logMessage);
-                    }
-                }
-            } else {
-                //System.out.println("clase: " + Clase + " metodo: " + Metodo);
-                //Rutas de archivos
-                File fichero = new File(getRuta());
-                //System.out.println("Ruta del log: " + fichero.getAbsolutePath());
-                //Verifica si existe la carpeta Logs, si no existe, la Crea
-                /////Esta seccion se encarga de Crear y escribir en el Log/////
-                //verificarSizeFichero();
-                /*Si es un nuevo Test se ejecuta el siguiente codigo, tomando en cuenta que sea el primer
-                 * TestCase del Test actual*/
-                //Si el fichero no Existe, lo creara y agregara el siguiente texto
-                if (!fichero.exists()) {
-                    BufferedWriter bw = getInstance().getBw();
-                    escribirCabeceraLog(bw);
-                    bw.write(logMessage);
-                    bw.newLine();
-                    if (getviewConsole()) {
-                        System.out.println("*" + "\n");
-                        System.out.println("*" + "\n");
-                        System.out.println("*" + "\n");
-                        System.out.println("*" + "\n");
-                        System.out.println("*" + "\n");
-                        System.out.println(logMessage);
-                    }
-                } else {
-                    if (getInstance().getLogtext() == 1) {
-                        BufferedWriter bw = getInstance().getBw();
-                        escribirCabeceraLog(bw);
-                        bw.write(logMessage);
-                        bw.newLine();
-                        if (getviewConsole()) {
-                            System.out.println("\n");
-                            System.out.println(logMessage);
-                        }
-                    } else {
-                        //Agrega en el fichero el Log
-                        BufferedWriter bw = getInstance().getBw();
-                        bw.newLine();
-                        bw.write(logMessage);
-                        bw.newLine();
-                        if (getviewConsole()) {
-                            System.out.println("\n");
-                        }
-                        if (nivelLog.getGradeLog() >= NivelLog.ERROR.getGradeLog()) {
-                            if (getviewConsole()) {
-                                System.err.println(logMessage);
-                            }
-                        } else {
-                            if (getviewConsole()) {
-                                System.out.println(logMessage);
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se escribir el log del Text" + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
-        }
-    }
-
     /**
      * Construye un mensaje de log basado en los parámetros proporcionados.
      * <p>
@@ -424,5 +304,169 @@ class MethodsTxt {
      */
     private static void escribirCabeceraLog(BufferedWriter bw) throws IOException {
         bw.write("\n*\n*\n*\n*\n");
+    }
+
+    /***
+     * Obtiene la cantidad de veces que se a escrito en el Txt En la ejecución actual
+     * @return Retorna la cantidad de veces que se a escrito en el Log.
+     */
+    protected long getLogtext() {
+        return logtext;
+    }
+
+    /**
+     * Setea la cantidad de veces que se a escrito en el Log actual.
+     *
+     * @param Logtext Numero de veces que se a escrito en el Log.
+     * @throws NoSuchFieldException   Lanza esta excepción si no encuentra el field que se quiere modificar
+     * @throws IllegalAccessException Lanza este error si no se puede setear el valor solicitado al campo
+     */
+    protected void setLogtext(long Logtext) throws NoSuchFieldException, IllegalAccessException {
+        this.logtext = logtext;
+    }
+
+    /**
+     * Obtiene el buffer en el que se esta escribiendo actualmente el log
+     *
+     * @return Buffer en memoria que referencia el archivo en el que se esta escribiendo el log
+     */
+    protected BufferedWriter getBw() {
+        return bw;
+    }
+
+    /**
+     * Setea el buffer en el que se esta escribiendo actualmente el log
+     *
+     * @param buffer Buffer en memoria que referencia el archivo en el que se esta escribiendo el log
+     */
+    protected void setBw(BufferedWriter buffer) {
+        this.bw = buffer;
+    }
+
+    /***
+     * Verifica el tamaño del fichero de log actual, cuando este alcance los 5MB le asignara el nombre
+     * LOG_dd-MM-YYYY_HH-MM-SSS.txt donde la fecha y hora que se le coloca, corresponde a la fecha y hora de creación del archivo
+     */
+    protected synchronized void verificarSizeFichero() {
+        try {
+            //System.out.println("Nombre hilo Execute: "+Thread.currentThread().getName());
+            File logactual = new File(getRuta());
+            //Devuelve el tamaño del fichero en Mb
+            long sizeFichero = ((logactual.length()) / 1024) / 1024;
+            //long sizeFichero=((logactual.length())/1024);
+            //System.out.println("Tamaño del archivo en Kb: " +sizeFichero);
+            if (sizeFichero > getSizeLog().getSizeLog()) {
+                BasicFileAttributes attributes = Files.readAttributes(logactual.toPath(), BasicFileAttributes.class);
+                //FileTime time = attributes.creationTime();
+                FileTime time = attributes.lastModifiedTime();
+                // Genera una fecha formateada para renombrar el archivo.
+                String fechaformateada = DATE_FORMATTER.format(Instant.ofEpochMilli(time.toMillis())
+                        .atZone(ZoneId.systemDefault()).toLocalDateTime());
+                // Genera un número aleatorio entre 0 y 9 para evitar colisiones de nombres.
+                int numeroAleatorio = ThreadLocalRandom.current().nextInt(0, 10);
+                //System.out.println( "La fecha y hora de creación del archivo es: " + fechaformateada );
+                //SimpleDateFormat  formatofecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                //String fechalog=(formatofecha.format(logactual.lastModified())).replace(":","-").replace(" ", "_");
+                this.getBw().close();
+                String fechalog = fechaformateada.replace(":", "-").replace(" ", "_") + numeroAleatorio;
+                String newrute = getRuta().replace(".txt", "") + "_" + fechalog + ".txt";
+                File newfile = new File(newrute);
+                logactual.renameTo(newfile);
+                System.out.println("Archivo renombrado: " + newrute);
+                logactual.delete();
+                logactual.createNewFile();
+                this.setBw(new BufferedWriter(new FileWriter(logactual, true)));
+            }
+        } catch (Exception e) {
+            System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se verifica el tamaño del archivo: " + getRuta() + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    /***
+     * Metodo para escribir en el Log, lo que esta sucediendo dentro de la prueba,
+     * imprime en consola el texto que sera agregado al Log
+     * @param nivelLog nivelLog que representa el grado de log del mensaje.
+     * @param Texto Texto que es el mensaje que se desea escribir.
+     * @param Clase Clase que representa la clase en la cual se mando a llamar la escritura del Log.
+     * @param Metodo Metodo que representa el metodo desde el cual se llama la escritura del Log.
+     * @param fecha fecha y hora de la escritura del Log.
+     */
+    protected synchronized void writeLog(NivelLog nivelLog, String Texto, String Clase, String Metodo, String fecha) {
+        try {
+            //System.out.println("Nombre hilo Execute: "+Thread.currentThread().getName());
+            //Aumenta la Cantidad de Veces que se a escrito el Log
+            this.setLogtext(this.getLogtext() + 1);
+            String logMessage = buildLogMessage(fecha, Clase, Metodo, nivelLog, Texto);
+            if (getIsAndroid()) {
+                if (getviewConsole()) {
+                    System.out.println("\n");
+                }
+                if (nivelLog.getGradeLog() >= NivelLog.ERROR.getGradeLog()) {
+                    if (getviewConsole()) {
+                        System.err.println(logMessage);
+                    }
+                } else {
+                    if (getviewConsole()) {
+                        System.out.println(logMessage);
+                    }
+                }
+            } else {
+                //System.out.println("clase: " + Clase + " metodo: " + Metodo);
+                //Rutas de archivos
+                File fichero = new File(getRuta());
+                //System.out.println("Ruta del log: " + fichero.getAbsolutePath());
+                //Verifica si existe la carpeta Logs, si no existe, la Crea
+                /////Esta seccion se encarga de Crear y escribir en el Log/////
+                //verificarSizeFichero();
+                /*Si es un nuevo Test se ejecuta el siguiente codigo, tomando en cuenta que sea el primer
+                 * TestCase del Test actual*/
+                //Si el fichero no Existe, lo creara y agregara el siguiente texto
+                if (!fichero.exists()) {
+                    BufferedWriter bw = this.getBw();
+                    escribirCabeceraLog(bw);
+                    bw.write(logMessage);
+                    bw.newLine();
+                    if (getviewConsole()) {
+                        System.out.println("*" + "\n");
+                        System.out.println("*" + "\n");
+                        System.out.println("*" + "\n");
+                        System.out.println("*" + "\n");
+                        System.out.println("*" + "\n");
+                        System.out.println(logMessage);
+                    }
+                } else {
+                    if (this.getLogtext() == 1) {
+                        BufferedWriter bw = this.getBw();
+                        escribirCabeceraLog(bw);
+                        bw.write(logMessage);
+                        bw.newLine();
+                        if (getviewConsole()) {
+                            System.out.println("\n");
+                            System.out.println(logMessage);
+                        }
+                    } else {
+                        //Agrega en el fichero el Log
+                        BufferedWriter bw = this.getBw();
+                        bw.newLine();
+                        bw.write(logMessage);
+                        bw.newLine();
+                        if (getviewConsole()) {
+                            System.out.println("\n");
+                        }
+                        if (nivelLog.getGradeLog() >= NivelLog.ERROR.getGradeLog()) {
+                            if (getviewConsole()) {
+                                System.err.println(logMessage);
+                            }
+                        } else {
+                            if (getviewConsole()) {
+                                System.out.println(logMessage);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Exepcion capturada en el metodo Metodo por medio del cual se escribir el log del Text" + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
+        }
     }
 }
