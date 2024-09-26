@@ -16,9 +16,7 @@
 
 package com.josebran.LogsJB;
 
-import com.josebran.LogsJB.Numeracion.LogsJBProperties;
 import com.josebran.LogsJB.Numeracion.NivelLog;
-import com.josebran.LogsJB.Numeracion.SizeLog;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.BufferedWriter;
@@ -26,14 +24,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.josebran.LogsJB.LogsJB.*;
@@ -48,39 +44,6 @@ class MethodsTxt {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss SSS");
     // Definir una constante para el patrón de fecha.
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss SSS");
-    /**
-     * Separador que utiliza el sistema de archivos por default
-     */
-    private static final String separador = System.getProperty("file.separator");
-    /**
-     * Bandera que indica si la aplicación esta corriendo en un sistema operativo Android
-     */
-    protected static Boolean isAndroid = false;
-
-    /**
-     * Indica si se imprimira en consola
-     */
-    protected static Boolean viewConsole = true;
-    /***
-     * Obtiene el usuario actual del sistema operativo
-     */
-    protected static String usuario = System.getProperty("user.name");
-    /****
-     * NivelLog desde el grado configurado hacía arriba se estara escribiendo el Log
-     * El NivelLog por default es INFO.
-     */
-    protected static NivelLog gradeLog = NivelLog.INFO;
-    /****
-     * Tamaño maximo del archivo LogTxt diario que se estara escribiendo, si se supera el tamaño se modificara
-     * el nombre del archivo a LOG_dd-MM-YYYY_HH-MM-SSS.txt, e iniciara la escritura del archivo Log.txt
-     * con el nuevo registro.
-     */
-    protected static SizeLog sizeLog = SizeLog.Little_Little;
-    /***
-     * Ruta donde se estara escribiendo el log por default, la cual sería:
-     *  ContexAplicación/Logs/fecha_hoy/Log.txt
-     */
-    protected static String ruta = (Paths.get("").toAbsolutePath().normalize() + separador + "Logs" + separador + convertir_fecha("dd-MM-YYYY") + separador + "Log.txt");
 
     private BufferedWriter bw;
 
@@ -89,115 +52,6 @@ class MethodsTxt {
      *
      */
     private long logtext = 0;
-
-    /***
-     * Setea el NivelLog configurado en las propiedades del sistema, de no estar
-     * configurada la propiedad correspondiente a NivelLog, setea el nivel por default.
-     */
-    protected static void setearNivelLog() {
-        String nivelLog = System.getProperty(LogsJBProperties.LogsJBNivelLog.getProperty());
-        if (Objects.isNull(nivelLog)) {
-            //Si la propiedad del sistema no esta definida, setea el nivel por default
-            setGradeLog(NivelLog.INFO);
-        } else {
-            if (nivelLog.equals("TRACE")) {
-                setGradeLog(NivelLog.TRACE);
-            }
-            if (nivelLog.equals("DEBUG")) {
-                setGradeLog(NivelLog.DEBUG);
-            }
-            if (nivelLog.equals("INFO")) {
-                setGradeLog(NivelLog.INFO);
-            }
-            if (nivelLog.equals("WARNING")) {
-                setGradeLog(NivelLog.WARNING);
-            }
-            if (nivelLog.equals("ERROR")) {
-                setGradeLog(NivelLog.ERROR);
-            }
-            if (nivelLog.equals("FATAL")) {
-                setGradeLog(NivelLog.FATAL);
-            }
-        }
-        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("NivelLog"));
-    }
-
-    /***
-     * Setea la RutaLog configurado en las propiedades del sistema, de no estar
-     * configurada la propiedad correspondiente a RutaLog, setea la ruta por default.
-     */
-    protected static void setearRuta() {
-        String rutaLog = System.getProperty(LogsJBProperties.LogsJBRutaLog.getProperty());
-        if (Objects.isNull(rutaLog)) {
-            //Si la propiedad del sistema no esta definida, setea la ruta por default
-            String ruta = (Paths.get("").toAbsolutePath().normalize() + separador + "Logs" + separador +
-                    convertir_fecha("dd-MM-YYYY") + separador + "Log.txt");
-            setRuta(ruta);
-        } else {
-            setRuta(rutaLog);
-        }
-        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("RutaLog"));
-    }
-
-    /***
-     * Setea el SizeLog configurado en las propiedades del sistema, de no estar
-     * configurada la propiedad correspondiente a SizeLog, setea el SizeLog por default.
-     */
-    protected static void setearSizelLog() {
-        String sizeLog = System.getProperty(LogsJBProperties.LogsJBSizeLog.getProperty());
-        if (Objects.isNull(sizeLog)) {
-            //Si la propiedad del sistema no esta definida, setea el nivel por default
-            setSizeLog(SizeLog.Little_Little);
-        } else {
-            if (sizeLog.equals("Little_Little")) {
-                setSizeLog(SizeLog.Little_Little);
-            }
-            if (sizeLog.equals("Little")) {
-                setSizeLog(SizeLog.Little);
-            }
-            if (sizeLog.equals("Small_Medium")) {
-                setSizeLog(SizeLog.Small_Medium);
-            }
-            if (sizeLog.equals("Medium")) {
-                setSizeLog(SizeLog.Medium);
-            }
-            if (sizeLog.equals("Small_Large")) {
-                setSizeLog(SizeLog.Small_Large);
-            }
-            if (sizeLog.equals("Large")) {
-                setSizeLog(SizeLog.Large);
-            }
-        }
-        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("SizeLog"));
-    }
-
-    /***
-     * Setea la propiedad de si la libreria esta siendo utilizada en Android o no
-     */
-    protected static void setearIsAndroid() {
-        String Android = System.getProperty(LogsJBProperties.LogsJBIsAndroid.getProperty());
-        if (Objects.isNull(Android)) {
-            //Si la propiedad del sistema no esta definida, setea el nivel por default
-            setIsAndroid(false);
-        } else {
-            setIsAndroid(Boolean.valueOf(Android));
-        }
-        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("SizeLog"));
-    }
-
-    /***
-     * Setea la propiedad de si la libreria imprimira en consola la salida de los logs
-     */
-    protected static void setearViewConsole() {
-        String viewConsole = System.getProperty(LogsJBProperties.LogsJBviewConsole.getProperty());
-        if (Objects.isNull(viewConsole)) {
-            //Si la propiedad del sistema no esta definida, setea el nivel por default
-            setviewConsole(true);
-        } else {
-            setviewConsole(Boolean.valueOf(viewConsole));
-        }
-        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("SizeLog"));
-    }
 
     /***
      * Obtiene la fecha actual en formato dd/MM/YYYY HH:MM:SS

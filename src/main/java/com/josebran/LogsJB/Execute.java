@@ -16,19 +16,26 @@
 
 package com.josebran.LogsJB;
 
+import com.josebran.LogsJB.Numeracion.LogsJBProperties;
 import com.josebran.LogsJB.Numeracion.NivelLog;
+import com.josebran.LogsJB.Numeracion.SizeLog;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.josebran.LogsJB.LogsJB.getRuta;
-import static com.josebran.LogsJB.MethodsTxt.*;
+import static com.josebran.LogsJB.LogsJB.setviewConsole;
+import static com.josebran.LogsJB.MethodsTxt.convertir_fecha;
 
 /****
  * Copyright (C) 2022 El proyecto de código abierto LogsJB de José Bran
@@ -48,21 +55,81 @@ class Execute {
         return new Execute();
     });
     /**
+     * Separador que utiliza el sistema de archivos por default
+     */
+    @Getter(AccessLevel.PROTECTED)
+    @Setter(AccessLevel.PROTECTED)
+    private static final String separador = System.getProperty("file.separator");
+    /**
      * Ejecutor de Tareas asincronas
      */
     private final ExecutorService executorPrincipal = Executors.newCachedThreadPool();
+    //private static final Execute instance = new Execute();
     //private Boolean TaskisReady = true;
     // Cambia la declaración de TaskisReady a AtomicBoolean
     private final AtomicBoolean TaskisReady = new AtomicBoolean(true);
-    //private static final Execute instance = new Execute();
     /***
      * Lista que funciona como la cola de peticiones que llegan al Ejecutor
      */
-    private ListaMensajes listado = new ListaMensajes();
-    private MethodsTxt runTXT = new MethodsTxt();
+    private final ListaMensajes listado = new ListaMensajes();
+    private final MethodsTxt runTXT = new MethodsTxt();
+    /**
+     * Bandera que indica si la aplicación esta corriendo en un sistema operativo Android
+     */
+    @Getter(AccessLevel.PROTECTED)
+    @Setter(AccessLevel.PROTECTED)
+    protected Boolean isAndroid = false;
+    /**
+     * Indica si se imprimira en consola
+     */
+    @Getter(AccessLevel.PROTECTED)
+    @Setter(AccessLevel.PROTECTED)
+    protected Boolean viewConsole = true;
+    /***
+     * Obtiene el usuario actual del sistema operativo
+     */
+    @Getter(AccessLevel.PROTECTED)
+    @Setter(AccessLevel.PROTECTED)
+    protected String usuario = System.getProperty("user.name");
+    /****
+     * NivelLog desde el grado configurado hacía arriba se estara escribiendo el Log
+     * El NivelLog por default es INFO.
+     */
+    @Getter(AccessLevel.PROTECTED)
+    @Setter(AccessLevel.PROTECTED)
+    protected NivelLog gradeLog = NivelLog.INFO;
+    /****
+     * Tamaño maximo del archivo LogTxt diario que se estara escribiendo, si se supera el tamaño se modificara
+     * el nombre del archivo a LOG_dd-MM-YYYY_HH-MM-SSS.txt, e iniciara la escritura del archivo Log.txt
+     * con el nuevo registro.
+     */
+    @Getter(AccessLevel.PROTECTED)
+    @Setter(AccessLevel.PROTECTED)
+    protected SizeLog sizeLog = SizeLog.Little_Little;
+    /***
+     * Ruta donde se estara escribiendo el log por default, la cual sería:
+     *  ContexAplicación/Logs/fecha_hoy/Log.txt
+     */
+    @Getter(AccessLevel.PROTECTED)
+    @Setter(AccessLevel.PROTECTED)
+    protected String ruta = (Paths.get("").toAbsolutePath().normalize() + separador + "Logs" + separador + convertir_fecha("dd-MM-YYYY") + separador + "Log.txt");
 
     private Execute() {
         getLogsJBProperties();
+    }
+
+    /***
+     * Setea la propiedad de si la libreria imprimira en consola la salida de los logs
+     */
+    protected void setearViewConsole() {
+        String viewConsole = System.getProperty(LogsJBProperties.LogsJBviewConsole.getProperty());
+        if (Objects.isNull(viewConsole)) {
+            //Si la propiedad del sistema no esta definida, setea el nivel por default
+            this.setViewConsole(true);
+        } else {
+            this.setViewConsole(Boolean.valueOf(viewConsole));
+        }
+        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("SizeLog"));
     }
 
     /***
@@ -73,6 +140,101 @@ class Execute {
     protected static Execute getInstance() {
         return instance.get();
         //return instance;
+    }
+
+    /***
+     * Setea el NivelLog configurado en las propiedades del sistema, de no estar
+     * configurada la propiedad correspondiente a NivelLog, setea el nivel por default.
+     */
+    protected void setearNivelLog() {
+        String nivelLog = System.getProperty(LogsJBProperties.LogsJBNivelLog.getProperty());
+        if (Objects.isNull(nivelLog)) {
+            //Si la propiedad del sistema no esta definida, setea el nivel por default
+            this.setGradeLog(NivelLog.INFO);
+        } else {
+            if (nivelLog.equals("TRACE")) {
+                this.setGradeLog(NivelLog.TRACE);
+            }
+            if (nivelLog.equals("DEBUG")) {
+                this.setGradeLog(NivelLog.DEBUG);
+            }
+            if (nivelLog.equals("INFO")) {
+                this.setGradeLog(NivelLog.INFO);
+            }
+            if (nivelLog.equals("WARNING")) {
+                this.setGradeLog(NivelLog.WARNING);
+            }
+            if (nivelLog.equals("ERROR")) {
+                this.setGradeLog(NivelLog.ERROR);
+            }
+            if (nivelLog.equals("FATAL")) {
+                this.setGradeLog(NivelLog.FATAL);
+            }
+        }
+        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("NivelLog"));
+    }
+
+    /***
+     * Setea la RutaLog configurado en las propiedades del sistema, de no estar
+     * configurada la propiedad correspondiente a RutaLog, setea la ruta por default.
+     */
+    protected void setearRuta() {
+        String rutaLog = System.getProperty(LogsJBProperties.LogsJBRutaLog.getProperty());
+        if (Objects.isNull(rutaLog)) {
+            //Si la propiedad del sistema no esta definida, setea la ruta por default
+            String ruta = (Paths.get("").toAbsolutePath().normalize() + separador + "Logs" + separador +
+                    convertir_fecha("dd-MM-YYYY") + separador + "Log.txt");
+            this.setRuta(ruta);
+        } else {
+            this.setRuta(rutaLog);
+        }
+        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("RutaLog"));
+    }
+
+    /***
+     * Setea el SizeLog configurado en las propiedades del sistema, de no estar
+     * configurada la propiedad correspondiente a SizeLog, setea el SizeLog por default.
+     */
+    protected void setearSizelLog() {
+        String sizeLog = System.getProperty(LogsJBProperties.LogsJBSizeLog.getProperty());
+        if (Objects.isNull(sizeLog)) {
+            //Si la propiedad del sistema no esta definida, setea el nivel por default
+            this.setSizeLog(SizeLog.Little_Little);
+        } else {
+            if (sizeLog.equals("Little_Little")) {
+                this.setSizeLog(SizeLog.Little_Little);
+            }
+            if (sizeLog.equals("Little")) {
+                this.setSizeLog(SizeLog.Little);
+            }
+            if (sizeLog.equals("Small_Medium")) {
+                this.setSizeLog(SizeLog.Small_Medium);
+            }
+            if (sizeLog.equals("Medium")) {
+                this.setSizeLog(SizeLog.Medium);
+            }
+            if (sizeLog.equals("Small_Large")) {
+                this.setSizeLog(SizeLog.Small_Large);
+            }
+            if (sizeLog.equals("Large")) {
+                this.setSizeLog(SizeLog.Large);
+            }
+        }
+        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("SizeLog"));
+    }
+
+    /***
+     * Setea la propiedad de si la libreria esta siendo utilizada en Android o no
+     */
+    protected void setearIsAndroid() {
+        String Android = System.getProperty(LogsJBProperties.LogsJBIsAndroid.getProperty());
+        if (Objects.isNull(Android)) {
+            //Si la propiedad del sistema no esta definida, setea el nivel por default
+            this.setIsAndroid(false);
+        } else {
+            this.setIsAndroid(Boolean.valueOf(Android));
+        }
+        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("SizeLog"));
     }
 
     /***
@@ -87,11 +249,11 @@ class Execute {
      * Recuperara las propiedades de LogsJB seteadas en las propiedades del sistema
      */
     protected void getLogsJBProperties() {
-        setearRuta();
-        setearNivelLog();
-        setearSizelLog();
-        setearIsAndroid();
-        setearViewConsole();
+        this.setearRuta();
+        this.setearNivelLog();
+        this.setearSizelLog();
+        this.setearIsAndroid();
+        this.setearViewConsole();
     }
 
     /***

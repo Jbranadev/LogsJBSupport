@@ -21,8 +21,6 @@ import com.josebran.LogsJB.Numeracion.NivelLog;
 import com.josebran.LogsJB.Numeracion.SizeLog;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import java.lang.reflect.Field;
-
 import static com.josebran.LogsJB.Execute.getInstance;
 import static com.josebran.LogsJB.MethodsTxt.convertir_fecha;
 
@@ -49,7 +47,7 @@ public class LogsJB {
      * @return Retorna un String con la ruta del archivo .Txt donde se estara escribiendo el Log.
      */
     public static String getRuta() {
-        return MethodsTxt.ruta;
+        return getInstance().ruta;
     }
 
     /**
@@ -59,9 +57,7 @@ public class LogsJB {
      */
     public static void setRuta(String Ruta) {
         try {
-            Field field = MethodsTxt.class.getDeclaredField("ruta");
-            field.setAccessible(true);
-            field.set(null, Ruta);
+            getInstance().setRuta(Ruta);
             System.setProperty(LogsJBProperties.LogsJBRutaLog.getProperty(), Ruta);
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear la ruta del log " + Ruta);
@@ -74,7 +70,7 @@ public class LogsJB {
      * @return True si la libreia esta siendo utilizada en Android, de lo contrario retorna False
      */
     public static Boolean getIsAndroid() {
-        return MethodsTxt.isAndroid;
+        return getInstance().isAndroid;
     }
 
     /**
@@ -84,9 +80,7 @@ public class LogsJB {
      */
     public static void setIsAndroid(Boolean isAndroid) {
         try {
-            Field field = MethodsTxt.class.getDeclaredField("isAndroid");
-            field.setAccessible(true);
-            field.set(null, isAndroid);
+            getInstance().setIsAndroid(isAndroid);
             System.setProperty(LogsJBProperties.LogsJBIsAndroid.getProperty(), String.valueOf(isAndroid));
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear el contador de las veces que se a escrito en " +
@@ -100,7 +94,7 @@ public class LogsJB {
      * @return True si imprimira en consola la salida del log, false en caso contrario
      */
     public static Boolean getviewConsole() {
-        return MethodsTxt.viewConsole;
+        return getInstance().viewConsole;
     }
 
     /**
@@ -110,9 +104,7 @@ public class LogsJB {
      */
     public static void setviewConsole(Boolean viewConsole) {
         try {
-            Field field = MethodsTxt.class.getDeclaredField("viewConsole");
-            field.setAccessible(true);
-            field.set(null, viewConsole);
+            getInstance().setViewConsole(viewConsole);
             System.setProperty(LogsJBProperties.LogsJBviewConsole.getProperty(), String.valueOf(viewConsole));
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear el contador de las veces que se a escrito en " +
@@ -133,7 +125,7 @@ public class LogsJB {
      * superiores, El valor por defaul es Info.
      */
     public static NivelLog getGradeLog() {
-        return MethodsTxt.gradeLog;
+        return getInstance().gradeLog;
     }
 
     /***
@@ -149,9 +141,7 @@ public class LogsJB {
      */
     public static void setGradeLog(NivelLog GradeLog) {
         try {
-            Field field = MethodsTxt.class.getDeclaredField("gradeLog");
-            field.setAccessible(true);
-            field.set(null, GradeLog);
+            getInstance().setGradeLog(GradeLog);
             System.setProperty(LogsJBProperties.LogsJBNivelLog.getProperty(), GradeLog.name());
             //Methods.metodo = metodo;
         } catch (Exception e) {
@@ -165,7 +155,7 @@ public class LogsJB {
      * El valor por defaul es Little_Little.
      */
     public static SizeLog getSizeLog() {
-        return MethodsTxt.sizeLog;
+        return getInstance().sizeLog;
     }
 
     /***
@@ -181,9 +171,7 @@ public class LogsJB {
      */
     public static void setSizeLog(SizeLog SizeLog) {
         try {
-            Field field = MethodsTxt.class.getDeclaredField("sizeLog");
-            field.setAccessible(true);
-            field.set(null, SizeLog);
+            getInstance().setSizeLog(SizeLog);
             System.setProperty(LogsJBProperties.LogsJBSizeLog.getProperty(), SizeLog.name());
             //Methods.metodo = metodo;
         } catch (Exception e) {
@@ -196,7 +184,7 @@ public class LogsJB {
      * @return Retorna un String con el nombre del usuario actual.
      */
     public static String getUsuario() {
-        return MethodsTxt.usuario;
+        return getInstance().usuario;
     }
 
     /***
@@ -205,9 +193,7 @@ public class LogsJB {
      */
     public static void setUsuario(String Usuario) {
         try {
-            Field field = MethodsTxt.class.getDeclaredField("usuario");
-            field.setAccessible(true);
-            field.set(null, Usuario);
+            getInstance().setUsuario(Usuario);
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear el usuario del entorno actual " + Usuario + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
         }
