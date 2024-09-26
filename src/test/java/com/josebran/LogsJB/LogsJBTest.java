@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.josebran.LogsJB.LogsJB.*;
@@ -187,6 +188,44 @@ public class LogsJBTest {
     @Test(testName = "Write Log txt Llegar a 25MB", dependsOnMethods = "writeLogVeinNueveTxt")
     public void writeLogTreintaYSeisTexto333() {
         try {
+            // Ejecutar el bloque de código de forma asíncrona en un CompletableFuture
+            CompletableFuture<Void> futureTask = CompletableFuture.runAsync(() -> {
+                try {
+                    File fichero = new File(LogsJB.getRuta());
+                    //System.out.println("Ruta del log: " + fichero.getAbsolutePath());
+                    //Verifica si existe la carpeta Logs, si no existe, la Crea
+                    File directorio = new File(fichero.getParent());
+                    if (!directorio.exists()) {
+                        if (directorio.mkdirs()) {
+                            System.out.println("*");
+                            System.out.println("Crea el directorio donde almacenara el Log de la prueba: " + fichero.getParent());
+                            System.out.println("*");
+                        }
+                    }
+                    // Crear un nuevo archivo llamado "jbran.txt" dentro del directorio
+                    File nuevoArchivo = new File(directorio, "jbran.txt");
+                    String rutanueva = nuevoArchivo.toPath().toAbsolutePath().normalize().toString();
+                    LogsJB.setRuta(rutanueva);
+                    LogsJB.setGradeLog(NivelLog.TRACE);
+                    LogsJB.setSizeLog(SizeLog.Little_Little);
+                    ThreadLocalRandom.current().nextInt(5, 14);  // Inicializa el generador de números aleatorios
+                    Integer i = 0;
+                    while (i < 5000) {
+                        // Ejecución de los logs con diferentes niveles
+                        trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                        debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                        info(i + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                        warning(i + " comentario grado " + "Warning".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                        error(i + " comentario grado " + "Error".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                        fatal(i + " comentario grado " + " Fatal".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                        i += 6;  // Incrementar el contador
+                    }
+                    LogsJB.waitForOperationComplete();
+                } catch (Exception e) {
+                    System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
+                    System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
+                }
+            });
             LogsJB.setGradeLog(NivelLog.TRACE);
             LogsJB.setSizeLog(SizeLog.Little_Little);
             ThreadLocalRandom.current().nextInt(5, 14);
@@ -201,13 +240,11 @@ public class LogsJBTest {
                 i = i + 6;
             }
             LogsJB.waitForOperationComplete();
+            futureTask.join();
             File fichero = new File(getRuta());
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
-            Assert.assertTrue(
-                    FileUtils.listFiles(directorio, null, false).size() > 1
-                    , "El Directorio no contiene más de un archivo"
-            );
+            Assert.assertEquals(FileUtils.listFiles(directorio, null, false).size(), 3, "El Directorio no contiene más de un archivo");
         } catch (Exception e) {
             System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
             System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));

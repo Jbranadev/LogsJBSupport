@@ -34,7 +34,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.josebran.LogsJB.LogsJB.setviewConsole;
 import static com.josebran.LogsJB.MethodsTxt.convertir_fecha;
 
 /****
@@ -72,6 +71,7 @@ class Execute {
      * Lista que funciona como la cola de peticiones que llegan al Ejecutor
      */
     private final ListaMensajes listado = new ListaMensajes();
+    @Getter(AccessLevel.PROTECTED)
     private final MethodsTxt runTXT = new MethodsTxt();
     /**
      * Bandera que indica si la aplicación esta corriendo en un sistema operativo Android
@@ -119,6 +119,16 @@ class Execute {
     }
 
     /***
+     * Proporciona la instancia de la clase encargada de ejecutar las acciónes en segundo Plano.
+     * @return Retorna la instancia de la Clase Execute, que estara trabajando las peticiones de la aplicación
+     * en segundo plano.
+     */
+    protected static Execute getInstance() {
+        return instance.get();
+        //return instance;
+    }
+
+    /***
      * Setea la propiedad de si la libreria imprimira en consola la salida de los logs
      */
     protected void setearViewConsole() {
@@ -130,16 +140,6 @@ class Execute {
             this.setViewConsole(Boolean.valueOf(viewConsole));
         }
         //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("SizeLog"));
-    }
-
-    /***
-     * Proporciona la instancia de la clase encargada de ejecutar las acciónes en segundo Plano.
-     * @return Retorna la instancia de la Clase Execute, que estara trabajando las peticiones de la aplicación
-     * en segundo plano.
-     */
-    protected static Execute getInstance() {
-        return instance.get();
-        //return instance;
     }
 
     /***
@@ -254,6 +254,7 @@ class Execute {
         this.setearSizelLog();
         this.setearIsAndroid();
         this.setearViewConsole();
+        this.getRunTXT().setInstance(this);
     }
 
     /***
