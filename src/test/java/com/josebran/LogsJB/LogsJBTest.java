@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
@@ -256,10 +257,11 @@ public class LogsJBTest {
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
             System.out.println("Directorio donde se almaceno archivo jbran: " + directorio.toPath().toAbsolutePath().normalize().toString());
-            FileUtils.listFiles(directorio, null, false).forEach(file -> {
+            Collection<File> archivos =FileUtils.listFiles(directorio, null, false);
+            archivos.forEach(file -> {
                 System.out.println("Nombre de archivo: "+file.toPath().toAbsolutePath().normalize().toString());
             });
-            Assert.assertEquals(FileUtils.listFiles(directorio, null, false).size(), 3, "El Directorio no contiene más de dos archivos");
+            Assert.assertEquals(archivos.size(), 3, "El Directorio no contiene más de dos archivos");
         } catch (Exception e) {
             System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
             System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
