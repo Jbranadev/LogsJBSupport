@@ -140,6 +140,7 @@ class Execute implements Cloneable {
     @Getter(AccessLevel.PUBLIC)
     @Setter(AccessLevel.PUBLIC)
     protected String LogsJBIsAndroid = LogsJBProperties.LogsJBIsAndroid.getProperty();
+
     private Execute() {
         getLogsJBProperties();
     }
