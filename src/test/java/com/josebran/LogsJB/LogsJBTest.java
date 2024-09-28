@@ -254,18 +254,18 @@ public class LogsJBTest {
             File fichero = new File(LogsJB.getRuta());
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
-            System.out.println("Directorio donde se almaceno archivo jbran: "+directorio.toPath().toAbsolutePath().normalize().toString());
+            //System.out.println("Directorio donde se almaceno archivo jbran: "+directorio.toPath().toAbsolutePath().normalize().toString());
             // Obtiene los archivos en el directorio
             File[] archivos = directorio.listFiles();
 
             // Verifica si hay archivos y los imprime
             if (archivos != null && archivos.length > 0) {
-                System.out.println("Archivos en el directorio 'Logs':");
+                //System.out.println("Archivos en el directorio 'Logs':");
                 for (File archivo : archivos) {
-                    System.out.println(archivo.getName());
+                    //System.out.println(archivo.getName());
                 }
             } else {
-                System.out.println("No hay archivos en el directorio 'Logs'.");
+                //System.out.println("No hay archivos en el directorio 'Logs'.");
             }
             Assert.assertEquals(FileUtils.listFiles(directorio, null, false).size(), 3, "El Directorio no contiene más de un archivo");
         } catch (Exception e) {
