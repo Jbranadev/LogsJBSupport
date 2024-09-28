@@ -79,10 +79,6 @@ class Execute implements Cloneable {
     //private Boolean TaskisReady = true;
     // Cambia la declaración de TaskisReady a AtomicBoolean
     private final AtomicBoolean TaskisReady = new AtomicBoolean(true);
-    /***
-     * Lista que funciona como la cola de peticiones que llegan al Ejecutor
-     */
-    private final ListaMensajes listado = new ListaMensajes();
     @Getter(AccessLevel.PROTECTED)
     private final MethodsTxt runTXT = new MethodsTxt();
     /**
@@ -140,6 +136,11 @@ class Execute implements Cloneable {
     @Getter(AccessLevel.PUBLIC)
     @Setter(AccessLevel.PUBLIC)
     protected String LogsJBIsAndroid = LogsJBProperties.LogsJBIsAndroid.getProperty();
+    /***
+     * Lista que funciona como la cola de peticiones que llegan al Ejecutor
+     */
+    private ListaMensajes listado = new ListaMensajes();
+
     private Execute() {
         getLogsJBProperties();
     }
@@ -158,7 +159,11 @@ class Execute implements Cloneable {
     @Override
     protected Execute clone() {
         try {
-            return (Execute) super.clone();
+            Execute cloned = (Execute) super.clone();
+            // Clonamos la lista de mensajes también
+            //cloned.listado = new ListaMensajes();;
+            cloned.listado = new ListaMensajes();
+            return cloned;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException("Error al clonar la instancia de Execute", e);
         }

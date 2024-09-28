@@ -188,6 +188,19 @@ public class LogsJBTest {
     @Test(testName = "Write Log txt Llegar a 25MB", dependsOnMethods = "writeLogVeinNueveTxt")
     public void writeLogTreintaYSeisTexto333() {
         try {
+            LogsJB.setGradeLog(NivelLog.TRACE);
+            LogsJB.setSizeLog(SizeLog.Little_Little);
+            ThreadLocalRandom.current().nextInt(5, 14);
+            Integer i = 0;
+            while (i < 55000) {
+                trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                info(i + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                warning(i + " comentario grado " + "Warning".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                error(i + " comentario grado " + "Error".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                fatal(i + " comentario grado " + " Fatal".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                i = i + 6;
+            }
             // Ejecutar el bloque de código de forma asíncrona en un CompletableFuture
             CompletableFuture<Void> futureTask = CompletableFuture.runAsync(() -> {
                 try {
@@ -217,16 +230,16 @@ public class LogsJBTest {
                     LogsJB.setGradeLog(NivelLog.TRACE);
                     LogsJB.setSizeLog(SizeLog.Little_Little);
                     ThreadLocalRandom.current().nextInt(5, 14);  // Inicializa el generador de números aleatorios
-                    Integer i = 0;
-                    while (i < 10) {
+                    Integer j = 0;
+                    while (j < 10) {
                         // Ejecución de los logs con diferentes niveles
-                        trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
-                        debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
-                        info(i + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
-                        warning(i + " comentario grado " + "Warning".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
-                        error(i + " comentario grado " + "Error".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
-                        fatal(i + " comentario grado " + " Fatal".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
-                        i += 6;  // Incrementar el contador
+                        trace(j + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                        debug(j + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                        info(j + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                        warning(j + " comentario grado " + "Warning".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                        error(j + " comentario grado " + "Error".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                        fatal(j + " comentario grado " + " Fatal".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                        j += 6;  // Incrementar el contador
                     }
                     LogsJB.waitForOperationComplete();
                 } catch (Exception e) {
@@ -234,19 +247,6 @@ public class LogsJBTest {
                     System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
                 }
             });
-            LogsJB.setGradeLog(NivelLog.TRACE);
-            LogsJB.setSizeLog(SizeLog.Little_Little);
-            ThreadLocalRandom.current().nextInt(5, 14);
-            Integer i = 0;
-            while (i < 55000) {
-                trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
-                debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
-                info(i + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
-                warning(i + " comentario grado " + "Warning".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
-                error(i + " comentario grado " + "Error".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
-                fatal(i + " comentario grado " + " Fatal".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
-                i = i + 6;
-            }
             LogsJB.waitForOperationComplete();
             futureTask.join();
             File fichero = new File(getRuta());
