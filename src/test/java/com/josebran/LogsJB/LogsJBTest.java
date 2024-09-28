@@ -193,7 +193,7 @@ public class LogsJBTest {
             LogsJB.setSizeLog(SizeLog.Little_Little);
             ThreadLocalRandom.current().nextInt(5, 14);
             Integer i = 0;
-            while (i < 55000) {
+            while (i < 66000) {
                 trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
                 debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
                 info(i + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
@@ -222,7 +222,7 @@ public class LogsJBTest {
                     String rutanueva = nuevoArchivo.toPath().toAbsolutePath().normalize().toString();
                     System.out.println("Ruta donde se almacenara el archivo jbran: " + rutanueva);
                     //instance.get().getLogsJBviewConsole();
-                    LogsJB.setviewConsole(true);
+                    LogsJB.setviewConsole(false);
                     String propiedad = LogsJB.getInstanceLogsJB().getLogsJBviewConsole();
                     String viewConsole = System.getProperty(propiedad);
                     LogsJB.getInstanceLogsJB().setLogsJBviewConsole("logsViewJB");
@@ -235,7 +235,7 @@ public class LogsJBTest {
                     LogsJB.setSizeLog(SizeLog.Little_Little);
                     ThreadLocalRandom.current().nextInt(5, 14);  // Inicializa el generador de números aleatorios
                     Integer j = 0;
-                    while (j < 6000) {
+                    while (j < 10) {
                         // Ejecución de los logs con diferentes niveles
                         trace(j + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
                         debug(j + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
