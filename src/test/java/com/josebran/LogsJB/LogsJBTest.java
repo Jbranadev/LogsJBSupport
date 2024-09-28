@@ -212,10 +212,10 @@ public class LogsJBTest {
                     LogsJB.getInstanceLogsJB().setLogsJBviewConsole("logsViewJB");
                     LogsJB.setviewConsole(!Boolean.valueOf(viewConsole));
                     String viewConsole2 = System.getProperty(LogsJB.getInstanceLogsJB().getLogsJBviewConsole());
-                    LogsJB.getInstanceLogsJB().getLogsJBProperties();
                     LogsJB.setRuta(rutanueva);
                     LogsJB.setGradeLog(NivelLog.TRACE);
                     LogsJB.setSizeLog(SizeLog.Little_Little);
+                    LogsJB.getInstanceLogsJB().getLogsJBProperties();
                     ThreadLocalRandom.current().nextInt(5, 14);  // Inicializa el generador de números aleatorios
                     Integer i = 0;
                     while (i < 10) {
@@ -247,8 +247,8 @@ public class LogsJBTest {
                 fatal(i + " comentario grado " + " Fatal".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
                 i = i + 6;
             }
-            LogsJB.waitForOperationComplete();
             futureTask.join();
+            LogsJB.waitForOperationComplete();
             File fichero = new File(getRuta());
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
