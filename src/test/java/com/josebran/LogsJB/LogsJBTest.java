@@ -260,6 +260,9 @@ public class LogsJBTest {
             Collection<File> archivos =FileUtils.listFiles(directorio, null, false);
             archivos.forEach(file -> {
                 System.out.println("Nombre de archivo: "+file.toPath().toAbsolutePath().normalize().toString());
+                //Devuelve el tamaño del fichero en Mb
+                long sizeFichero = ((file.length()) / 1024) / 1024;
+                System.out.println("Tamaño del archivo en MB: "+sizeFichero);
             });
             Assert.assertEquals(archivos.size(), 3, "El Directorio no contiene más de dos archivos");
         } catch (Exception e) {
