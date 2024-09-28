@@ -296,7 +296,7 @@ class Execute implements Cloneable {
         this.setearSizelLog();
         this.setearIsAndroid();
         this.setearViewConsole();
-        this.getRunTXT().setInstance(this);
+        this.runTXT.setInstance(this);
     }
 
     /***

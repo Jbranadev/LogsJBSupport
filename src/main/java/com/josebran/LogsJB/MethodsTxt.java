@@ -214,6 +214,7 @@ class MethodsTxt {
             long sizeFichero = ((logactual.length()) / 1024) / 1024;
             //long sizeFichero=((logactual.length())/1024);
             //System.out.println("Tamaño del archivo en Kb: " +sizeFichero);
+            System.out.println("Nombre del archivo: " +this.getInstance().getRuta());
             System.out.println("Tamaño del archivo en Kb: " +sizeFichero);
             System.out.println("Tamaño del archivo a comparar: " +this.getInstance().getSizeLog().getSizeLog());
             if (sizeFichero > this.getInstance().getSizeLog().getSizeLog()) {
