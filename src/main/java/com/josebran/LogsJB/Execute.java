@@ -82,7 +82,7 @@ class Execute implements Cloneable {
     /***
      * Lista que funciona como la cola de peticiones que llegan al Ejecutor
      */
-    private final ListaMensajes listado = new ListaMensajes();
+    private ListaMensajes listado = new ListaMensajes();
     @Getter(AccessLevel.PROTECTED)
     private final MethodsTxt runTXT = new MethodsTxt();
     /**
@@ -159,7 +159,9 @@ class Execute implements Cloneable {
     @Override
     protected Execute clone() {
         try {
-            return (Execute) super.clone();
+            Execute instancia=(Execute) super.clone();
+            instancia.listado.clearList();
+            return instancia ;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException("Error al clonar la instancia de Execute", e);
         }
@@ -311,7 +313,7 @@ class Execute implements Cloneable {
             Runnable EscritorPrincipal = () -> {
                 try {
                     //Rutas de archivos
-                    File fichero = new File(getRuta());
+                    File fichero = new File(this.getRuta());
                     //Verifica si existe la carpeta Logs, si no existe, la Crea
                     File directorio = new File(fichero.getParent());
                     if (!directorio.exists()) {
@@ -340,7 +342,7 @@ class Execute implements Cloneable {
                         String fecha = mensajetemp.getFecha();
                         //Verifica que el nivel de Log a escribir sea igual o mayor al nivel predefinido.
                         this.runTXT.writeLog(logtemporal, Mensaje, Clase, Metodo, fecha);
-                        if (getListado().getSize() == 0) {
+                        if (this.getListado().getSize() == 0) {
                             band = false;
                             this.runTXT.getBw().close();
                             this.setTaskisReady(true);
