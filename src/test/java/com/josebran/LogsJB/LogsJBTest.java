@@ -233,7 +233,7 @@ public class LogsJBTest {
                     LogsJB.setSizeLog(SizeLog.Little_Little);
                     ThreadLocalRandom.current().nextInt(5, 14);  // Inicializa el generador de números aleatorios
                     Integer j = 0;
-                    while (j < 10) {
+                    while (j < 600) {
                         // Ejecución de los logs con diferentes niveles
                         trace(j + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
                         debug(j + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
