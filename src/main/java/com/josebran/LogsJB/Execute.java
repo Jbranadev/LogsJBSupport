@@ -333,7 +333,7 @@ class Execute implements Cloneable {
                     while (band) {
                         if (i > 5000) {
                             System.out.println("Revisara el tamaño del fichero: ");
-                            runTXT.verificarSizeFichero();
+                            this.runTXT.verificarSizeFichero();
                             i = 0;
                         }
                         i++;
