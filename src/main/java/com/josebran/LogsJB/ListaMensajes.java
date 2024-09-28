@@ -25,7 +25,7 @@ import java.util.List;
  * por escribir a la lista, mientras que el proceso de ejecución secundario se encarga de escribir los mensajes.
  */
 class ListaMensajes {
-    private List<MensajeWrite> mensajes = new LinkedList<>();
+    private final List<MensajeWrite> mensajes = new LinkedList<>();
 
     protected ListaMensajes() {
     }
@@ -59,9 +59,5 @@ class ListaMensajes {
      */
     protected synchronized int getSize() {
         return this.mensajes.size();
-    }
-
-    protected synchronized void clearList() {
-        this.mensajes.clear();
     }
 }

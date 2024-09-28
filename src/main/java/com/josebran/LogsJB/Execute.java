@@ -82,7 +82,7 @@ class Execute implements Cloneable {
     /***
      * Lista que funciona como la cola de peticiones que llegan al Ejecutor
      */
-    private ListaMensajes listado = new ListaMensajes();
+    private final ListaMensajes listado = new ListaMensajes();
     @Getter(AccessLevel.PROTECTED)
     private final MethodsTxt runTXT = new MethodsTxt();
     /**
@@ -140,7 +140,6 @@ class Execute implements Cloneable {
     @Getter(AccessLevel.PUBLIC)
     @Setter(AccessLevel.PUBLIC)
     protected String LogsJBIsAndroid = LogsJBProperties.LogsJBIsAndroid.getProperty();
-
     private Execute() {
         getLogsJBProperties();
     }
@@ -159,9 +158,7 @@ class Execute implements Cloneable {
     @Override
     protected Execute clone() {
         try {
-            Execute instancia=(Execute) super.clone();
-            instancia.listado.clearList();
-            return instancia ;
+            return (Execute) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException("Error al clonar la instancia de Execute", e);
         }
