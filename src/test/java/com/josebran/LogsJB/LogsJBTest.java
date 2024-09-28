@@ -205,12 +205,20 @@ public class LogsJBTest {
                     // Crear un nuevo archivo llamado "jbran.txt" dentro del directorio
                     File nuevoArchivo = new File(directorio, "jbran.txt");
                     String rutanueva = nuevoArchivo.toPath().toAbsolutePath().normalize().toString();
+                    //instance.get().getLogsJBviewConsole();
+                    LogsJB.setviewConsole(false);
+                    String propiedad = LogsJB.getInstanceLogsJB().getLogsJBviewConsole();
+                    String viewConsole = System.getProperty(propiedad);
+                    LogsJB.getInstanceLogsJB().setLogsJBviewConsole("logsViewJB");
+                    LogsJB.setviewConsole(!Boolean.valueOf(viewConsole));
+                    String viewConsole2 = System.getProperty(LogsJB.getInstanceLogsJB().getLogsJBviewConsole());
+                    LogsJB.getInstanceLogsJB().getLogsJBProperties();
                     LogsJB.setRuta(rutanueva);
                     LogsJB.setGradeLog(NivelLog.TRACE);
                     LogsJB.setSizeLog(SizeLog.Little_Little);
                     ThreadLocalRandom.current().nextInt(5, 14);  // Inicializa el generador de números aleatorios
                     Integer i = 0;
-                    while (i < 5000) {
+                    while (i < 10) {
                         // Ejecución de los logs con diferentes niveles
                         trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
                         debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));

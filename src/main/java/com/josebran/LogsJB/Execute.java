@@ -41,24 +41,36 @@ import static com.josebran.LogsJB.MethodsTxt.convertir_fecha;
  * Clase encargada de recuperar los mensajes de la lista compartida por el Proceso Principal
  * e iniciar un SubProceso encargado de leer los mensajes de la lista y escribirlos en el LogTxt.
  */
-class Execute {
+class Execute implements Cloneable {
 
     /***
      * Se utiliza el patron Singleton, para asegurarnos que sea una unica instancia la que se encargue de
      * Llevar el control de los Logs
      */
-    // ThreadLocal asegura que cada hilo tenga su propia instancia de SingletonLogger
-    //private static final ThreadLocal<Execute> instance = ThreadLocal.withInitial(Execute::new);
-    private static final ThreadLocal<Execute> instance = ThreadLocal.withInitial(() -> {
-        System.out.println("Creando instancia de Execute para el hilo: " + Thread.currentThread().getName());
-        return new Execute();
-    });
+    private static final InheritableThreadLocal<Execute> instance = new InheritableThreadLocal<>() {
+        @Override
+        protected Execute initialValue() {
+            System.out.println("Creando instancia de Execute para el hilo: " + Thread.currentThread().getName());
+            return new Execute();
+        }
+
+        @Override
+        protected Execute childValue(Execute parentValue) {
+            System.out.println("Heredando instancia de Execute para el hilo hijo: " + Thread.currentThread().getName());
+            // Retornamos una copia del valor del padre para evitar que se afecte la instancia original
+            return parentValue.clone();
+        }
+    };
     /**
      * Separador que utiliza el sistema de archivos por default
      */
     @Getter(AccessLevel.PROTECTED)
     @Setter(AccessLevel.PROTECTED)
     private static final String separador = System.getProperty("file.separator");
+//    private static final ThreadLocal<Execute> instance = ThreadLocal.withInitial(() -> {
+//        System.out.println("Creando instancia de Execute para el hilo: " + Thread.currentThread().getName());
+//        return new Execute();
+//    });
     /**
      * Ejecutor de Tareas asincronas
      */
@@ -113,7 +125,21 @@ class Execute {
     @Getter(AccessLevel.PROTECTED)
     @Setter(AccessLevel.PROTECTED)
     protected String ruta = (Paths.get("").toAbsolutePath().normalize() + separador + "Logs" + separador + convertir_fecha("dd-MM-YYYY") + separador + "Log.txt");
-
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
+    protected String LogsJBviewConsole = LogsJBProperties.LogsJBviewConsole.getProperty();
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
+    protected String LogsJBNivelLog = LogsJBProperties.LogsJBNivelLog.getProperty();
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
+    protected String LogsJBRutaLog = LogsJBProperties.LogsJBRutaLog.getProperty();
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
+    protected String LogsJBSizeLog = LogsJBProperties.LogsJBSizeLog.getProperty();
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
+    protected String LogsJBIsAndroid = LogsJBProperties.LogsJBIsAndroid.getProperty();
     private Execute() {
         getLogsJBProperties();
     }
@@ -128,11 +154,21 @@ class Execute {
         //return instance;
     }
 
+    // Método para clonar la instancia, asegurando que cada hilo tiene una copia separada
+    @Override
+    protected Execute clone() {
+        try {
+            return (Execute) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException("Error al clonar la instancia de Execute", e);
+        }
+    }
+
     /***
      * Setea la propiedad de si la libreria imprimira en consola la salida de los logs
      */
     protected void setearViewConsole() {
-        String viewConsole = System.getProperty(LogsJBProperties.LogsJBviewConsole.getProperty());
+        String viewConsole = System.getProperty(this.LogsJBviewConsole);
         if (Objects.isNull(viewConsole)) {
             //Si la propiedad del sistema no esta definida, setea el nivel por default
             this.setViewConsole(true);
@@ -147,7 +183,7 @@ class Execute {
      * configurada la propiedad correspondiente a NivelLog, setea el nivel por default.
      */
     protected void setearNivelLog() {
-        String nivelLog = System.getProperty(LogsJBProperties.LogsJBNivelLog.getProperty());
+        String nivelLog = System.getProperty(this.LogsJBNivelLog);
         if (Objects.isNull(nivelLog)) {
             //Si la propiedad del sistema no esta definida, setea el nivel por default
             this.setGradeLog(NivelLog.INFO);
@@ -179,7 +215,7 @@ class Execute {
      * configurada la propiedad correspondiente a RutaLog, setea la ruta por default.
      */
     protected void setearRuta() {
-        String rutaLog = System.getProperty(LogsJBProperties.LogsJBRutaLog.getProperty());
+        String rutaLog = System.getProperty(this.LogsJBRutaLog);
         if (Objects.isNull(rutaLog)) {
             //Si la propiedad del sistema no esta definida, setea la ruta por default
             String ruta = (Paths.get("").toAbsolutePath().normalize() + separador + "Logs" + separador +
@@ -196,7 +232,7 @@ class Execute {
      * configurada la propiedad correspondiente a SizeLog, setea el SizeLog por default.
      */
     protected void setearSizelLog() {
-        String sizeLog = System.getProperty(LogsJBProperties.LogsJBSizeLog.getProperty());
+        String sizeLog = System.getProperty(this.LogsJBSizeLog);
         if (Objects.isNull(sizeLog)) {
             //Si la propiedad del sistema no esta definida, setea el nivel por default
             this.setSizeLog(SizeLog.Little_Little);
@@ -227,7 +263,7 @@ class Execute {
      * Setea la propiedad de si la libreria esta siendo utilizada en Android o no
      */
     protected void setearIsAndroid() {
-        String Android = System.getProperty(LogsJBProperties.LogsJBIsAndroid.getProperty());
+        String Android = System.getProperty(this.LogsJBIsAndroid);
         if (Objects.isNull(Android)) {
             //Si la propiedad del sistema no esta definida, setea el nivel por default
             this.setIsAndroid(false);
@@ -248,7 +284,7 @@ class Execute {
     /**
      * Recuperara las propiedades de LogsJB seteadas en las propiedades del sistema
      */
-    protected void getLogsJBProperties() {
+    public void getLogsJBProperties() {
         this.setearRuta();
         this.setearNivelLog();
         this.setearSizelLog();

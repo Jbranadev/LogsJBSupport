@@ -16,7 +16,6 @@
 
 package com.josebran.LogsJB;
 
-import com.josebran.LogsJB.Numeracion.LogsJBProperties;
 import com.josebran.LogsJB.Numeracion.NivelLog;
 import com.josebran.LogsJB.Numeracion.SizeLog;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -58,7 +57,7 @@ public class LogsJB {
     public static void setRuta(String Ruta) {
         try {
             getInstance().setRuta(Ruta);
-            System.setProperty(LogsJBProperties.LogsJBRutaLog.getProperty(), Ruta);
+            System.setProperty(getInstance().LogsJBRutaLog, Ruta);
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear la ruta del log " + Ruta);
         }
@@ -81,7 +80,7 @@ public class LogsJB {
     public static void setIsAndroid(Boolean isAndroid) {
         try {
             getInstance().setIsAndroid(isAndroid);
-            System.setProperty(LogsJBProperties.LogsJBIsAndroid.getProperty(), String.valueOf(isAndroid));
+            System.setProperty(getInstance().LogsJBIsAndroid, String.valueOf(isAndroid));
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear el contador de las veces que se a escrito en " +
                     "el log " + isAndroid + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
@@ -105,7 +104,7 @@ public class LogsJB {
     public static void setviewConsole(Boolean viewConsole) {
         try {
             getInstance().setViewConsole(viewConsole);
-            System.setProperty(LogsJBProperties.LogsJBviewConsole.getProperty(), String.valueOf(viewConsole));
+            System.setProperty(getInstance().LogsJBviewConsole, String.valueOf(viewConsole));
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear el contador de las veces que se a escrito en " +
                     "el log " + viewConsole + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
@@ -142,7 +141,7 @@ public class LogsJB {
     public static void setGradeLog(NivelLog GradeLog) {
         try {
             getInstance().setGradeLog(GradeLog);
-            System.setProperty(LogsJBProperties.LogsJBNivelLog.getProperty(), GradeLog.name());
+            System.setProperty(getInstance().LogsJBNivelLog, GradeLog.name());
             //Methods.metodo = metodo;
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear el GradeLog de la aplicación " + GradeLog + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
@@ -172,7 +171,7 @@ public class LogsJB {
     public static void setSizeLog(SizeLog SizeLog) {
         try {
             getInstance().setSizeLog(SizeLog);
-            System.setProperty(LogsJBProperties.LogsJBSizeLog.getProperty(), SizeLog.name());
+            System.setProperty(getInstance().LogsJBSizeLog, SizeLog.name());
             //Methods.metodo = metodo;
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear el Tamaño del archivo Log " + SizeLog + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
@@ -197,6 +196,13 @@ public class LogsJB {
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear el usuario del entorno actual " + Usuario + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
         }
+    }
+
+    /**
+     * Obtiene la instancia del escritor de LogsJB para obtener las propiedades de configuración y escritura de logs
+     */
+    public static Execute getInstanceLogsJB() {
+        return getInstance();
     }
 
     /***
