@@ -254,6 +254,7 @@ public class LogsJBTest {
             File fichero = new File(LogsJB.getRuta());
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
+            FileUtils.listFiles(directorio, null, false);
 //            System.out.println("Directorio donde se almaceno archivo jbran: "+directorio.toPath().toAbsolutePath().normalize().toString());
 //            // Obtiene los archivos en el directorio
 //            File[] archivos = directorio.listFiles();
