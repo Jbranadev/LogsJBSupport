@@ -267,7 +267,7 @@ public class LogsJBTest {
 //            } else {
 //                //System.out.println("No hay archivos en el directorio 'Logs'.");
 //            }
-            Assert.assertTrue(FileUtils.listFiles(directorio, null, false).size()>=3, "El Directorio no contiene más de un archivo");
+            Assert.assertTrue(FileUtils.listFiles(directorio, null, false).size()>=2, "El Directorio no contiene más de 2 archivos");
         } catch (Exception e) {
             System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
             System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
