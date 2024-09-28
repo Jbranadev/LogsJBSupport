@@ -221,7 +221,7 @@ public class LogsJBTest {
                     String rutanueva = nuevoArchivo.toPath().toAbsolutePath().normalize().toString();
                     System.out.println("Ruta donde se almacenara el archivo jbran: "+rutanueva);
                     //instance.get().getLogsJBviewConsole();
-                    LogsJB.setviewConsole(true);
+                    LogsJB.setviewConsole(false);
                     String propiedad = LogsJB.getInstanceLogsJB().getLogsJBviewConsole();
                     String viewConsole = System.getProperty(propiedad);
                     LogsJB.getInstanceLogsJB().setLogsJBviewConsole("logsViewJB");
