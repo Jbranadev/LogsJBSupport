@@ -256,6 +256,9 @@ public class LogsJBTest {
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
             System.out.println("Directorio donde se almaceno archivo jbran: " + directorio.toPath().toAbsolutePath().normalize().toString());
+            FileUtils.listFiles(directorio, null, false).forEach(file -> {
+                System.out.println("Nombre de archivo: "+file.toPath().toAbsolutePath().normalize().toString());
+            });
             Assert.assertEquals(FileUtils.listFiles(directorio, null, false).size(), 3, "El Directorio no contiene más de dos archivos");
         } catch (Exception e) {
             System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
