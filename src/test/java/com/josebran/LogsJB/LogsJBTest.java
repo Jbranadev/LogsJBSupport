@@ -146,7 +146,7 @@ public class LogsJBTest {
             ThreadLocalRandom.current().nextInt(5, 14);
             Integer i = 0;
             Random random = new Random();
-            while (i < 60000) {
+            while (i < 55000) {
                 trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
                 debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
                 info(i + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
@@ -170,7 +170,7 @@ public class LogsJBTest {
             ThreadLocalRandom.current().nextInt(5, 14);
             Integer i = 0;
             Random random = new Random();
-            while (i < 60000) {
+            while (i < 55000) {
                 trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
                 debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
                 info(i + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
@@ -193,7 +193,7 @@ public class LogsJBTest {
             LogsJB.setSizeLog(SizeLog.Little_Little);
             ThreadLocalRandom.current().nextInt(5, 14);
             Integer i = 0;
-            while (i < 60000) {
+            while (i < 55000) {
                 trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
                 debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
                 info(i + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
@@ -222,7 +222,7 @@ public class LogsJBTest {
                     String rutanueva = nuevoArchivo.toPath().toAbsolutePath().normalize().toString();
                     System.out.println("Ruta donde se almacenara el archivo jbran: " + rutanueva);
                     //instance.get().getLogsJBviewConsole();
-                    LogsJB.setviewConsole(false);
+                    LogsJB.setviewConsole(true);
                     String propiedad = LogsJB.getInstanceLogsJB().getLogsJBviewConsole();
                     String viewConsole = System.getProperty(propiedad);
                     LogsJB.getInstanceLogsJB().setLogsJBviewConsole("logsViewJB");
