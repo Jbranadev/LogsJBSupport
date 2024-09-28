@@ -313,7 +313,7 @@ class Execute implements Cloneable {
             Runnable EscritorPrincipal = () -> {
                 try {
                     //Rutas de archivos
-                    File fichero = new File(this.getRuta());
+                    File fichero = new File(getRuta());
                     //Verifica si existe la carpeta Logs, si no existe, la Crea
                     File directorio = new File(fichero.getParent());
                     if (!directorio.exists()) {
@@ -342,7 +342,7 @@ class Execute implements Cloneable {
                         String fecha = mensajetemp.getFecha();
                         //Verifica que el nivel de Log a escribir sea igual o mayor al nivel predefinido.
                         this.runTXT.writeLog(logtemporal, Mensaje, Clase, Metodo, fecha);
-                        if (this.getListado().getSize() == 0) {
+                        if (getListado().getSize() == 0) {
                             band = false;
                             this.runTXT.getBw().close();
                             this.setTaskisReady(true);
