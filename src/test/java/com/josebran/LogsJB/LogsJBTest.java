@@ -219,7 +219,6 @@ public class LogsJBTest {
                     // Crear un nuevo archivo llamado "jbran.txt" dentro del directorio
                     File nuevoArchivo = new File(directorio, "jbran.txt");
                     String rutanueva = nuevoArchivo.toPath().toAbsolutePath().normalize().toString();
-                    System.out.println("Ruta donde se almacenara el archivo jbran: "+rutanueva);
                     //instance.get().getLogsJBviewConsole();
                     LogsJB.setviewConsole(false);
                     String propiedad = LogsJB.getInstanceLogsJB().getLogsJBviewConsole();
@@ -255,19 +254,6 @@ public class LogsJBTest {
             File fichero = new File(LogsJB.getRuta());
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
-            System.out.println("Directorio donde se almaceno archivo jbran: "+directorio.toPath().toAbsolutePath().normalize().toString());
-            // Obtiene los archivos en el directorio
-            File[] archivos = directorio.listFiles();
-
-            // Verifica si hay archivos y los imprime
-            if (archivos != null && archivos.length > 0) {
-                System.out.println("Archivos en el directorio 'Logs':");
-                for (File archivo : archivos) {
-                    System.out.println(archivo.getName());
-                }
-            } else {
-                System.out.println("No hay archivos en el directorio 'Logs'.");
-            }
             Assert.assertEquals(FileUtils.listFiles(directorio, null, false).size(), 3, "El Directorio no contiene más de un archivo");
         } catch (Exception e) {
             System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
