@@ -30,6 +30,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -312,10 +313,10 @@ class Execute implements Cloneable {
     private void writePrincipal() {
         try {
             this.setTaskisReady(false);
-            Runnable EscritorPrincipal = () -> {
+            CompletableFuture<Void> escritorPrincipal = CompletableFuture.runAsync(() -> {
                 try {
                     //Rutas de archivos
-                    File fichero = new File(getRuta());
+                    File fichero = new File(this.getRuta());
                     //Verifica si existe la carpeta Logs, si no existe, la Crea
                     File directorio = new File(fichero.getParent());
                     if (!directorio.exists()) {
@@ -344,7 +345,7 @@ class Execute implements Cloneable {
                         String fecha = mensajetemp.getFecha();
                         //Verifica que el nivel de Log a escribir sea igual o mayor al nivel predefinido.
                         this.runTXT.writeLog(logtemporal, Mensaje, Clase, Metodo, fecha);
-                        if (getListado().getSize() == 0) {
+                        if (this.getListado().getSize() == 0) {
                             band = false;
                             this.runTXT.getBw().close();
                             this.setTaskisReady(true);
@@ -354,8 +355,8 @@ class Execute implements Cloneable {
                 } catch (IOException e) {
                     System.err.println("Exepcion capturada al inicializar el buffer, " + "Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
                 }
-            };
-            this.executorPrincipal.submit(EscritorPrincipal);
+            });
+            //this.executorPrincipal.submit(EscritorPrincipal);
         } catch (Exception e) {
             System.err.println("Exepcion capturada en el metodo Escritor principal, " + "Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
         }

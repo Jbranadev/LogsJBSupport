@@ -201,6 +201,7 @@ public class LogsJBTest {
                 fatal(i + " comentario grado " + " Fatal".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
                 i = i + 6;
             }
+            Integer k = 0;
             // Ejecutar el bloque de código de forma asíncrona en un CompletableFuture
             CompletableFuture<Void> futureTask = CompletableFuture.runAsync(() -> {
                 try {
@@ -226,6 +227,7 @@ public class LogsJBTest {
                     LogsJB.setviewConsole(!Boolean.valueOf(viewConsole));
                     String viewConsole2 = System.getProperty(LogsJB.getInstanceLogsJB().getLogsJBviewConsole());
                     LogsJB.getInstanceLogsJB().getLogsJBProperties();
+                    LogsJB.getInstanceLogsJB().setLogsJBRutaLog("logsjbruta");
                     LogsJB.setRuta(rutanueva);
                     LogsJB.setGradeLog(NivelLog.TRACE);
                     LogsJB.setSizeLog(SizeLog.Little_Little);
@@ -249,7 +251,7 @@ public class LogsJBTest {
             });
             LogsJB.waitForOperationComplete();
             futureTask.join();
-            File fichero = new File(getRuta());
+            File fichero = new File(LogsJB.getRuta());
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
             Assert.assertEquals(FileUtils.listFiles(directorio, null, false).size(), 3, "El Directorio no contiene más de un archivo");
