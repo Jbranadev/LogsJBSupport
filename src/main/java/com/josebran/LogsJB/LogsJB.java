@@ -178,6 +178,27 @@ public class LogsJB {
         }
     }
 
+    /**
+     * Retorna la propiedad que indica cada cuanto ciertos logs validar el tamaño del archivo log
+     * @return Cantidad de registros que deben escribirse para validar el tamaño del archivo log
+     */
+    public static Integer getValidarSize() {
+        return getInstance().validarSize;
+    }
+
+    /**
+     * Setea la Cantidad de registros que deben escribirse para validar el tamaño del archivo log
+     * @param validarSize Cantidad de registros que deben escribirse para validar el tamaño del archivo log
+     */
+    public static void setSizeLog(Integer validarSize) {
+        try {
+            getInstance().setValidarSize(validarSize);
+            System.setProperty(getInstance().LogsJBValidarSize, String.valueOf(validarSize));
+        } catch (Exception e) {
+            System.err.println("Excepcion capturada al tratar de setear la validación de tamaño del archivo " + validarSize + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
+        }
+    }
+
     /***
      * Obtiene el usuario del sistema sobre el cual corre la aplicación
      * @return Retorna un String con el nombre del usuario actual.
