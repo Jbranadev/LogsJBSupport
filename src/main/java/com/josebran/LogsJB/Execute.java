@@ -115,6 +115,11 @@ class Execute implements Cloneable {
     @Getter(AccessLevel.PROTECTED)
     @Setter(AccessLevel.PROTECTED)
     protected SizeLog sizeLog = SizeLog.Little_Little;
+
+
+    @Getter(AccessLevel.PROTECTED)
+    @Setter(AccessLevel.PROTECTED)
+    protected Integer validarSize = 5000;
     /***
      * Ruta donde se estara escribiendo el log por default, la cual sería:
      *  ContexAplicación/Logs/fecha_hoy/Log.txt
@@ -137,6 +142,10 @@ class Execute implements Cloneable {
     @Getter(AccessLevel.PUBLIC)
     @Setter(AccessLevel.PUBLIC)
     protected String LogsJBIsAndroid = LogsJBProperties.LogsJBIsAndroid.getProperty();
+    @Getter(AccessLevel.PUBLIC)
+    @Setter(AccessLevel.PUBLIC)
+    protected String LogsJBValidarSize = LogsJBProperties.LogsJBValidarSize.getProperty();
+
     /***
      * Lista que funciona como la cola de peticiones que llegan al Ejecutor
      */
@@ -156,7 +165,11 @@ class Execute implements Cloneable {
         //return instance;
     }
 
-    // Método para clonar la instancia, asegurando que cada hilo tiene una copia separada
+
+    /**
+     * Método para clonar la instancia, asegurando que cada hilo tiene una copia separada
+     * @return Instancia correspondiente al hilo actual
+     */
     @Override
     protected Execute clone() {
         try {
@@ -170,19 +183,6 @@ class Execute implements Cloneable {
         }
     }
 
-    /***
-     * Setea la propiedad de si la libreria imprimira en consola la salida de los logs
-     */
-    protected void setearViewConsole() {
-        String viewConsole = System.getProperty(this.LogsJBviewConsole);
-        if (Objects.isNull(viewConsole)) {
-            //Si la propiedad del sistema no esta definida, setea el nivel por default
-            this.setViewConsole(true);
-        } else {
-            this.setViewConsole(Boolean.valueOf(viewConsole));
-        }
-        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("SizeLog"));
-    }
 
     /***
      * Setea el NivelLog configurado en las propiedades del sistema, de no estar
@@ -190,7 +190,7 @@ class Execute implements Cloneable {
      */
     protected void setearNivelLog() {
         String nivelLog = System.getProperty(this.LogsJBNivelLog);
-        if (Objects.isNull(nivelLog)) {
+        if (Objects.isNull(nivelLog) || nivelLog.isEmpty()) {
             //Si la propiedad del sistema no esta definida, setea el nivel por default
             this.setGradeLog(NivelLog.INFO);
         } else {
@@ -222,7 +222,7 @@ class Execute implements Cloneable {
      */
     protected void setearRuta() {
         String rutaLog = System.getProperty(this.LogsJBRutaLog);
-        if (Objects.isNull(rutaLog)) {
+        if (Objects.isNull(rutaLog) || rutaLog.isEmpty()) {
             //Si la propiedad del sistema no esta definida, setea la ruta por default
             String ruta = (Paths.get("").toAbsolutePath().normalize() + separador + "Logs" + separador +
                     convertir_fecha("dd-MM-YYYY") + separador + "Log.txt");
@@ -239,7 +239,7 @@ class Execute implements Cloneable {
      */
     protected void setearSizelLog() {
         String sizeLog = System.getProperty(this.LogsJBSizeLog);
-        if (Objects.isNull(sizeLog)) {
+        if (Objects.isNull(sizeLog) || sizeLog.isEmpty()) {
             //Si la propiedad del sistema no esta definida, setea el nivel por default
             this.setSizeLog(SizeLog.Little_Little);
         } else {
@@ -270,11 +270,39 @@ class Execute implements Cloneable {
      */
     protected void setearIsAndroid() {
         String Android = System.getProperty(this.LogsJBIsAndroid);
-        if (Objects.isNull(Android)) {
+        if (Objects.isNull(Android) || Android.isEmpty()) {
             //Si la propiedad del sistema no esta definida, setea el nivel por default
             this.setIsAndroid(false);
         } else {
             this.setIsAndroid(Boolean.valueOf(Android));
+        }
+        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("SizeLog"));
+    }
+
+    /***
+     * Setea la propiedad de si la libreria imprimira en consola la salida de los logs
+     */
+    protected void setearViewConsole() {
+        String viewConsole = System.getProperty(this.LogsJBviewConsole);
+        if (Objects.isNull(viewConsole) || viewConsole.isEmpty()) {
+            //Si la propiedad del sistema no esta definida, setea el nivel por default
+            this.setViewConsole(true);
+        } else {
+            this.setViewConsole(Boolean.valueOf(viewConsole));
+        }
+        //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("SizeLog"));
+    }
+
+    /**
+     * Setea la propiedad de cada cuantos logs validara el tamaño del log
+     */
+    protected void setearValidarSize() {
+        String LogsJBValidarSize = System.getProperty(this.LogsJBValidarSize);
+        if (Objects.isNull(LogsJBValidarSize)|| LogsJBValidarSize.isEmpty()) {
+            //Si la propiedad del sistema no esta definida, setea el nivel por default
+            this.setValidarSize(5000);
+        } else {
+            this.setValidarSize(Integer.valueOf(LogsJBValidarSize));
         }
         //System.out.println("SystemProperty Seteada soporte: "+System.getProperty("SizeLog"));
     }
@@ -296,6 +324,7 @@ class Execute implements Cloneable {
         this.setearSizelLog();
         this.setearIsAndroid();
         this.setearViewConsole();
+        this.setearValidarSize();
         this.runTXT.setInstance(this);
     }
 
@@ -332,7 +361,7 @@ class Execute implements Cloneable {
                     Integer i = 0;
                     while (band) {
                         //System.out.println("Valor de I: "+i);
-                        if (i > 250) {
+                        if (i > this.validarSize) {
                             //System.out.println("Revisara el tamaño del fichero: ");
                             this.runTXT.verificarSizeFichero();
                             i = 0;

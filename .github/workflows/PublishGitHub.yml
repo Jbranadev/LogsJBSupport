@@ -39,7 +39,7 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE # Env var that holds the key's passphrase
           cache: 'maven'
       - name: Publish to GitHub Packages
-        run: mvn --batch-mode deploy -P Github -DLogsJBSupportviewConsole=false -Darguments=-Dgpg.passphrase=${{ secrets.SIGN_KEY_PASS }} -X
+        run: mvn --batch-mode deploy -P Github -DLogsJBSupportviewConsole=false -DLogsJBSupportValidarSize=250 -Darguments=-Dgpg.passphrase=${{ secrets.SIGN_KEY_PASS }} -X
         env:
           GITHUB_USERNAME: ${{ secrets.USER_NAME }}
           GITHUB_PASSWORD: ${{ secrets.DEPLOY_ACTIONS_GITHUB }}

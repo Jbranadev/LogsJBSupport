@@ -7,6 +7,10 @@ public enum LogsJBProperties {
      */
     LogsJBIsAndroid("LogsJBSupportisAndroid"),
     /**
+     * Identifica la propiedad para validar el tamaño del log size
+     */
+    LogsJBValidarSize("LogsJBSupportValidarSize"),
+    /**
      * Bandera que indica si la libreria imprimira en la terminal
      */
     LogsJBviewConsole("LogsJBSupportviewConsole"),
