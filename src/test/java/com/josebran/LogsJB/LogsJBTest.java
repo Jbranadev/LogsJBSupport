@@ -10,7 +10,9 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.util.Collection;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.josebran.LogsJB.LogsJB.*;
@@ -144,7 +146,7 @@ public class LogsJBTest {
             ThreadLocalRandom.current().nextInt(5, 14);
             Integer i = 0;
             Random random = new Random();
-            while (i < 55000) {
+            while (i < 72000) {
                 trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
                 debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
                 info(i + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
@@ -168,7 +170,7 @@ public class LogsJBTest {
             ThreadLocalRandom.current().nextInt(5, 14);
             Integer i = 0;
             Random random = new Random();
-            while (i < 55000) {
+            while (i < 72000) {
                 trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
                 debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
                 info(i + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
@@ -191,12 +193,7 @@ public class LogsJBTest {
             LogsJB.setSizeLog(SizeLog.Little_Little);
             ThreadLocalRandom.current().nextInt(5, 14);
             Integer i = 0;
-            // Secuencia ANSI para limpiar la terminal
-            System.out.print("\033[H\033[2J");
-            System.out.flush();
-            // Ejecutar el comando "cls" de Windows para limpiar la terminal
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            while (i < 55000) {
+            while (i < 72000) {
                 trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
                 debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
                 info(i + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
@@ -205,14 +202,69 @@ public class LogsJBTest {
                 fatal(i + " comentario grado " + " Fatal".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
                 i = i + 6;
             }
+            Integer k = 0;
+            // Ejecutar el bloque de código de forma asíncrona en un CompletableFuture
+            CompletableFuture<Void> futureTask = CompletableFuture.runAsync(() -> {
+                try {
+                    File fichero = new File(LogsJB.getRuta());
+                    //System.out.println("Ruta del log: " + fichero.getAbsolutePath());
+                    //Verifica si existe la carpeta Logs, si no existe, la Crea
+                    File directorio = new File(fichero.getParent());
+                    if (!directorio.exists()) {
+                        if (directorio.mkdirs()) {
+                            System.out.println("*");
+                            System.out.println("Crea el directorio donde almacenara el Log de la prueba: " + fichero.getParent());
+                            System.out.println("*");
+                        }
+                    }
+                    // Crear un nuevo archivo llamado "jbran.txt" dentro del directorio
+                    File nuevoArchivo = new File(directorio, "jbran.txt");
+                    String rutanueva = nuevoArchivo.toPath().toAbsolutePath().normalize().toString();
+                    System.out.println("Ruta donde se almacenara el archivo jbran: " + rutanueva);
+                    //instance.get().getLogsJBviewConsole();
+                    LogsJB.setviewConsole(true);
+                    String propiedad = LogsJB.getInstanceLogsJB().getLogsJBviewConsole();
+                    String viewConsole = System.getProperty(propiedad);
+                    LogsJB.getInstanceLogsJB().setLogsJBviewConsole("logsViewJB");
+                    LogsJB.setviewConsole(!Boolean.valueOf(viewConsole));
+                    String viewConsole2 = System.getProperty(LogsJB.getInstanceLogsJB().getLogsJBviewConsole());
+                    LogsJB.getInstanceLogsJB().getLogsJBProperties();
+                    LogsJB.getInstanceLogsJB().setLogsJBRutaLog("logsjbruta");
+                    LogsJB.setRuta(rutanueva);
+                    LogsJB.setGradeLog(NivelLog.TRACE);
+                    LogsJB.setSizeLog(SizeLog.Little_Little);
+                    ThreadLocalRandom.current().nextInt(5, 14);  // Inicializa el generador de números aleatorios
+                    Integer j = 0;
+                    while (j < 10) {
+                        // Ejecución de los logs con diferentes niveles
+                        trace(j + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                        debug(j + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                        info(j + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                        warning(j + " comentario grado " + "Warning".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                        error(j + " comentario grado " + "Error".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                        fatal(j + " comentario grado " + " Fatal".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                        j += 6;  // Incrementar el contador
+                    }
+                    LogsJB.waitForOperationComplete();
+                } catch (Exception e) {
+                    System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
+                    System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
+                }
+            });
             LogsJB.waitForOperationComplete();
-            File fichero = new File(getRuta());
+            futureTask.join();
+            File fichero = new File(LogsJB.getRuta());
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
-            Assert.assertTrue(
-                    FileUtils.listFiles(directorio, null, false).size() > 1
-                    , "El Directorio no contiene más de un archivo"
-            );
+            System.out.println("Directorio donde se almaceno archivo jbran: " + directorio.toPath().toAbsolutePath().normalize().toString());
+            Collection<File> archivos =FileUtils.listFiles(directorio, null, false);
+            archivos.forEach(file -> {
+                System.out.println("Nombre de archivo: "+file.toPath().toAbsolutePath().normalize().toString());
+                //Devuelve el tamaño del fichero en Mb
+                long sizeFichero = ((file.length()) / 1024) / 1024;
+                System.out.println("Tamaño del archivo en MB: "+sizeFichero);
+            });
+            Assert.assertEquals(archivos.size(), 3, "El Directorio no contiene más de dos archivos");
         } catch (Exception e) {
             System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
             System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
