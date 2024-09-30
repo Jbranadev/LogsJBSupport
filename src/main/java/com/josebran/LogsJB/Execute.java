@@ -31,8 +31,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.josebran.LogsJB.MethodsTxt.convertir_fecha;
@@ -51,13 +49,11 @@ class Execute implements Cloneable {
     private static final InheritableThreadLocal<Execute> instance = new InheritableThreadLocal<>() {
         @Override
         protected Execute initialValue() {
-            System.out.println("Creando instancia de Execute para el hilo: " + Thread.currentThread().getName());
             return new Execute();
         }
 
         @Override
         protected Execute childValue(Execute parentValue) {
-            System.out.println("Heredando instancia de Execute para el hilo hijo: " + Thread.currentThread().getName());
             // Retornamos una copia del valor del padre para evitar que se afecte la instancia original
             return parentValue.clone();
         }
@@ -68,17 +64,7 @@ class Execute implements Cloneable {
     @Getter(AccessLevel.PROTECTED)
     @Setter(AccessLevel.PROTECTED)
     private static final String separador = System.getProperty("file.separator");
-//    private static final ThreadLocal<Execute> instance = ThreadLocal.withInitial(() -> {
-//        System.out.println("Creando instancia de Execute para el hilo: " + Thread.currentThread().getName());
-//        return new Execute();
-//    });
-    /**
-     * Ejecutor de Tareas asincronas
-     */
-    private final ExecutorService executorPrincipal = Executors.newCachedThreadPool();
-    //private static final Execute instance = new Execute();
-    //private Boolean TaskisReady = true;
-    // Cambia la declaración de TaskisReady a AtomicBoolean
+
     private final AtomicBoolean TaskisReady = new AtomicBoolean(true);
     @Getter(AccessLevel.PROTECTED)
     private final MethodsTxt runTXT = new MethodsTxt();
@@ -115,7 +101,6 @@ class Execute implements Cloneable {
     @Getter(AccessLevel.PROTECTED)
     @Setter(AccessLevel.PROTECTED)
     protected SizeLog sizeLog = SizeLog.Little_Little;
-
 
     @Getter(AccessLevel.PROTECTED)
     @Setter(AccessLevel.PROTECTED)
@@ -165,9 +150,9 @@ class Execute implements Cloneable {
         //return instance;
     }
 
-
     /**
      * Método para clonar la instancia, asegurando que cada hilo tiene una copia separada
+     *
      * @return Instancia correspondiente al hilo actual
      */
     @Override
@@ -182,7 +167,6 @@ class Execute implements Cloneable {
             throw new RuntimeException("Error al clonar la instancia de Execute", e);
         }
     }
-
 
     /***
      * Setea el NivelLog configurado en las propiedades del sistema, de no estar
@@ -298,7 +282,7 @@ class Execute implements Cloneable {
      */
     protected void setearValidarSize() {
         String LogsJBValidarSize = System.getProperty(this.LogsJBValidarSize);
-        if (Objects.isNull(LogsJBValidarSize)|| LogsJBValidarSize.isEmpty()) {
+        if (Objects.isNull(LogsJBValidarSize) || LogsJBValidarSize.isEmpty()) {
             //Si la propiedad del sistema no esta definida, setea el nivel por default
             this.setValidarSize(5000);
         } else {

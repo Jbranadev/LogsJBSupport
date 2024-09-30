@@ -227,14 +227,12 @@ class MethodsTxt {
                 // Genera un número aleatorio entre 0 y 9 para evitar colisiones de nombres.
                 int numeroAleatorio = ThreadLocalRandom.current().nextInt(0, 10);
                 //System.out.println( "La fecha y hora de creación del archivo es: " + fechaformateada );
-                //SimpleDateFormat  formatofecha = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                //String fechalog=(formatofecha.format(logactual.lastModified())).replace(":","-").replace(" ", "_");
                 this.getBw().close();
                 String fechalog = fechaformateada.replace(":", "-").replace(" ", "_") + numeroAleatorio;
                 String newrute = this.getInstance().getRuta().replace(".txt", "") + "_" + fechalog + ".txt";
                 File newfile = new File(newrute);
                 logactual.renameTo(newfile);
-                System.out.println("Archivo renombrado: " + newrute);
+                System.out.println("Archivo de Log renombrado: " + newrute);
                 logactual.delete();
                 logactual.createNewFile();
                 this.setBw(new BufferedWriter(new FileWriter(logactual, true)));
@@ -276,10 +274,7 @@ class MethodsTxt {
                 //System.out.println("clase: " + Clase + " metodo: " + Metodo);
                 //Rutas de archivos
                 File fichero = new File(this.getInstance().getRuta());
-                //System.out.println("Ruta del log: " + fichero.getAbsolutePath());
                 //Verifica si existe la carpeta Logs, si no existe, la Crea
-                /////Esta seccion se encarga de Crear y escribir en el Log/////
-                //verificarSizeFichero();
                 /*Si es un nuevo Test se ejecuta el siguiente codigo, tomando en cuenta que sea el primer
                  * TestCase del Test actual*/
                 //Si el fichero no Existe, lo creara y agregara el siguiente texto

@@ -199,14 +199,14 @@ Maven
 <dependency>
     <groupId>io.github.josecarlosbran</groupId>
     <artifactId>logsjbsupport</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 </dependency>
 ~~~
 
 Gradle
 
 ~~~
-implementation 'io.github.josecarlosbran:logsjbsupport:1.0.3'
+implementation 'io.github.josecarlosbran:logsjbsupport:1.0.4'
 ~~~
 
 Para mayor información sobre como descargar LogsJBSupport desde otros

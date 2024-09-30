@@ -221,7 +221,6 @@ public class LogsJBTest {
                     File nuevoArchivo = new File(directorio, "jbran.txt");
                     String rutanueva = nuevoArchivo.toPath().toAbsolutePath().normalize().toString();
                     System.out.println("Ruta donde se almacenara el archivo jbran: " + rutanueva);
-                    //instance.get().getLogsJBviewConsole();
                     LogsJB.setviewConsole(true);
                     String propiedad = LogsJB.getInstanceLogsJB().getLogsJBviewConsole();
                     String viewConsole = System.getProperty(propiedad);
@@ -257,12 +256,12 @@ public class LogsJBTest {
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
             System.out.println("Directorio donde se almaceno archivo jbran: " + directorio.toPath().toAbsolutePath().normalize().toString());
-            Collection<File> archivos =FileUtils.listFiles(directorio, null, false);
+            Collection<File> archivos = FileUtils.listFiles(directorio, null, false);
             archivos.forEach(file -> {
-                System.out.println("Nombre de archivo: "+file.toPath().toAbsolutePath().normalize().toString());
+                System.out.println("Nombre de archivo: " + file.toPath().toAbsolutePath().normalize().toString());
                 //Devuelve el tamaño del fichero en Mb
                 long sizeFichero = ((file.length()) / 1024) / 1024;
-                System.out.println("Tamaño del archivo en MB: "+sizeFichero);
+                System.out.println("Tamaño del archivo en MB: " + sizeFichero);
             });
             Assert.assertEquals(archivos.size(), 3, "El Directorio no contiene más de dos archivos");
         } catch (Exception e) {

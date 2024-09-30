@@ -142,7 +142,6 @@ public class LogsJB {
         try {
             getInstance().setGradeLog(GradeLog);
             System.setProperty(getInstance().LogsJBNivelLog, GradeLog.name());
-            //Methods.metodo = metodo;
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear el GradeLog de la aplicación " + GradeLog + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
         }
@@ -179,15 +178,8 @@ public class LogsJB {
     }
 
     /**
-     * Retorna la propiedad que indica cada cuanto ciertos logs validar el tamaño del archivo log
-     * @return Cantidad de registros que deben escribirse para validar el tamaño del archivo log
-     */
-    public static Integer getValidarSize() {
-        return getInstance().validarSize;
-    }
-
-    /**
      * Setea la Cantidad de registros que deben escribirse para validar el tamaño del archivo log
+     *
      * @param validarSize Cantidad de registros que deben escribirse para validar el tamaño del archivo log
      */
     public static void setSizeLog(Integer validarSize) {
@@ -197,6 +189,15 @@ public class LogsJB {
         } catch (Exception e) {
             System.err.println("Excepcion capturada al tratar de setear la validación de tamaño del archivo " + validarSize + " Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
         }
+    }
+
+    /**
+     * Retorna la propiedad que indica cada cuanto ciertos logs validar el tamaño del archivo log
+     *
+     * @return Cantidad de registros que deben escribirse para validar el tamaño del archivo log
+     */
+    public static Integer getValidarSize() {
+        return getInstance().validarSize;
     }
 
     /***
