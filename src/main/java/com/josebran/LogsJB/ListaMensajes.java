@@ -37,7 +37,6 @@ class ListaMensajes {
     protected synchronized void addDato(MensajeWrite dato) {
         //System.out.println("Agrega el msj a la lista: "+dato.getTexto()+" "+dato.getNivelLog());
         this.mensajes.add(dato);
-        //notify();
     }
 
     /***
