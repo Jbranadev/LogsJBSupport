@@ -13,7 +13,6 @@
  * Consulte la Licencia para conocer el idioma específico que rige los permisos y
  * limitaciones bajo la Licencia.
  */
-
 package com.josebran.LogsJB;
 
 import java.util.LinkedList;

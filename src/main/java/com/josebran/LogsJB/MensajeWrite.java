@@ -13,7 +13,6 @@
  * Consulte la Licencia para conocer el idioma específico que rige los permisos y
  * limitaciones bajo la Licencia.
  */
-
 package com.josebran.LogsJB;
 
 import com.josebran.LogsJB.Numeracion.NivelLog;
@@ -30,11 +29,8 @@ import com.josebran.LogsJB.Numeracion.NivelLog;
 class MensajeWrite {
     private String Texto;
     private NivelLog nivelLog;
-
     private String Clase;
-
     private String Metodo;
-
     private String fecha;
 
     protected MensajeWrite() {

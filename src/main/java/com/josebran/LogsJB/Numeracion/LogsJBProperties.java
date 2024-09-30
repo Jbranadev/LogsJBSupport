@@ -1,7 +1,6 @@
 package com.josebran.LogsJB.Numeracion;
 
 public enum LogsJBProperties {
-
     /**
      * Bandera que indica si la libreria esta siendo utilizada en Android
      */
@@ -30,7 +29,6 @@ public enum LogsJBProperties {
      * Ruta del archivo .Txt donde se desea escribir el Log.
      */
     LogsJBRutaLog("LogsJBSupportRutaLog");
-
     /**
      * Indica la propieda que se estara setiando
      */
