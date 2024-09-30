@@ -13,7 +13,6 @@
  * Consulte la Licencia para conocer el idioma específico que rige los permisos y
  * limitaciones bajo la Licencia.
  */
-
 package com.josebran.LogsJB;
 
 import com.josebran.LogsJB.Numeracion.LogsJBProperties;
@@ -40,8 +39,7 @@ import static com.josebran.LogsJB.MethodsTxt.convertir_fecha;
  * Clase encargada de recuperar los mensajes de la lista compartida por el Proceso Principal
  * e iniciar un SubProceso encargado de leer los mensajes de la lista y escribirlos en el LogTxt.
  */
-class Execute implements Cloneable {
-
+public class Execute implements Cloneable {
     /***
      * Se utiliza el patron Singleton, para asegurarnos que sea una unica instancia la que se encargue de
      * Llevar el control de los Logs
@@ -64,7 +62,6 @@ class Execute implements Cloneable {
     @Getter(AccessLevel.PROTECTED)
     @Setter(AccessLevel.PROTECTED)
     private static final String separador = System.getProperty("file.separator");
-
     private final AtomicBoolean TaskisReady = new AtomicBoolean(true);
     @Getter(AccessLevel.PROTECTED)
     private final MethodsTxt runTXT = new MethodsTxt();
@@ -101,7 +98,6 @@ class Execute implements Cloneable {
     @Getter(AccessLevel.PROTECTED)
     @Setter(AccessLevel.PROTECTED)
     protected SizeLog sizeLog = SizeLog.Little_Little;
-
     @Getter(AccessLevel.PROTECTED)
     @Setter(AccessLevel.PROTECTED)
     protected Integer validarSize = 5000;
@@ -130,7 +126,6 @@ class Execute implements Cloneable {
     @Getter(AccessLevel.PUBLIC)
     @Setter(AccessLevel.PUBLIC)
     protected String LogsJBValidarSize = LogsJBProperties.LogsJBValidarSize.getProperty();
-
     /***
      * Lista que funciona como la cola de peticiones que llegan al Ejecutor
      */

@@ -13,7 +13,6 @@
  * Consulte la Licencia para conocer el idioma específico que rige los permisos y
  * limitaciones bajo la Licencia.
  */
-
 package com.josebran.LogsJB.Numeracion;
 
 /****
@@ -21,7 +20,6 @@ package com.josebran.LogsJB.Numeracion;
  * Numeración que sirve para indicar el tamaño maximo del LogTxt que se escribira por día.
  */
 public enum SizeLog {
-
     /***
      * El tamaño mas pequeño, que el pequeño,
      * Se definiria el tamaño de log en 25Mb.
@@ -52,7 +50,6 @@ public enum SizeLog {
      * Se definiría el tamaño de log en 500Mb.
      */
     Large(500);
-
     private final int size;
 
     SizeLog(int SizeLog) {
