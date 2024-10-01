@@ -13,7 +13,6 @@
  * Consulte la Licencia para conocer el idioma específico que rige los permisos y
  * limitaciones bajo la Licencia.
  */
-
 package com.josebran.LogsJB;
 
 import com.josebran.LogsJB.Numeracion.NivelLog;
@@ -41,18 +40,14 @@ import java.util.concurrent.ThreadLocalRandom;
  * Clase que almacena los metodos necesarios para poder escribir el LogTxt
  */
 class MethodsTxt {
-
     // Definimos el formateador como una constante estática para evitar recrearlo en cada llamada
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss SSS");
     // Definir una constante para el patrón de fecha.
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss SSS");
-
     @Getter(AccessLevel.PROTECTED)
     @Setter(AccessLevel.PROTECTED)
     private Execute instance;
-
     private BufferedWriter bw;
-
     /***
      * Contador que expresa la cantidad de veces que se a escrito en la ejecución actual de la aplicación
      *

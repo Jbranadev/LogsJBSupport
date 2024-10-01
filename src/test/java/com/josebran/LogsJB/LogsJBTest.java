@@ -19,7 +19,6 @@ import static com.josebran.LogsJB.LogsJB.*;
 
 @Listeners({org.uncommons.reportng.HTMLReporter.class, org.uncommons.reportng.JUnitXMLReporter.class})
 public class LogsJBTest {
-
     @Test(testName = "Write Log sin Setear propiedades")
     public void writeLogSinSetearPropiedades() {
         try {

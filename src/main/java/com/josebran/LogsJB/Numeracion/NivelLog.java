@@ -13,7 +13,6 @@
  * Consulte la Licencia para conocer el idioma específico que rige los permisos y
  * limitaciones bajo la Licencia.
  */
-
 package com.josebran.LogsJB.Numeracion;
 
 /****
@@ -51,7 +50,6 @@ public enum NivelLog {
      * El grado de este nivel de log es 1000.
      */
     FATAL(1000);
-
     private final int gradeLog;
 
     NivelLog(int GradeLog) {

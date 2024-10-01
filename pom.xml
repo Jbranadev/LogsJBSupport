@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>io.github.josecarlosbran</groupId>
     <artifactId>logsjbsupport</artifactId>
-    <version>1.0.4</version>
-
+    <version>1.0.5</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>LogsJBSupport es una librería java que permite la gestión de
         registros de un programa en paralelo a la ejecución
@@ -17,35 +14,27 @@
     </description>
     <!-- FIXME change it to the project's website -->
     <url>https://github.com/Jbranadev/LogsJB/tree/support_version</url>
-
-
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
-
     <developers>
         <developer>
             <name>Jose Carlos Bran</name>
             <email>jbranadev@gmail.com</email>
             <organization>JoseBran</organization>
         </developer>
-
     </developers>
-
     <scm>
         <connection>scm:git:git://github.com/Jbranadev/LogsJB.git</connection>
         <developerConnection>scm:git:ssh://github.com/Jbranadev/LogsJB.git</developerConnection>
         <url>https://github.com/Jbranadev/LogsJB/tree/support_version</url>
     </scm>
-
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
     <dependencyManagement>
         <dependencies>
             <!-- Dependencia para TestNG-->
@@ -62,7 +51,6 @@
                 <version>2.7.0</version>
                 <scope>test</scope>
             </dependency>
-
             <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
             <dependency>
                 <groupId>commons-io</groupId>
@@ -70,8 +58,6 @@
                 <version>2.17.0</version>
                 <scope>test</scope>
             </dependency>
-
-
             <!-- Dependencia para Extender funcionalidades de lenguaje Java-->
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -87,9 +73,7 @@
                 <scope>compile</scope>
             </dependency>
         </dependencies>
-
     </dependencyManagement>
-
     <dependencies>
         <!-- Dependencia para TestNG-->
         <dependency>
@@ -109,7 +93,6 @@
             <artifactId>commons-io</artifactId>
             <scope>test</scope>
         </dependency>
-
         <!-- Dependencia para Extender funcionalidades de lenguaje Java-->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -123,8 +106,6 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
-
     <build>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
@@ -177,8 +158,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-
-
         <plugins>
             <!-- Generación de JACOCO -->
             <plugin>
@@ -202,16 +181,13 @@
                 </executions>
             </plugin>
         </plugins>
-
     </build>
-
     <profiles>
         <profile>
             <id>Maven</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-
             <distributionManagement>
                 <!-- Compilar y Publicar en Maven -->
                 <snapshotRepository>
@@ -233,7 +209,6 @@
                             <target>11</target>
                         </configuration>
                     </plugin>
-
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
@@ -247,7 +222,6 @@
                             </execution>
                         </executions>
                     </plugin>
-
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
@@ -264,7 +238,6 @@
                             <doclint>all,-missing</doclint>
                         </configuration>
                     </plugin>
-
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-site-plugin</artifactId>
@@ -273,7 +246,6 @@
                             <locales>es,en,fr</locales>
                         </configuration>
                     </plugin>
-
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -285,8 +257,6 @@
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
-
-
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -307,13 +277,11 @@
                             </gpgArguments>
                         </configuration>
                     </plugin>
-
                 </plugins>
             </build>
         </profile>
         <profile>
             <id>Github</id>
-
             <distributionManagement>
                 <!-- Compilar y Publicar en Maven -->
                 <repository>
@@ -337,7 +305,6 @@
                             <target>11</target>
                         </configuration>
                     </plugin>
-
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
@@ -351,7 +318,6 @@
                             </execution>
                         </executions>
                     </plugin>
-
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
@@ -368,7 +334,6 @@
                             <doclint>all,-missing</doclint>
                         </configuration>
                     </plugin>
-
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-site-plugin</artifactId>
@@ -377,8 +342,6 @@
                             <locales>es,en,fr</locales>
                         </configuration>
                     </plugin>
-
-
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -399,13 +362,74 @@
                             </gpgArguments>
                         </configuration>
                     </plugin>
-
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <!--            mvn clean install -P local-install-->
+            <id>local-install</id>
+            <properties>
+                <!-- Evita la firma con GPG -->
+                <gpg.skip>true</gpg.skip>
+                <!-- Salta la ejecución de pruebas -->
+                <maven.test.skip>true</maven.test.skip>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <source>11</source>
+                            <target>11</target>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.3.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.10.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <doclint>all,-missing</doclint>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-site-plugin</artifactId>
+                        <version>4.0.0-M16</version>
+                        <configuration>
+                            <locales>es,en,fr</locales>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-install-plugin</artifactId>
+                        <version>3.1.3</version>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
-
-
     <reporting>
         <plugins>
             <plugin>
@@ -418,5 +442,4 @@
             </plugin>
         </plugins>
     </reporting>
-
 </project>
