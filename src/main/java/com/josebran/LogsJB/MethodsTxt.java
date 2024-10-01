@@ -186,7 +186,7 @@ class MethodsTxt {
      * @return Buffer en memoria que referencia el archivo en el que se esta escribiendo el log
      */
     protected BufferedWriter getBw() throws IOException {
-        if(Objects.isNull(bw)){
+        if (Objects.isNull(bw)) {
             File fichero = new File(this.getInstance().getRuta());
             this.setBw(new BufferedWriter(new FileWriter(fichero, true)));
         }

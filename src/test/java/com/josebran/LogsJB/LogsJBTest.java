@@ -322,4 +322,92 @@ public class LogsJBTest {
             System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
         }
     }
+
+    @Test(testName = "Validar creación instancia para hilo en paralelo"
+            , dependsOnMethods = "writeLogSegundaOcasionMayorTreintaYSeis")
+    public void ValidarMetodoAsyncrono() {
+        try {
+            LogsJB.setGradeLog(NivelLog.TRACE);
+            LogsJB.setSizeLog(SizeLog.Little_Little);
+            ThreadLocalRandom.current().nextInt(5, 14);
+            Integer i = 0;
+            while (i < 10) {
+                trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                debug(i + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                info(i + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                warning(i + " comentario grado " + "Warning".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                error(i + " comentario grado " + "Error".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                fatal(i + " comentario grado " + " Fatal".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                i = i + 6;
+            }
+            Integer k = 0;
+            // Ejecutar el bloque de código de forma asíncrona en un CompletableFuture
+            Runnable logTask = () -> {
+                try {
+                    File fichero = new File(LogsJB.getRuta());
+                    //System.out.println("Ruta del log: " + fichero.getAbsolutePath());
+                    //Verifica si existe la carpeta Logs, si no existe, la Crea
+                    File directorio = new File(fichero.getParent());
+                    // Crear un nuevo archivo llamado "jbran.txt" dentro del directorio
+                    File nuevoArchivo = new File(directorio, "mayron.txt");
+                    String rutanueva = nuevoArchivo.toPath().toAbsolutePath().normalize().toString();
+                    System.out.println("Ruta donde se almacenara el archivo jbran: " + rutanueva);
+                    LogsJB.setviewConsole(true);
+                    String propiedad = LogsJB.getInstanceLogsJB().getLogsJBviewConsole();
+                    String viewConsole = System.getProperty(propiedad);
+                    LogsJB.getInstanceLogsJB().setLogsJBviewConsole("logsViewJB");
+                    LogsJB.setviewConsole(!Boolean.valueOf(viewConsole));
+                    String viewConsole2 = System.getProperty(LogsJB.getInstanceLogsJB().getLogsJBviewConsole());
+                    LogsJB.getInstanceLogsJB().getLogsJBProperties();
+                    LogsJB.getInstanceLogsJB().setLogsJBRutaLog("logsjbruta");
+                    LogsJB.setRuta(rutanueva);
+                    LogsJB.setGradeLog(NivelLog.TRACE);
+                    LogsJB.setSizeLog(SizeLog.Little_Little);
+                    ThreadLocalRandom.current().nextInt(5, 14);  // Inicializa el generador de números aleatorios
+                    Integer j = 0;
+                    while (j < 20) {
+                        // Ejecución de los logs con diferentes niveles
+                        trace(j + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                        debug(j + " comentario grado " + "Debug".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                        info(j + " comentario grado " + "Info".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                        warning(j + " comentario grado " + "Warning".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                        error(j + " comentario grado " + "Error".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+                        fatal(j + " comentario grado " + " Fatal".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
+                        j += 6;  // Incrementar el contador
+                    }
+                    LogsJB.waitForOperationComplete();
+                } catch (Exception e) {
+                    System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
+                    System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
+                }
+            };
+            LogsJB.waitForOperationComplete();
+            // Crear y ejecutar el hilo
+            Thread logThread = new Thread(logTask);
+            logThread.start();
+            // Esperar a que termine la ejecución
+            try {
+                logThread.join();
+            } catch (InterruptedException e) {
+                System.err.println("El hilo fue interrumpido: " + e.getMessage());
+            }
+            File fichero = new File(LogsJB.getRuta());
+            //Verifica si existe la carpeta Logs, si no existe, la Crea
+            File directorio = new File(fichero.getParent());
+            System.out.println("Directorio donde se almaceno archivo jbran: " + directorio.toPath().toAbsolutePath().normalize().toString());
+            Collection<File> archivos = FileUtils.listFiles(directorio, null, false);
+            archivos.forEach(file -> {
+                System.out.println("Nombre de archivo: " + file.toPath().toAbsolutePath().normalize().toString());
+                //Devuelve el tamaño del fichero en Mb
+                long sizeFichero = ((file.length()) / 1024) / 1024;
+                System.out.println("Tamaño del archivo en MB: " + sizeFichero);
+            });
+            Assert.assertEquals(archivos.size(), 4, "El Directorio no contiene más de dos archivos");
+        } catch (Exception e) {
+            System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
+            System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+
 }
