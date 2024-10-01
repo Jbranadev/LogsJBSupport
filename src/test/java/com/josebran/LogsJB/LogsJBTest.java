@@ -19,6 +19,20 @@ import static com.josebran.LogsJB.LogsJB.*;
 
 @Listeners({org.uncommons.reportng.HTMLReporter.class, org.uncommons.reportng.JUnitXMLReporter.class})
 public class LogsJBTest {
+
+    @Test(testName = "Setear Cantidad de registros a validar tamaño txt Fallo", dependsOnMethods = "ValidarMetodoAsyncrono")
+    public void setearValidZiseLogFail() {
+        try {
+            Integer valor = 1000;
+            LogsJB.setSizeLog(valor);
+            LogsJB.getLogsJBProperties();
+            Assert.assertEquals(valor, getValidarSize(), "El valor de Usuario obtenido no corresponde al seteado");
+        } catch (Exception e) {
+            System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
+            System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
+        }
+    }
+
     @Test(testName = "Write Log sin Setear propiedades")
     public void writeLogSinSetearPropiedades() {
         try {
@@ -88,7 +102,7 @@ public class LogsJBTest {
             Integer valor = 1000;
             LogsJB.setSizeLog(valor);
             LogsJB.getLogsJBProperties();
-            Assert.assertTrue(LogsJB.getValidarSize().equals(valor), "El valor de Usuario obtenido no corresponde al seteado");
+            Assert.assertEquals(valor, getValidarSize(), "El valor de Usuario obtenido no corresponde al seteado");
         } catch (Exception e) {
             System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
             System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
@@ -266,10 +280,10 @@ public class LogsJBTest {
             File fichero = new File(LogsJB.getRuta());
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
-            System.out.println("Directorio donde se almaceno archivo jbran: " + directorio.toPath().toAbsolutePath().normalize().toString());
+            System.out.println("Directorio donde se almaceno archivo jbran: " + directorio.toPath().toAbsolutePath().normalize());
             Collection<File> archivos = FileUtils.listFiles(directorio, null, false);
             archivos.forEach(file -> {
-                System.out.println("Nombre de archivo: " + file.toPath().toAbsolutePath().normalize().toString());
+                System.out.println("Nombre de archivo: " + file.toPath().toAbsolutePath().normalize());
                 //Devuelve el tamaño del fichero en Mb
                 long sizeFichero = ((file.length()) / 1024) / 1024;
                 System.out.println("Tamaño del archivo en MB: " + sizeFichero);
@@ -394,10 +408,10 @@ public class LogsJBTest {
             File fichero = new File(LogsJB.getRuta());
             //Verifica si existe la carpeta Logs, si no existe, la Crea
             File directorio = new File(fichero.getParent());
-            System.out.println("Directorio donde se almaceno archivo jbran: " + directorio.toPath().toAbsolutePath().normalize().toString());
+            System.out.println("Directorio donde se almaceno archivo jbran: " + directorio.toPath().toAbsolutePath().normalize());
             Collection<File> archivos = FileUtils.listFiles(directorio, null, false);
             archivos.forEach(file -> {
-                System.out.println("Nombre de archivo: " + file.toPath().toAbsolutePath().normalize().toString());
+                System.out.println("Nombre de archivo: " + file.toPath().toAbsolutePath().normalize());
                 //Devuelve el tamaño del fichero en Mb
                 long sizeFichero = ((file.length()) / 1024) / 1024;
                 System.out.println("Tamaño del archivo en MB: " + sizeFichero);
