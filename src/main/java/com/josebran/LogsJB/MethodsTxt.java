@@ -33,6 +33,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 /****
@@ -189,7 +190,11 @@ class MethodsTxt {
      *
      * @return Buffer en memoria que referencia el archivo en el que se esta escribiendo el log
      */
-    protected BufferedWriter getBw() {
+    protected BufferedWriter getBw() throws IOException {
+        if(Objects.isNull(bw)){
+            File fichero = new File(this.getInstance().getRuta());
+            this.setBw(new BufferedWriter(new FileWriter(fichero, true)));
+        }
         return bw;
     }
 
@@ -228,6 +233,7 @@ class MethodsTxt {
                 int numeroAleatorio = ThreadLocalRandom.current().nextInt(0, 10);
                 //System.out.println( "La fecha y hora de creación del archivo es: " + fechaformateada );
                 this.getBw().close();
+                this.setBw(null);
                 String fechalog = fechaformateada.replace(":", "-").replace(" ", "_") + numeroAleatorio;
                 String newrute = this.getInstance().getRuta().replace(".txt", "") + "_" + fechalog + ".txt";
                 File newfile = new File(newrute);

@@ -247,12 +247,7 @@ public class LogsJB {
                     metodo = elements[4].getMethodName() + " => " + elements[4].getLineNumber();
                 }
             } catch (Exception ex) {
-                clase = elements[2].getClassName();
-                metodo = elements[2].getMethodName() + " => " + elements[2].getLineNumber();
-                if (getIsAndroid()) {
-                    clase = elements[3].getClassName();
-                    metodo = elements[3].getMethodName() + " => " + elements[3].getLineNumber();
-                }
+
             }
             if (nivelLog.getGradeLog() >= getGradeLog().getGradeLog()) {
                 MensajeWrite mensaje = new MensajeWrite();

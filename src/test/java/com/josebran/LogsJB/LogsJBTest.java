@@ -43,6 +43,7 @@ public class LogsJBTest {
             error(" comentario grado " + "Error".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
             fatal(" comentario grado " + " Fatal".repeat(ThreadLocalRandom.current().nextInt(0, 10)));
             LogsJB.waitForOperationComplete();
+            FileUtils.deleteDirectory(directorio);
         } catch (Exception e) {
             System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
             System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
@@ -82,7 +83,20 @@ public class LogsJBTest {
         }
     }
 
-    @Test(testName = "Setear Nivel Log txt", dependsOnMethods = "setearUsuario")
+    @Test(testName = "Setear Cantidad de registros a validar tamaño txt", dependsOnMethods = "writeLogSinSetIsAndroid")
+    public void setearValidZiseLog() {
+        try {
+            Integer valor = 1000;
+            LogsJB.setSizeLog(valor);
+            LogsJB.getLogsJBProperties();
+            Assert.assertTrue(LogsJB.getValidarSize().equals(valor), "El valor de Usuario obtenido no corresponde al seteado");
+        } catch (Exception e) {
+            System.err.println("Excepcion capturada en el metodo main: " + e.getMessage());
+            System.err.println("Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    @Test(testName = "Setear Nivel Log txt", dependsOnMethods = "setearValidZiseLog")
     public void setearNivelLog() {
         try {
             LogsJB.setGradeLog(NivelLog.TRACE);
@@ -139,6 +153,9 @@ public class LogsJBTest {
     @Test(testName = "Write Log txt Llegar a 8MB", dependsOnMethods = "setearSizeLog")
     public void writeLog() {
         try {
+            File fichero = new File(LogsJB.getRuta());
+            File directorio = new File(fichero.getParent());
+            FileUtils.deleteDirectory(directorio);
             LogsJB.setGradeLog(NivelLog.TRACE);
             LogsJB.setSizeLog(SizeLog.Little_Little);
             LogsJB.getLogsJBProperties();
@@ -210,13 +227,13 @@ public class LogsJBTest {
                     //System.out.println("Ruta del log: " + fichero.getAbsolutePath());
                     //Verifica si existe la carpeta Logs, si no existe, la Crea
                     File directorio = new File(fichero.getParent());
-                    if (!directorio.exists()) {
+                    /*if (!directorio.exists()) {
                         if (directorio.mkdirs()) {
                             System.out.println("*");
                             System.out.println("Crea el directorio donde almacenara el Log de la prueba: " + fichero.getParent());
                             System.out.println("*");
                         }
-                    }
+                    }*/
                     // Crear un nuevo archivo llamado "jbran.txt" dentro del directorio
                     File nuevoArchivo = new File(directorio, "jbran.txt");
                     String rutanueva = nuevoArchivo.toPath().toAbsolutePath().normalize().toString();

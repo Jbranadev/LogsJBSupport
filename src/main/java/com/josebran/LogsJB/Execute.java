@@ -339,7 +339,6 @@ class Execute implements Cloneable {
                             System.out.println("*");
                         }
                     }
-                    this.runTXT.setBw(new BufferedWriter(new FileWriter(fichero, true)));
                     String temporal = "";
                     boolean band = true;
                     Integer i = 0;
@@ -363,6 +362,7 @@ class Execute implements Cloneable {
                         if (this.getListado().getSize() == 0) {
                             band = false;
                             this.runTXT.getBw().close();
+                            this.runTXT.setBw(null);
                             this.setTaskisReady(true);
                             break;
                         }
