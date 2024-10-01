@@ -161,6 +161,8 @@ public class LogsJBTest {
             Assert.assertEquals(SizeLog.Little_Little.getSizeLog(), getSizeLog().getSizeLog(), "El Size de Log obtenido no corresponde al seteado");
             ThreadLocalRandom.current().nextInt(5, 14);
             Integer i = 0;
+            trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
+            LogsJB.waitForOperationComplete();
             Random random = new Random();
             while (i < 72000) {
                 trace(i + " comentario grado" + " Trace".repeat(ThreadLocalRandom.current().nextInt(5, 14)));
@@ -226,13 +228,6 @@ public class LogsJBTest {
                     //System.out.println("Ruta del log: " + fichero.getAbsolutePath());
                     //Verifica si existe la carpeta Logs, si no existe, la Crea
                     File directorio = new File(fichero.getParent());
-                    /*if (!directorio.exists()) {
-                        if (directorio.mkdirs()) {
-                            System.out.println("*");
-                            System.out.println("Crea el directorio donde almacenara el Log de la prueba: " + fichero.getParent());
-                            System.out.println("*");
-                        }
-                    }*/
                     // Crear un nuevo archivo llamado "jbran.txt" dentro del directorio
                     File nuevoArchivo = new File(directorio, "jbran.txt");
                     String rutanueva = nuevoArchivo.toPath().toAbsolutePath().normalize().toString();

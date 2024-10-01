@@ -358,11 +358,12 @@ public class Execute implements Cloneable {
                             band = false;
                             this.runTXT.getBw().close();
                             this.runTXT.setBw(null);
+                            this.runTXT.setLogtext(0);
                             this.setTaskisReady(true);
                             break;
                         }
                     }
-                } catch (IOException e) {
+                } catch (Exception e) {
                     System.err.println("Exepcion capturada al inicializar el buffer, " + "Trace de la Exepción : " + ExceptionUtils.getStackTrace(e));
                 }
             });

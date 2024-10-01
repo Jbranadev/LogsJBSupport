@@ -177,7 +177,7 @@ class MethodsTxt {
      * @throws IllegalAccessException Lanza este error si no se puede setear el valor solicitado al campo
      */
     protected void setLogtext(long Logtext) throws NoSuchFieldException, IllegalAccessException {
-        this.logtext = logtext;
+        this.logtext = Logtext;
     }
 
     /**
