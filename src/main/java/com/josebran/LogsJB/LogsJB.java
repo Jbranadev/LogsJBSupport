@@ -311,7 +311,7 @@ public class LogsJB {
      * @param Texto Texto que se desea escribir en el Log.
      */
     public static void info(String Texto) {
-        info(Texto, 1);
+        info(Texto, 0);
     }
 
     /***
@@ -319,7 +319,7 @@ public class LogsJB {
      * @param Texto Texto que se desea escribir en el Log.
      */
     public static void debug(String Texto) {
-        debug(Texto, 1);
+        debug(Texto, 0);
     }
 
     /***
@@ -327,7 +327,7 @@ public class LogsJB {
      * @param Texto Texto que se desea escribir en el Log.
      */
     public static void trace(String Texto) {
-        trace(Texto, 1);
+        trace(Texto, 0);
     }
 
     /***
@@ -335,7 +335,7 @@ public class LogsJB {
      * @param Texto Texto que se desea escribir en el Log.
      */
     public static void warning(String Texto) {
-        warning(Texto, 1);
+        warning(Texto, 0);
     }
 
     /***
@@ -343,7 +343,7 @@ public class LogsJB {
      * @param Texto Texto que se desea escribir en el Log.
      */
     public static void fatal(String Texto) {
-        fatal(Texto, 1);
+        fatal(Texto, 0);
     }
 
     /***
@@ -351,7 +351,7 @@ public class LogsJB {
      * @param Texto Texto que se desea escribir en el Log.
      */
     public static void error(String Texto) {
-        error(Texto, 1);
+        error(Texto, 0);
     }
 
     /***

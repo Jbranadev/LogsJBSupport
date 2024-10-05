@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.josecarlosbran</groupId>
     <artifactId>logsjbsupport</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>LogsJBSupport es una librería java que permite la gestión de
         registros de un programa en paralelo a la ejecución
