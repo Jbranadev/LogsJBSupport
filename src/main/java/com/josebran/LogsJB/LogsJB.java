@@ -19,6 +19,8 @@ import com.josebran.LogsJB.Numeracion.NivelLog;
 import com.josebran.LogsJB.Numeracion.SizeLog;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
+import java.util.Objects;
+
 import static com.josebran.LogsJB.Execute.getInstance;
 import static com.josebran.LogsJB.MethodsTxt.convertir_fecha;
 
@@ -230,26 +232,30 @@ public class LogsJB {
      * de ejecutar los ejecutores de log's en subprocesos, diferentes al programa principal
      * @param nivelLog NivelLog del mensaje que queremos almacenar en el Log.
      * @param Texto Texto que se desea escribir en el Log.
+     * @param traceMethod Indica en que posición más se encuentra el metodo al cual buscar el metodo y clase que invoca el momento de la llamada.
      */
-    private static void executor(NivelLog nivelLog, String Texto) {
+    private static void executor(NivelLog nivelLog, String Texto, Integer traceMethod) {
         try {
+            if (Objects.isNull(traceMethod)) {
+                traceMethod = 0;
+            }
             //Permitira obtener la pila de procesos asociados a la ejecuciòn actual
             StackTraceElement[] elements = Thread.currentThread().getStackTrace();
             String clase = null;
             String metodo = null;
             try {
-                clase = elements[3].getClassName();
-                metodo = elements[3].getMethodName() + " => " + elements[3].getLineNumber();
+                clase = elements[3 + (traceMethod)].getClassName();
+                metodo = elements[3 + (traceMethod)].getMethodName() + " => " + elements[3 + (traceMethod)].getLineNumber();
                 if (getIsAndroid()) {
-                    clase = elements[4].getClassName();
-                    metodo = elements[4].getMethodName() + " => " + elements[4].getLineNumber();
+                    clase = elements[4 + (traceMethod)].getClassName();
+                    metodo = elements[4 + (traceMethod)].getMethodName() + " => " + elements[4 + (traceMethod)].getLineNumber();
                 }
             } catch (Exception ex) {
-                clase = elements[2].getClassName();
-                metodo = elements[2].getMethodName() + " => " + elements[2].getLineNumber();
+                clase = elements[2 + (traceMethod)].getClassName();
+                metodo = elements[2 + (traceMethod)].getMethodName() + " => " + elements[2 + (traceMethod)].getLineNumber();
                 if (getIsAndroid()) {
-                    clase = elements[3].getClassName();
-                    metodo = elements[3].getMethodName() + " => " + elements[3].getLineNumber();
+                    clase = elements[3 + (traceMethod)].getClassName();
+                    metodo = elements[3 + (traceMethod)].getMethodName() + " => " + elements[3 + (traceMethod)].getLineNumber();
                 }
             }
             if (nivelLog.getGradeLog() >= getGradeLog().getGradeLog()) {
@@ -299,7 +305,7 @@ public class LogsJB {
      * @param Texto Texto que se desea escribir en el Log.
      */
     public static void info(String Texto) {
-        executor(NivelLog.INFO, Texto);
+        info(Texto, 1);
     }
 
     /***
@@ -307,7 +313,7 @@ public class LogsJB {
      * @param Texto Texto que se desea escribir en el Log.
      */
     public static void debug(String Texto) {
-        executor(NivelLog.DEBUG, Texto);
+        debug(Texto, 1);
     }
 
     /***
@@ -315,7 +321,7 @@ public class LogsJB {
      * @param Texto Texto que se desea escribir en el Log.
      */
     public static void trace(String Texto) {
-        executor(NivelLog.TRACE, Texto);
+        trace(Texto, 1);
     }
 
     /***
@@ -323,7 +329,7 @@ public class LogsJB {
      * @param Texto Texto que se desea escribir en el Log.
      */
     public static void warning(String Texto) {
-        executor(NivelLog.WARNING, Texto);
+        warning(Texto, 1);
     }
 
     /***
@@ -331,7 +337,7 @@ public class LogsJB {
      * @param Texto Texto que se desea escribir en el Log.
      */
     public static void fatal(String Texto) {
-        executor(NivelLog.FATAL, Texto);
+        fatal(Texto, 1);
     }
 
     /***
@@ -339,6 +345,60 @@ public class LogsJB {
      * @param Texto Texto que se desea escribir en el Log.
      */
     public static void error(String Texto) {
-        executor(NivelLog.ERROR, Texto);
+        error(Texto, 1);
+    }
+
+    /***
+     * Escribe en el Log el mensaje especificado indicando que pertenece a la categoria de Informacion.
+     * @param Texto Texto que se desea escribir en el Log.
+     * @param traceMethod Indica en que posición más se encuentra el metodo al cual buscar el metodo y clase que invoca el momento de la llamada.
+     */
+    public static void info(String Texto, Integer traceMethod) {
+        executor(NivelLog.INFO, Texto, traceMethod);
+    }
+
+    /***
+     * Escribe en el Log el mensaje especificado indicando que pertenece a la categoria de Debug.
+     * @param Texto Texto que se desea escribir en el Log.
+     * @param traceMethod Indica en que posición más se encuentra el metodo al cual buscar el metodo y clase que invoca el momento de la llamada.
+     */
+    public static void debug(String Texto, Integer traceMethod) {
+        executor(NivelLog.DEBUG, Texto, traceMethod);
+    }
+
+    /***
+     * Escribe en el Log el mensaje especificado indicando que pertenece a la categoria de Trace, la cual es un seguimiento mayor a Debug.
+     * @param Texto Texto que se desea escribir en el Log.
+     * @param traceMethod Indica en que posición más se encuentra el metodo al cual buscar el metodo y clase que invoca el momento de la llamada.
+     */
+    public static void trace(String Texto, Integer traceMethod) {
+        executor(NivelLog.TRACE, Texto, traceMethod);
+    }
+
+    /***
+     * Escribe en el Log el mensaje especificado indicando que pertenece a la categoria de Advertencia.
+     * @param Texto Texto que se desea escribir en el Log.
+     * @param traceMethod Indica en que posición más se encuentra el metodo al cual buscar el metodo y clase que invoca el momento de la llamada.
+     */
+    public static void warning(String Texto, Integer traceMethod) {
+        executor(NivelLog.WARNING, Texto, traceMethod);
+    }
+
+    /***
+     * Escribe en el Log el mensaje especificado indicando que pertenece a la categoria Fatal lo cual indica un error del cual no es posible recuperarse.
+     * @param Texto Texto que se desea escribir en el Log.
+     * @param traceMethod Indica en que posición más se encuentra el metodo al cual buscar el metodo y clase que invoca el momento de la llamada.
+     */
+    public static void fatal(String Texto, Integer traceMethod) {
+        executor(NivelLog.FATAL, Texto, traceMethod);
+    }
+
+    /***
+     * Escribe en el Log el mensaje especificado indicando que pertenece a la categoria de Error, lo cual indica que capturo un error.
+     * @param Texto Texto que se desea escribir en el Log.
+     * @param traceMethod Indica en que posición más se encuentra el metodo al cual buscar el metodo y clase que invoca el momento de la llamada.
+     */
+    public static void error(String Texto, Integer traceMethod) {
+        executor(NivelLog.ERROR, Texto, traceMethod);
     }
 }
