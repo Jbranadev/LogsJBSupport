@@ -237,7 +237,13 @@ public class LogsJB {
     private static void executor(NivelLog nivelLog, String Texto, Integer traceMethod) {
         try {
             if (Objects.isNull(traceMethod)) {
-                traceMethod = 0;
+                traceMethod = 1;
+            }else{
+                if (traceMethod >= 0) {
+                    traceMethod=traceMethod+1;
+                } else {
+                    traceMethod=traceMethod-1;
+                }
             }
             //Permitira obtener la pila de procesos asociados a la ejecuciòn actual
             StackTraceElement[] elements = Thread.currentThread().getStackTrace();
